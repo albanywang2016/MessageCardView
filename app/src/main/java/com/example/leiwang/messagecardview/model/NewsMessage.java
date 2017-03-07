@@ -11,16 +11,25 @@ public class NewsMessage {
     String title;
     String source_name;
     String time;
-    String link;
+    String imageLink;
+    String contentsLink;
 
+    public String getContentsLink() {
+        return contentsLink;
+    }
 
-    public NewsMessage(String message_id, String source_name, String title, String time, String link, String contents) {
+    public void setContentsLink(String contentsLink) {
+        this.contentsLink = contentsLink;
+    }
+
+    public NewsMessage(String message_id, String source_name, String title, String time, String link, String contentsLink, String contents) {
         this.message_id = message_id;
         this.contents = contents;
         this.title = title;
         this.source_name = source_name;
         this.time = time;
-        this.link = link;
+        this.imageLink = link;
+        this.contentsLink = contentsLink;
     }
 
     public NewsMessage() {
@@ -35,16 +44,16 @@ public class NewsMessage {
                 ", title='" + title + '\'' +
                 ", source_name='" + source_name + '\'' +
                 ", time='" + time + '\'' +
-                ", link='" + link + '\'' +
+                ", imageLink='" + imageLink + '\'' +
                 '}';
     }
 
-    public String getLink() {
-        return link;
+    public String getImageLink() {
+        return imageLink;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public String getMessage_id() {
