@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -14,7 +15,6 @@ import com.eclipsesource.json.JsonValue;
 
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.adapter.MessageAdapter;
-import com.example.leiwang.messagecardview.adapter.RecyclerviewClickListener;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 
 import java.io.BufferedReader;
@@ -22,13 +22,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements RecyclerviewClickListener{
+public class MainActivity extends Activity {
     private static final String FILE_PATH = "Asahi.json";
     private static final String TAG = "MyActivity";
     RecyclerView rv;
     MessageAdapter ma;
     List<NewsMessage> messageList = new ArrayList<NewsMessage>();
-    RecyclerviewClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +45,12 @@ public class MainActivity extends Activity implements RecyclerviewClickListener{
 
         prepareMessageList();
 
-//        listener = new RecyclerviewClickListener() {
-//            @Override
-//            public void onRowClicked(int position) {
-//                String url = messageList.get(position).getContentsLink();
-//                startWebViewActivity(url);
-//            }
-//
-//            @Override
-//            public void onViewClicked(View view, int position) {
-//                String url = messageList.get(position).getContentsLink();
-//                startWebViewActivity(url);
-//            }
-//        };
-
-        ma = new MessageAdapter(this, messageList,listener);
-        rv.setAdapter(ma);
+        rv.setAdapter(new MessageAdapter(this, messageList, new MessageAdapter.RecyclerviewClickListener() {
+            @Override
+            public void onItemClick(NewsMessage item) {
+                //Toast.makeText(getApplicationContext(), "item clicked" + item.getMessage_id(), Toast.LENGTH_LONG).show();
+            }
+        }));
 
     }
 
@@ -112,21 +101,4 @@ public class MainActivity extends Activity implements RecyclerviewClickListener{
 
     }
 
-    @Override
-    public void onRowClicked(int position) {
-        String url = messageList.get(position).getContentsLink();
-        Intent intent = new Intent(this, WebViewContents.class);
-        intent.putExtra("ArticleURL", url);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onViewClicked(View view, int position) {
-        String url = messageList.get(position).getContentsLink();
-        Intent intent = new Intent(this, WebViewContents.class);
-
-        intent.putExtra("ArticleURL", url);
-        startActivity(intent);
-
-    }
 }
