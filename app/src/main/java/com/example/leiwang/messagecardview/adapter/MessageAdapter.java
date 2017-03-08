@@ -80,6 +80,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             source_name = (TextView) itemView.findViewById(R.id.tv_source);
             time = (TextView) itemView.findViewById(R.id.tv_time);
 
+            itemView.setClickable(true);
+            image.setClickable(true);
+
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,6 +96,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(v.getContext(),"itemView position " + Integer.toString(getAdapterPosition()), Toast.LENGTH_LONG ).show();
                     if(listener != null){
                         listener.onViewClicked(v,getAdapterPosition());
                     }

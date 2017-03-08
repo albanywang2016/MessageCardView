@@ -46,13 +46,30 @@ public class MainActivity extends Activity implements RecyclerviewClickListener{
 
         prepareMessageList();
 
+//        listener = new RecyclerviewClickListener() {
+//            @Override
+//            public void onRowClicked(int position) {
+//                String url = messageList.get(position).getContentsLink();
+//                startWebViewActivity(url);
+//            }
+//
+//            @Override
+//            public void onViewClicked(View view, int position) {
+//                String url = messageList.get(position).getContentsLink();
+//                startWebViewActivity(url);
+//            }
+//        };
 
         ma = new MessageAdapter(this, messageList,listener);
         rv.setAdapter(ma);
 
     }
 
-
+    private void startWebViewActivity(String url){
+        Intent intent = new Intent(this, WebViewContents.class);
+        intent.putExtra("ArticleURL", url);
+        startActivity(intent);
+    }
 
     private void prepareMessageList() {
 
