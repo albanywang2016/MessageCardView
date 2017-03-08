@@ -1,17 +1,11 @@
-package com.example.leiwang.messagecardview.control;
+package com.example.leiwang.messagecardview.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonValue;
 
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.adapter.MessageAdapter;
@@ -23,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private static final String FILE_PATH = "Asahi.json";
-    private static final String TAG = "MyActivity";
+
     RecyclerView rv;
     MessageAdapter ma;
     List<NewsMessage> messageList = new ArrayList<NewsMessage>();
@@ -46,9 +39,13 @@ public class MainActivity extends Activity {
         prepareMessageList();
 
         rv.setAdapter(new MessageAdapter(this, messageList, new MessageAdapter.RecyclerviewClickListener() {
+
             @Override
-            public void onItemClick(NewsMessage item) {
-                //Toast.makeText(getApplicationContext(), "item clicked" + item.getMessage_id(), Toast.LENGTH_LONG).show();
+            public void onClick(View view) {
+                int position = rv.getChildLayoutPosition(view);
+                NewsMessage item = messageList.get(position);
+                //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
+                startWebViewActivity(item.getContentsLink());
             }
         }));
 

@@ -1,4 +1,4 @@
-package com.example.leiwang.messagecardview.control;
+package com.example.leiwang.messagecardview.activity;
 
 import android.app.Activity;
 import android.content.Context;
