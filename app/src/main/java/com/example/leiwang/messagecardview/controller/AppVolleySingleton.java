@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.example.leiwang.messagecardview.utils.Const;
 import com.example.leiwang.messagecardview.utils.LruBitmapCache;
 
 /**
@@ -15,8 +16,6 @@ import com.example.leiwang.messagecardview.utils.LruBitmapCache;
  */
 
 public class AppVolleySingleton extends Application {
-
-    public static final String TAG = AppVolleySingleton.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
@@ -46,8 +45,8 @@ public class AppVolleySingleton extends Application {
         return this.mImageLoader;
     }
 
-    public <T> void addToRequestQueue(Request<T> req){
-        req.setTag(TAG);
+    public <T> void addToRequestQueue(Request<T> req, String jsonArrayTag){
+        req.setTag(jsonArrayTag);
         getRequestQueue().add(req);
     }
 

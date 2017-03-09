@@ -16,9 +16,9 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
+import com.example.leiwang.messagecardview.utils.Const;
 import com.squareup.picasso.Picasso;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -33,14 +33,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     private final List<NewsMessage> items;
-    private final Context context;
     private final RecyclerviewClickListener listener;
 
 
     private NetworkImageView imgNetWorkView;
 
-    public MessageAdapter(Context context, List<NewsMessage> items, RecyclerviewClickListener listener) {
-        this.context = context;
+    public MessageAdapter(List<NewsMessage> items, RecyclerviewClickListener listener) {
+
         this.items = items;
         this.listener = listener;
     }
@@ -59,7 +58,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         NewsMessage message = items.get(position);
         holder.title.setText(message.getTitle());
-        holder.source_name.setText(message.getSource_name());
+        switch(message.getSource_name()){
+            case Const.ASAHI:
+                holder.source_image.setImageDrawable(R.drawable.asahi);
+                break;
+            default:
+                break;
+        }
+
         holder.time.setText(message.getTime());
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.image.getContext();
@@ -99,7 +105,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public static class MessageViewHolder extends RecyclerView.ViewHolder{
         private ImageView image;
         private TextView title;
-        private TextView source_name;
+        private ImageView source_image;
         private TextView time;
         private LinearLayout linerLayout;
 
@@ -108,7 +114,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             linerLayout = (LinearLayout) itemView.findViewById(R.id.ll_layout);
             image = (ImageView) itemView.findViewById(R.id.iv_image);
             title = (TextView) itemView.findViewById(R.id.tv_description);
-            source_name = (TextView) itemView.findViewById(R.id.tv_source);
+            source_image = (ImageView) itemView.findViewById(R.id.iv_source);
             time = (TextView) itemView.findViewById(R.id.tv_time);
         }
     }
