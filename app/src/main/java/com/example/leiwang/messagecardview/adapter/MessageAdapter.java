@@ -60,10 +60,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.title.setText(message.getTitle());
         switch(message.getSource_name()){
             case Const.ASAHI:
-                holder.source_image.setImageDrawable(R.drawable.asahi);
+                holder.source_image.setImageResource(R.drawable.asahi);
                 break;
             default:
                 break;
+        }
+
+        Long time = Long.valueOf(message.getMessage_id());
+        Long now = System.currentTimeMillis();
+        Long diff = now - time;
+
+        long minute = Math.abs((now-time)/60000);
+        int hours = (int) minute/60;
+        int minutes = (int)minute%60;
+        if(hours > 0 ){
+            holder.time.setText(hours + " h ago");
+        }else{
+            holder.time.setText(minutes + " min ago");
         }
 
         holder.time.setText(message.getTime());
