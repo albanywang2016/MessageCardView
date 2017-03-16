@@ -17,6 +17,7 @@ import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
+import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,31 +27,76 @@ import java.util.List;
  */
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+    private final List<NewsMessage> items;
+    private final RecyclerviewClickListener listener;
+    private NetworkImageView imgNetWorkView;
+
 
     public interface RecyclerviewClickListener extends View.OnClickListener {
         @Override
         void onClick(View view);
     }
 
-    private final List<NewsMessage> items;
-    private final RecyclerviewClickListener listener;
-
-
-    private NetworkImageView imgNetWorkView;
-
     public MessageAdapter(List<NewsMessage> items, RecyclerviewClickListener listener) {
-
         this.items = items;
         this.listener = listener;
     }
 
     @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        int viewHolderType = 0;
+
+        boolean hasImage = items.get(position).getHas_image();
+        if(!hasImage){
+            viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
+        }else{
+            int width = items.get(position).getWidth();
+            int height = items.get(position).getHeight();
+            if(width > 350){
+                viewHolderType = ViewHolderTypeEnum.BIG_IMAGE;
+            }else if ((float)(width/height) >= 0.5) {
+                viewHolderType = ViewHolderTypeEnum.VERTICAL_IMAGE;
+            }else{
+                viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
+            }
+        }
+
+        return viewHolderType;
+    }
+
+    @Override
     public MessageAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
-        view.setOnClickListener(listener);
+        MessageAdapter.MessageViewHolder viewHolder = null;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new MessageViewHolder(view);
+        switch(viewType){
+            case ViewHolderTypeEnum.NO_IMAGE:
+                View v1 = inflater.inflate(R.layout.card_no_image, parent, false);
+                viewHolder = new MessageViewHolder(v1);
+                break;
+            case ViewHolderTypeEnum.VERTICAL_IMAGE:
+                View v2 = inflater.inflate(R.layout.card_vertical_image, parent, false);
+                viewHolder = new MessageViewHolder(v2);
+                break;
+            case ViewHolderTypeEnum.BIG_IMAGE:
+                View v3 = inflater.inflate(R.layout.card_big_image, parent,false);
+                viewHolder = new MessageViewHolder(v3);
+                break;
+            case ViewHolderTypeEnum.HIRIZONAL_IMAGE:
+                View v4 = inflater.inflate(R.layout.card_vertical_image, parent, false);
+                break;
+        }
+
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
+//        view.setOnClickListener(listener);
+        return viewHolder;
     }
 
     @Override
@@ -110,10 +156,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return view;
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder{
         private ImageView image;
@@ -124,7 +166,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         public MessageViewHolder(View itemView) {
             super(itemView);
-            linerLayout = (LinearLayout) itemView.findViewById(R.id.ll_layout);
+
             image = (ImageView) itemView.findViewById(R.id.iv_image);
             title = (TextView) itemView.findViewById(R.id.tv_description);
             source_image = (ImageView) itemView.findViewById(R.id.iv_source);

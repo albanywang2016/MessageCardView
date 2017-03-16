@@ -13,6 +13,9 @@ public class NewsMessage {
     String time;
     String imageLink;
     String contentsLink;
+    int width;
+    int height;
+    boolean has_image;
 
     public String getContentsLink() {
         return contentsLink;
@@ -45,7 +48,35 @@ public class NewsMessage {
                 ", source_name='" + source_name + '\'' +
                 ", time='" + time + '\'' +
                 ", imageLink='" + imageLink + '\'' +
+                ", contentsLink='" + contentsLink + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                ", has_image=" + has_image +
                 '}';
+    }
+
+    public boolean getHas_image() {
+        return has_image;
+    }
+
+    public void setHas_image(boolean has_image) {
+        this.has_image = has_image;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public String getImageLink() {
