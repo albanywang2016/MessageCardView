@@ -10,7 +10,8 @@ public class Const {
     public static final String TAG = AppVolleySingleton.class.getSimpleName();
     public static final String FILE_PATH = "Asahi.json";
     public static final String ASAHI = "Asahi";
-    public static final String ASAHI_JSON = "https://apiwiki.fxcorporate.com/api/examples/Json/Asahi.json";
+    //public static final String ASAHI_JSON = "https://apiwiki.fxcorporate.com/api/examples/Json/Asahi.json";
+    public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
     public static final String ITEM = "item";
     public static final String MESSAGE_ID = "message_id";

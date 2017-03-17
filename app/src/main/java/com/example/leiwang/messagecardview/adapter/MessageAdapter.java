@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.volley.Cache;
 import com.android.volley.toolbox.ImageLoader;
@@ -16,7 +14,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
-import com.example.leiwang.messagecardview.utils.Const;
 import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
@@ -26,7 +23,7 @@ import java.util.List;
  * Created by lei.wang on 3/1/2017.
  */
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<NewsMessage> items;
     private final RecyclerviewClickListener listener;
     private NetworkImageView imgNetWorkView;
@@ -71,26 +68,31 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public MessageAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        MessageAdapter.MessageViewHolder viewHolder = null;
+        RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         switch(viewType){
             case ViewHolderTypeEnum.NO_IMAGE:
                 View v1 = inflater.inflate(R.layout.card_no_image, parent, false);
-                viewHolder = new MessageViewHolder(v1);
+                viewHolder = new ViewHolderNoImage(v1);
+                v1.setOnClickListener(listener);
                 break;
             case ViewHolderTypeEnum.VERTICAL_IMAGE:
                 View v2 = inflater.inflate(R.layout.card_vertical_image, parent, false);
-                viewHolder = new MessageViewHolder(v2);
+                viewHolder = new ViewHolderVerticalImage(v2);
+                v2.setOnClickListener(listener);
                 break;
             case ViewHolderTypeEnum.BIG_IMAGE:
                 View v3 = inflater.inflate(R.layout.card_big_image, parent,false);
-                viewHolder = new MessageViewHolder(v3);
+                viewHolder = new ViewHolderBigImage(v3);
+                v3.setOnClickListener(listener);
                 break;
             case ViewHolderTypeEnum.HIRIZONAL_IMAGE:
-                View v4 = inflater.inflate(R.layout.card_vertical_image, parent, false);
+                View v4 = inflater.inflate(R.layout.card_horizonal_image, parent, false);
+                viewHolder = new ViewHolderHorizonalImage(v4);
+                v4.setOnClickListener(listener);
                 break;
         }
 
@@ -100,39 +102,83 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(MessageAdapter.MessageViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        NewsMessage message = items.get(position);
-        holder.title.setText(message.getTitle());
-        switch(message.getSource_name()){
-            case Const.ASAHI:
-                holder.source_image.setImageResource(R.drawable.asahi);
+        switch(holder.getItemViewType()){
+            case ViewHolderTypeEnum.NO_IMAGE:
+                ViewHolderNoImage viewHolderNoImage = (ViewHolderNoImage) holder;
+                configureNoImageHolder(viewHolderNoImage, position);
+                break;
+            case ViewHolderTypeEnum.BIG_IMAGE:
+                ViewHolderBigImage viewHolderBigImage = (ViewHolderBigImage) holder;
+                configureBigImageHolder(viewHolderBigImage, position);
+                break;
+            case ViewHolderTypeEnum.HIRIZONAL_IMAGE:
+                ViewHolderHorizonalImage viewHolderHorizonalImage = (ViewHolderHorizonalImage) holder;
+                configureHorizonalImageHolder(viewHolderHorizonalImage, position);
+                break;
+            case ViewHolderTypeEnum.VERTICAL_IMAGE:
+                ViewHolderVerticalImage viewHolderVertialImage = (ViewHolderVerticalImage) holder;
+                configureVerticalImageHolder(viewHolderVertialImage, position);
                 break;
             default:
                 break;
+
         }
 
-        Long time = Long.valueOf(message.getMessage_id());
-        Long now = System.currentTimeMillis();
-        Long diff = now - time;
+    }
 
-        long minute = Math.abs((now-time)/60000);
-        int hours = (int) minute/60;
-        int minutes = (int)minute%60;
-        if(hours > 0 ){
-            holder.time.setText(hours + " h ago");
-        }else{
-            holder.time.setText(minutes + " min ago");
-        }
 
-        holder.time.setText(message.getTime());
+    private void configureNoImageHolder(ViewHolderNoImage holder, int position) {
+        NewsMessage message = items.get(position);
+        holder.getTitle().setText(message.getTime());
+        holder.getSource().setText(message.getTitle());
+        holder.getSource().setText(message.getSource_name());
+        holder.getTime().setText(message.getTime());
+
+    }
+
+    private void configureBigImageHolder(ViewHolderBigImage holder, int position) {
+        NewsMessage message = items.get(position);
+        holder.getTitle().setText(message.getTime());
+        holder.getSource().setText(message.getTitle());
+        holder.getSource().setText(message.getSource_name());
+        holder.getTime().setText(message.getTime());
+
         Uri uri = Uri.parse(message.getImageLink());
-        Context context = holder.image.getContext();
-        Picasso.with(context).load(uri).noFade().into(holder.image);
+        Context context = holder.getIv_image().getContext();
+        Picasso.with(context).load(uri).fit().into(holder.getIv_image());
+    }
+
+    private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
+        NewsMessage message = items.get(position);
+        holder.getTitle().setText(message.getTime());
+        holder.getSource().setText(message.getTitle());
+        holder.getSource().setText(message.getSource_name());
+        holder.getTime().setText(message.getTime());
+
+        Uri uri = Uri.parse(message.getImageLink());
+        Context context = holder.getIv_image().getContext();
+        Picasso.with(context).load(uri).fit().into(holder.getIv_image());
+
+    }
+
+    private void configureVerticalImageHolder(ViewHolderVerticalImage holder, int position) {
+
+        NewsMessage message = items.get(position);
+        holder.getTitle().setText(message.getTime());
+        holder.getSource().setText(message.getTitle());
+        holder.getSource().setText(message.getSource_name());
+        holder.getTime().setText(message.getTime());
+
+        Uri uri = Uri.parse(message.getImageLink());
+        Context context = holder.getIv_image().getContext();
+        Picasso.with(context).load(uri).fit().into(holder.getIv_image());
         //ImageView view = makeImageRequest(message.getImageLink());
         //holder.image = view;
 
     }
+
 
     private ImageView makeImageRequest(String imageURL) {
         ImageView view = null;
@@ -156,21 +202,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return view;
     }
 
-
-    public static class MessageViewHolder extends RecyclerView.ViewHolder{
-        private ImageView image;
-        private TextView title;
-        private ImageView source_image;
-        private TextView time;
-        private LinearLayout linerLayout;
-
-        public MessageViewHolder(View itemView) {
-            super(itemView);
-
-            image = (ImageView) itemView.findViewById(R.id.iv_image);
-            title = (TextView) itemView.findViewById(R.id.tv_description);
-            source_image = (ImageView) itemView.findViewById(R.id.iv_source);
-            time = (TextView) itemView.findViewById(R.id.tv_time);
-        }
-    }
+//
+//    public static class MessageViewHolder extends RecyclerView.ViewHolder{
+//        private ImageView image;
+//        private TextView title;
+//        private ImageView source_image;
+//        private TextView time;
+//        private LinearLayout linerLayout;
+//
+//        public MessageViewHolder(View itemView) {
+//            super(itemView);
+//
+//            image = (ImageView) itemView.findViewById(R.id.iv_image);
+//            title = (TextView) itemView.findViewById(R.id.tv_description);
+//            source_image = (ImageView) itemView.findViewById(R.id.iv_source);
+//            time = (TextView) itemView.findViewById(R.id.tv_time);
+//        }
+//    }
 }
