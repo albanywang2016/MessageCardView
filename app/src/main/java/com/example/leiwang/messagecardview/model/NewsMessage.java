@@ -7,10 +7,11 @@ package com.example.leiwang.messagecardview.model;
 public class NewsMessage {
     int imageID;
     String message_id;
+    String channel;
     String contents;
     String title;
     String source_name;
-    String time;
+    String pub_date;
     String imageLink;
     String contentsLink;
     int width;
@@ -25,17 +26,41 @@ public class NewsMessage {
         this.contentsLink = contentsLink;
     }
 
-    public NewsMessage(String message_id, String source_name, String title, String time, String link, String contentsLink, String contents) {
+    public NewsMessage(String message_id, String source_name, String title, String pub_date, String link, String contentsLink, String contents) {
         this.message_id = message_id;
         this.contents = contents;
         this.title = title;
         this.source_name = source_name;
-        this.time = time;
+        this.pub_date = pub_date;
         this.imageLink = link;
         this.contentsLink = contentsLink;
     }
 
+    public NewsMessage(String message_id, String source_name, String channel, String title,  String link, boolean has_image, String pub_date, String imageLink,  int width, int height) {
+        this.message_id = message_id;
+        this.channel = channel;
+        this.title = title;
+        this.source_name = source_name;
+        this.pub_date = pub_date;
+        this.imageLink = imageLink;
+        this.width = width;
+        this.height = height;
+        this.has_image = has_image;
+    }
+
     public NewsMessage() {
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public boolean isHas_image() {
+        return has_image;
     }
 
     @Override
@@ -46,7 +71,7 @@ public class NewsMessage {
                 ", contents='" + contents + '\'' +
                 ", title='" + title + '\'' +
                 ", source_name='" + source_name + '\'' +
-                ", time='" + time + '\'' +
+                ", pub_date='" + pub_date + '\'' +
                 ", imageLink='" + imageLink + '\'' +
                 ", contentsLink='" + contentsLink + '\'' +
                 ", width=" + width +
@@ -128,12 +153,12 @@ public class NewsMessage {
         this.source_name = source_name;
     }
 
-    public String getTime() {
-        return time;
+    public String getPub_date() {
+        return pub_date;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setPub_date(String time) {
+        this.pub_date = pub_date;
     }
 
 

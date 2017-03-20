@@ -55,15 +55,46 @@ public class MainActivity extends AppCompatActivity {
         //prepareMessageList();
 
         //make json array request to retrieve Json object via http web
-        makeJsonArrayRequest();
+        //getJsonArrayRequest();
+
+        //get Json array view php
+        getJsonArrayViaPHP();
 
     }
 
-    private void makeJsonArrayRequest() {
+    private void getJsonArrayViaPHP() {
+        JsonArrayRequest arrayReq = new JsonArrayRequest(Const.GET_JSON_VIS_PHP, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                parseJsonArray(response.toString());
+                Log.d("Info", response.toString());
+
+                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position = rv.getChildLayoutPosition(view);
+                        NewsMessage item = messageList.get(position);
+                        startWebViewActivity(item.getContentsLink());
+                    }
+                }));
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(arrayReq, Const.TAG);
+
+    }
+
+    private void getJsonArrayRequest() {
         JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                parseJsonArray(response.toString());
+                parseJsonObject(response.toString());
 
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
 
@@ -88,6 +119,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void parseJsonArray(String result) {
+        messageList = new ArrayList<>();
+        JsonArray array = Json.parse(result).asArray();
+        for (JsonValue value : array) {
+            messageList.add(new NewsMessage(value.asObject().getString(Const.ID, ""),
+                    value.asObject().getString(Const.SOURCE_NAME, ""),
+                    value.asObject().getString(Const.CHANNEL, ""),
+                    value.asObject().getString(Const.TITLE, ""),
+                    value.asObject().getString(Const.LINK, ""),
+                    value.asObject().getBoolean(Const.HAS_IMAGE, false),
+                    value.asObject().getString(Const.PUB_DATE, ""),
+                    value.asObject().getString(Const.IMAGE_URL, ""),
+                    value.asObject().getInt(Const.IMAGE_WIDTH, 0),
+                    value.asObject().getInt(Const.IMAGE_HEIGHT, 0)));
+        }
+
+    }
+
+
+    private void parseJsonObject(String result) {
         messageList = new ArrayList<>();
         JsonArray array = Json.parse(result).asObject().get(Const.ITEM).asArray();
         for (JsonValue value : array) {
@@ -127,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         messageList.add(new NewsMessage("1488744622706", "Asahi", "「つなぐ意識」流れ変えた　侍Ｊ・鈴木が３ラン", "2017-03-06T04:24:03+09:00", "http://www.asahicom.jp/articles/images/AS20170305002614_commL.jpg", "http://www.asahi.com/articles/ASK361CSSK35UOOB01Q.html?ref=rss", "<div class=\\\"ImagesMod\\\">\\n <div class=\\\"Image\\\">\\n  <p class=\\\"Width\\\"><a href=\\\"./photo/AS20170305002614.html\\\"><img alt=\\\"写真・図版\\\" oncontextmenu=\\\"return false\\\" src=\\\"//www.asahicom.jp/articles/images/AS20170305002614_commL.jpg\\\"><em class=\\\"Caption\\\">オリックスに先制された後の二回表の攻撃前、青木（中央）を中心に円陣を組む日本代表の選手たち＝川村直子撮影</em></a></p>\\n </div>\\n <!--Image-->\\n</div>\\n<!--ImagesMod-->\\n<!-- Ad BGN -->\\n<div class=\\\"AdMod\\\">\\n <!-- impact スポーツ記事中レクタングル(Aone仕様) RECT4★ここから-->\\n <script type=\\\"text/javascript\\\" language=\\\"JavaScript\\\"><!-- impAcn = \\\"ASAHISEG\\\";impAco = document.cookie;impApos = impAco.indexOf(impAcn+\\\"=\\\");impAseg = (impApos!=-1)?impAco.substring(impApos+impAcn.length+1,(impAco.indexOf(\\\"; \\\",impApos)!=-1)?impAco.indexOf(\\\"; \\\",impApos):impAco.length):null;impAseg = (impAseg)?unescape(impAseg):null;impAserver = 'http://imp.asahi.com';impAtag = \\\"/SITE=SPORTS/AREA=RECT4/AAMSZ=300X250/OENCJP=UTF8\\\";impAtarget = (impAseg)?impAtag+\\\"/\\\"+impAseg:impAtag;impArnd = Math.round(Math.random() * 100000000);if (!impApid) var impApid = Math.round(Math.random() * 100000000);document.write('<scr');document.write('ipt src=\\\"' + impAserver + '/jserver/acc_random=' + impArnd + impAtarget + '/pageid=' + impApid + '\\\">');document.write('</scr');document.write('ipt>');//--></script>\\n <span>[PR]</span>\\n <!-- impact スポーツ記事中レクタングル(Aone仕様) RECT4★ここまで-->\\n</div>\\n<!-- Ad END -->\\n<!-- ArticleText BGN -->\\n<div class=\\\"ArticleText\\\">\\n <!--googleon:index-->\\n <p>（５日、ＷＢＣ強化試合　日本代表５―３オリックス）</p>\\n <p>　鈴木が、一振りで嫌な流れを変えた。失策絡みで失った２点を追う二回、無死二、三塁の好機が回ってきた。１ボールからの２球目、高めに来た１３３キロを引っ張って左翼席へ。３点本塁打で試合をひっくり返した。「つなぐ意識だった。それが最高の形になった」と笑った。</p>\\n <p>　攻撃の直前、侍ジャパンは円陣…</p>\\n <!--googleoff:index-->\\n</div>\\n<!-- ArticleText END -->\\n<!-- 有料記事　続きを読む BGN -->\\n<div class=\\\"LoginSelectArea\\\" id=\\\"KeySilver\\\">\\n <div class=\\\"ArticleTypeArea\\\"></div>\\n <div class=\\\"MoveLink\\\">\\n  <p class=\\\"Count\\\">残り：160文字／全文：312文字</p>\\n  <ul>\\n   <li class=\\\"ReadMore\\\"><a href=\\\"http://digital.asahi.com/info/information/free_member/?jumpUrl=http%3A%2F%2Fdigital.asahi.com%2Farticles%2FASK353GN8K35UTQP00G.html%3F_requesturl%3Darticles%2FASK353GN8K35UTQP00G.html\\\" class=\\\"NonRegi\\\" onclick=\\\"s.getPreviousValue('fn3','sc_clk_btn','');\\\"><span>無料登録して全文を読む</span></a></li>\\n   <li class=\\\"ReadMore\\\"><a href=\\\"http://digital.asahi.com/articles/ASK353GN8K35UTQP00G.html?rm=152\\\" class=\\\"Lite Member\\\" onclick=\\\"s.getPreviousValue('fn1','sc_clk_btn','');\\\"><span>全文を読む</span></a></li>\\n   <li class=\\\"ReadMore\\\"><a href=\\\"http://digital.asahi.com/rd/lgck2.html?jumpUrl=http%3A%2F%2Fdigital.asahi.com%2Farticles%2FASK353GN8K35UTQP00G.html%3F_requesturl%3Darticles%2FASK353GN8K35UTQP00G.html%26rm%3D152\\\" class=\\\"Logout Member\\\" onclick=\\\"s.getPreviousValue('fn2','sc_clk_btn','');\\\"><span>ログインして全文を読む</span></a></li>\\n   <li class=\\\"ReadMore\\\">\\n    <noscript>\\n     <a href=\\\"http://digital.asahi.com/rd/lgck2.html?jumpUrl=http%3A%2F%2Fdigital.asahi.com%2Farticles%2FASK353GN8K35UTQP00G.html%3F_requesturl%3Darticles%2FASK353GN8K35UTQP00G.html%26rm%3D152\\\" class=\\\"NoScript\\\"><span>ログインして全文を読む</span></a>\\n    </noscript></li>\\n  </ul>\\n </div>\\n</div>\\n<!-- 有料記事　続きを読む END -->\\n<!--ArticleNoteBox BGN -->\\n<div class=\\\"ArticleNoteBox Lite LiteOut\\\">\\n <p>有料会員に登録すると全ての記事が読み放題です。</p>\\n <p>初月無料につき月初のお申し込みがお得</p>\\n <p><span class=\\\"EmText\\\">980円で月300本まで</span>読めるシンプルコースは<a href=\\\"http://digital.asahi.com/info/simple_course/?iref=com_smpl_txtpr\\\">こちら</a></p>\\n</div>\\n<!--ArticleNoteBox END -->\\n<!-- 緊急時用リンクはありません -->\\n<div class=\\\"RelatedLinkMod\\\">\\n <div class=\\\"Title\\\">\\n  関連ニュース\\n </div>\\n <ul>\\n  <li><a href=\\\"http://www.asahi.com/articles/ASK353GN7K35UTQP00D.html\\\">侍Ｊ、打線模索のまま７日初戦へ　先発藤浪も不安露呈</a></li>\\n  <li><a href=\\\"http://www.asahi.com/articles/ASK353HX0K35UTQP00Y.html\\\">侍Ｊ、代打秋山が九回に勝ち越し打　オリックスに勝利</a></li>\\n  <li><a href=\\\"http://www.asahi.com/articles/ASK2F6DLKK2FUEHF00H.html\\\">北京五輪のエラー？ああ、それ聞きます？　ＧＧ佐藤さん</a></li>\\n  <li><a href=\\\"http://www.asahi.com/articles/ASK2X7FH9K2XUEHF01Z.html\\\">ＷＢＣ連覇へ内川のファインプレー　名場面をモノマネで</a></li>\\n  <li><a href=\\\"http://www.asahi.com/articles/ASK2P1DRNK2NUEHF00X.html\\\">ＷＢＣ、捕手は？抑え投手は？　里崎智也さんに聞く展望</a></li>\\n </ul>\\n</div>"));
         messageList.add(new NewsMessage("1488744625234", "Asahi", "「すかいらーく」復活のわけ…　谷真社長インタビュー", "2017-03-06T04:24:03+09:00", "http://www.asahicom.jp/articles/images/AS20170305001628_commL.jpg", "http://www.asahi.com/articles/ASK361CSSK35UOOB01Q.html?ref=rss", "<div class=\\\"ImagesMod\\\">\\n <div class=\\\"Image\\\">\\n  <p class=\\\"Width\\\"><a href=\\\"./photo/AS20170305001628.html\\\"><img alt=\\\"写真・図版\\\" oncontextmenu=\\\"return false\\\" src=\\\"//www.asahicom.jp/articles/images/AS20170305001628_commL.jpg\\\"><em class=\\\"Caption\\\">「バーミヤン」方南町駅前店で従業員と談笑する谷真社長（左）＝１月３１日、東京都杉並区、林紗記撮影</em></a></p>\\n  <ul class=\\\"Thum\\\">\\n   <li><a href=\\\"./photo/AS20170305001627.html\\\"><span class=\\\"Height\\\"><img alt=\\\"写真・図版\\\" oncontextmenu=\\\"return false\\\" src=\\\"//www.asahicom.jp/articles/images/AS20170305001627_commL.jpg\\\"></span></a></li>\\n   <li><a href=\\\"./photo/AS20170305001625.html\\\"><span class=\\\"Width\\\"><img alt=\\\"写真・図版\\\" oncontextmenu=\\\"return false\\\" src=\\\"//www.asahicom.jp/articles/images/AS20170305001625_commL.jpg\\\"></span></a></li>\\n  </ul>\\n </div>\\n <!--Image-->\\n</div>\\n<!--ImagesMod-->\\n<!-- Ad BGN -->\\n<div class=\\\"AdMod\\\">\\n <!-- impact 経済・マネー記事中レクタングル(Aone仕様) RECT4★ここから-->\\n <script type=\\\"text/javascript\\\" language=\\\"JavaScript\\\"><!-- impAcn = \\\"ASAHISEG\\\";impAco = document.cookie;impApos = impAco.indexOf(impAcn+\\\"=\\\");impAseg = (impApos!=-1)?impAco.substring(impApos+impAcn.length+1,(impAco.indexOf(\\\"; \\\",impApos)!=-1)?impAco.indexOf(\\\"; \\\",impApos):impAco.length):null;impAseg = (impAseg)?unescape(impAseg):null;impAserver = 'http://imp.asahi.com';impAtag = \\\"/SITE=BUSINESS/AREA=RECT4/AAMSZ=300X250/OENCJP=UTF8\\\";impAtarget = (impAseg)?impAtag+\\\"/\\\"+impAseg:impAtag;impArnd = Math.round(Math.random() * 100000000);if (!impApid) var impApid = Math.round(Math.random() * 100000000);document.write('<scr');document.write('ipt src=\\\"' + impAserver + '/jserver/acc_random=' + impArnd + impAtarget + '/pageid=' + impApid + '\\\">');document.write('</scr');document.write('ipt>');//--></script>\\n <span>[PR]</span>\\n <!-- impact 経済・マネー記事中レクタングル(Aone仕様) RECT4★ここまで-->\\n</div>\\n<!-- Ad END -->\\n<!-- ArticleText BGN -->\\n<div class=\\\"ArticleText\\\">\\n <!--googleon:index-->\\n <p>　どうしてすかいらーくは、一時は危機に陥り、復活できたのか。そしてこれからどこを目指すのか。谷真（たに・まこと）社長に聞いた。</p>\\n <div class=\\\"ExtendedLinkMod\\\">\\n  <ul>\\n   <li><a href=\\\"http://www.asahi.com/articles/ASK2S4GRSK2SULFA00X.html\\\">すかいらーく、ビッグデータ重視　新ブランド連発で復活</a></li>\\n  </ul>\\n </div>\\n <p>　――２００８年の社長就任前、すかいらーくは厳しい経営状況にありました。</p>\\n <p>　「デフレが進行して、（１９９７年をピークに）外食産業は縮小する傾向にありました。赤字店の閉鎖などの構造改革を行った後に、既存店の成長を促す施策をとらなければいけないのに、『出店＝成長』という考え方が社内に広がっていました。マーケットは拡大するもの、売り上げは上がるもの。そんな時代ではなかったのですが……。そうした考え方を変えていかないと何も始まらない状態でした」</p>\\n <p>　「私はすかいらーくの子会社、ニラックスに長く在籍していたので、さめた目で見てきました。消費者のニーズと当時のビジネスモデルが合っていたかといえば、明らかにギャップが生じていました。消費者のニーズが細分化されている状況に対応できる組織にはなっていなかったのです」</p>\\n <p>　――社長就任後、創業ブランドの「すかいらーく」の閉鎖を決断しました。７０年に１号店を開業し、ファミリーレストランの先駆け的な存在です。多くの従業員から「１店だけでも残して欲しい」との声も出たようですね。</p>\\n <p>　「確かに、そうした声は出ていました。しかし、創業ブランドのすかいらーくは、（同じファミレス業態の）ジョナサンと競合していました。ガストなどへの転換は避けて通れないことでした。ブランドを集約する動きと並行して、消費者ニーズの変化に対応するため『ステーキガスト』という新しいブランドを立ち上げてもいます」</p>\\n <p>　「（すかいらーくを閉鎖した翌…</p>\\n <!--googleoff:index-->\\n</div>\\n<!-- ArticleText END -->\\n<!-- 有料記事　続きを読む BGN -->\\n<div class=\\\"LoginSelectArea\\\" id=\\\"KeySilver\\\">\\n <div class=\\\"ArticleTypeArea\\\"></div>\\n <div class=\\\"MoveLink\\\">\\n  <p class=\\\"Count\\\">残り：2292文字／全文：2963文字</p>\\n  <ul>\\n   <li class=\\\"ReadMore\\\"><a href=\\\"http://digital.asahi.com/info/information/free_member/?jumpUrl=http%3A%2F%2Fdigital.asahi.com%2Farticles%2FASK2S560KK2SULFA029.html%3F_requesturl%3Darticles%2FASK2S560KK2SULFA029.html\\\" class=\\\"NonRegi\\\" onclick=\\\"s.getPreviousValue('fn3','sc_clk_btn','');\\\"><span>無料登録して全文を読む</span></a></li>\\n   <li class=\\\"ReadMore\\\"><a href=\\\"http://digital.asahi.com/articles/ASK2S560KK2SULFA029.html?rm=671\\\" class=\\\"Lite Member\\\" onclick=\\\"s.getPreviousValue('fn1','sc_clk_btn','');\\\"><span>全文を読む</span></a></li>\\n   <li class=\\\"ReadMore\\\"><a href=\\\"http://digital.asahi.com/rd/lgck2.html?jumpUrl=http%3A%2F%2Fdigital.asahi.com%2Farticles%2FASK2S560KK2SULFA029.html%3F_requesturl%3Darticles%2FASK2S560KK2SULFA029.html%26rm%3D671\\\" class=\\\"Logout Member\\\" onclick=\\\"s.getPreviousValue('fn2','sc_clk_btn','');\\\"><span>ログインして全文を読む</span></a></li>\\n   <li class=\\\"ReadMore\\\">\\n    <noscript>\\n     <a href=\\\"http://digital.asahi.com/rd/lgck2.html?jumpUrl=http%3A%2F%2Fdigital.asahi.com%2Farticles%2FASK2S560KK2SULFA029.html%3F_requesturl%3Darticles%2FASK2S560KK2SULFA029.html%26rm%3D671\\\" class=\\\"NoScript\\\"><span>ログインして全文を読む</span></a>\\n    </noscript></li>\\n  </ul>\\n </div>\\n</div>\\n<!-- 有料記事　続きを読む END -->\\n<!--ArticleNoteBox BGN -->\\n<div class=\\\"ArticleNoteBox Lite LiteOut\\\">\\n <p>有料会員に登録すると全ての記事が読み放題です。</p>\\n <p>初月無料につき月初のお申し込みがお得</p>\\n <p><span class=\\\"EmText\\\">980円で月300本まで</span>読めるシンプルコースは<a href=\\\"http://digital.asahi.com/info/simple_course/?iref=com_smpl_txtpr\\\">こちら</a></p>\\n</div>\\n<!--ArticleNoteBox END -->\\n<!-- 緊急時用リンクはありません -->\\n<!-- Outbrain TAG PC 2017.02.17 -->\\n<div class=\\\"OutbrainRecMod\\\">\\n <div class=\\\"Title\\\">\\n  こんなニュースも\\n </div>\\n <div class=\\\"OUTBRAIN\\\" data-src=\\\"DROP_PERMALINK_HERE\\\" data-widget-id=\\\"AR_7\\\" data-ob-template=\\\"AsahiShimbunDigital\\\"></div>\\n <div class=\\\"OUTBRAIN\\\" data-src=\\\"DROP_PERMALINK_HERE\\\" data-widget-id=\\\"AR_8\\\" data-ob-template=\\\"AsahiShimbunDigital\\\"></div>\\n <div class=\\\"OUTBRAIN\\\" data-src=\\\"DROP_PERMALINK_HERE\\\" data-widget-id=\\\"AR_9\\\" data-ob-template=\\\"AsahiShimbunDigital\\\"></div>\\n</div>\\n<!-- /Outbrain TAG PC 2017.02.17 -->"));
 
-    }
+  }
 
 
     private String readFile(String filePath) {

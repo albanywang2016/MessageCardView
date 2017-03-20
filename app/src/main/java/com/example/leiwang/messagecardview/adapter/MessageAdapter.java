@@ -131,19 +131,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureNoImageHolder(ViewHolderNoImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getTime());
+        holder.getTitle().setText(message.getPub_date());
         holder.getSource().setText(message.getTitle());
         holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getTime());
+        holder.getTime().setText(message.getPub_date());
 
     }
 
     private void configureBigImageHolder(ViewHolderBigImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getTime());
+        holder.getTitle().setText(message.getPub_date());
         holder.getSource().setText(message.getTitle());
         holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getTime());
+        holder.getTime().setText(message.getPub_date());
 
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.getIv_image().getContext();
@@ -152,10 +152,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getTime());
+        holder.getTitle().setText(message.getPub_date());
         holder.getSource().setText(message.getTitle());
         holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getTime());
+        holder.getTime().setText(message.getPub_date());
 
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.getIv_image().getContext();
@@ -166,10 +166,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void configureVerticalImageHolder(ViewHolderVerticalImage holder, int position) {
 
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getTime());
+        holder.getTitle().setText(message.getPub_date());
         holder.getSource().setText(message.getTitle());
         holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getTime());
+        holder.getTime().setText(message.getPub_date());
 
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.getIv_image().getContext();
