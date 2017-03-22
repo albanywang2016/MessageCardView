@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     value.asObject().getString(Const.CHANNEL, ""),
                     value.asObject().getString(Const.TITLE, ""),
                     value.asObject().getString(Const.LINK, ""),
-                    value.asObject().getBoolean(Const.HAS_IMAGE, false),
+                    value.asObject().getInt(Const.HAS_IMAGE, 0),
                     value.asObject().getString(Const.PUB_DATE, ""),
                     value.asObject().getString(Const.IMAGE_URL, ""),
                     value.asObject().getInt(Const.IMAGE_WIDTH, 0),
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     value.asObject().getString(Const.LINK, ""),
                     value.asObject().getString(Const.CONTENTS_URL, ""),
                     value.asObject().getString(Const.CONTENTS, ""),
-                    value.asObject().getBoolean(Const.HAS_IMAGE, false),
+                    value.asObject().getInt(Const.HAS_IMAGE, 0),
                     value.asObject().getInt(Const.IMAGE_WIDTH, 0),
                     value.asObject().getInt(Const.IMAGE_HEIGHT, 0));
 

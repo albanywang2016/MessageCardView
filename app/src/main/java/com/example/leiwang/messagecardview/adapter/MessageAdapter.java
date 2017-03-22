@@ -49,8 +49,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         int viewHolderType = 0;
 
-        boolean hasImage = items.get(position).getHas_image();
-        if(!hasImage){
+        int hasImage = items.get(position).getHas_image();
+        if(hasImage == 0){
             viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
         }else{
             int width = items.get(position).getWidth();

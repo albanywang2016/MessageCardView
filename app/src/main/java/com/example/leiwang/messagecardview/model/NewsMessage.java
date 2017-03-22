@@ -16,7 +16,7 @@ public class NewsMessage {
     String contentsLink;
     int width;
     int height;
-    boolean has_image;
+    int has_image;
 
     public String getContentsLink() {
         return contentsLink;
@@ -26,7 +26,7 @@ public class NewsMessage {
         this.contentsLink = contentsLink;
     }
 
-    public NewsMessage(String message_id, String source_name, String title, String pub_date, String imageLink, String contentsLink, String contents, boolean has_image, int image_width, int image_height) {
+    public NewsMessage(String message_id, String source_name, String title, String pub_date, String imageLink, String contentsLink, String contents, int has_image, int image_width, int image_height) {
         this.message_id = message_id;
         this.contents = contents;
         this.title = title;
@@ -39,7 +39,7 @@ public class NewsMessage {
         this.height = image_height;
     }
 
-    public NewsMessage(String message_id, String source_name, String channel, String title,  String contentsLink, boolean has_image, String pub_date, String imageLink,  int width, int height) {
+    public NewsMessage(String message_id, String source_name, String channel, String title,  String contentsLink, int has_image, String pub_date, String imageLink,  int width, int height) {
         this.message_id = message_id;
         this.channel = channel;
         this.title = title;
@@ -75,7 +75,7 @@ public class NewsMessage {
         this.channel = channel;
     }
 
-    public boolean isHas_image() {
+    public int isHas_image() {
         return has_image;
     }
 
@@ -96,11 +96,11 @@ public class NewsMessage {
                 '}';
     }
 
-    public boolean getHas_image() {
+    public int getHas_image() {
         return has_image;
     }
 
-    public void setHas_image(boolean has_image) {
+    public void setHas_image(int has_image) {
         this.has_image = has_image;
     }
 
