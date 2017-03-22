@@ -50,15 +50,17 @@ public class MainActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
 
+        messageList = new ArrayList<>();
+
         //prepareMessageList(readFile(FILE_PATH));
 
         //prepareMessageList();
 
         //make json array request to retrieve Json object via http web
-        //getJsonArrayRequest();
+        getJsonArrayRequest();
 
         //get Json array view php
-        getJsonArrayViaPHP();
+        //getJsonArrayViaPHP();
 
     }
 
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 parseJsonArray(response.toString());
-                Log.d("Info", response.toString());
+                Log.i("Info", response.toString());
 
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(Const.TAG, "Error: " + error.getMessage());
+                Log.e(Const.TAG, "Error: " + error.getMessage());
             }
         });
 
@@ -141,13 +143,21 @@ public class MainActivity extends AppCompatActivity {
         messageList = new ArrayList<>();
         JsonArray array = Json.parse(result).asObject().get(Const.ITEM).asArray();
         for (JsonValue value : array) {
-            messageList.add(new NewsMessage(value.asObject().getString(Const.MESSAGE_ID, ""),
+            NewsMessage message = new NewsMessage(value.asObject().getString(Const.MESSAGE_ID, ""),
                     value.asObject().getString(Const.SOURCE_NAME, ""),
                     value.asObject().getString(Const.TITLE, ""),
-                    value.asObject().getString(Const.TIME, ""),
+                    value.asObject().getString(Const.PUB_DATE, ""),
                     value.asObject().getString(Const.LINK, ""),
                     value.asObject().getString(Const.CONTENTS_URL, ""),
-                    value.asObject().getString(Const.CONTENTS, "")));
+                    value.asObject().getString(Const.CONTENTS, ""),
+                    value.asObject().getBoolean(Const.HAS_IMAGE, false),
+                    value.asObject().getInt(Const.IMAGE_WIDTH, 0),
+                    value.asObject().getInt(Const.IMAGE_HEIGHT, 0));
+
+            Log.i(Const.TAG, ("has_image = " + message.getHas_image() + ", image_width = " + message.getWidth() + ", image_height = " + message.getHeight()));
+            messageList.add(message);
+
+
         }
 
     }

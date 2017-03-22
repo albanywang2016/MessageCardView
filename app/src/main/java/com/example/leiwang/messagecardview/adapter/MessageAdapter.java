@@ -131,49 +131,47 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureNoImageHolder(ViewHolderNoImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getPub_date());
-        holder.getSource().setText(message.getTitle());
-        holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getPub_date());
+        holder.title.setText(message.getTitle());
+        holder.source.setText(message.getSource_name());
+        holder.time.setText(message.getPub_date());
 
     }
 
     private void configureBigImageHolder(ViewHolderBigImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getPub_date());
-        holder.getSource().setText(message.getTitle());
-        holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getPub_date());
+        holder.title.setTextSize(28);
+        holder.title.setText(message.getTitle());
+
+        holder.source.setText(message.getSource_name());
+        holder.time.setText(message.getPub_date());
 
         Uri uri = Uri.parse(message.getImageLink());
-        Context context = holder.getIv_image().getContext();
-        Picasso.with(context).load(uri).fit().into(holder.getIv_image());
+        Context context = holder.iv_image.getContext();
+        Picasso.with(context).load(uri).fit().into(holder.iv_image);
     }
 
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getPub_date());
-        holder.getSource().setText(message.getTitle());
-        holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getPub_date());
+        holder.time.setText(message.getPub_date());
+        holder.title.setText(message.getTitle());
+        holder.source.setText(message.getSource_name());
 
         Uri uri = Uri.parse(message.getImageLink());
-        Context context = holder.getIv_image().getContext();
-        Picasso.with(context).load(uri).fit().into(holder.getIv_image());
+        Context context = holder.iv_image.getContext();
+        Picasso.with(context).load(uri).fit().into(holder.iv_image);
 
     }
 
     private void configureVerticalImageHolder(ViewHolderVerticalImage holder, int position) {
 
         NewsMessage message = items.get(position);
-        holder.getTitle().setText(message.getPub_date());
-        holder.getSource().setText(message.getTitle());
-        holder.getSource().setText(message.getSource_name());
-        holder.getTime().setText(message.getPub_date());
+        holder.title.setText(message.getTitle());
+        holder.source.setText(message.getSource_name());
+        holder.time.setText(message.getPub_date());
 
         Uri uri = Uri.parse(message.getImageLink());
-        Context context = holder.getIv_image().getContext();
-        Picasso.with(context).load(uri).fit().into(holder.getIv_image());
+        Context context = holder.iv_image.getContext();
+        Picasso.with(context).load(uri).fit().into(holder.iv_image);
         //ImageView view = makeImageRequest(message.getImageLink());
         //holder.image = view;
 

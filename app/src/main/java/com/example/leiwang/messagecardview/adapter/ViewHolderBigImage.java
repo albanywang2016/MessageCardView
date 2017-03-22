@@ -13,8 +13,8 @@ import com.example.leiwang.messagecardview.R;
 
 public class ViewHolderBigImage extends RecyclerView.ViewHolder {
 
-    private ImageView iv_image;
-    private TextView title,source,time;
+    public ImageView iv_image;
+    public TextView title,source,time;
 
     public ViewHolderBigImage(View itemView) {
         super(itemView);

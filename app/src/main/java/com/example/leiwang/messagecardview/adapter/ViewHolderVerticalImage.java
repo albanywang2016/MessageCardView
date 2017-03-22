@@ -12,8 +12,8 @@ import com.example.leiwang.messagecardview.R;
  */
 
 public class ViewHolderVerticalImage extends RecyclerView.ViewHolder {
-    private ImageView iv_image;
-    private TextView title, source, time;
+    public ImageView iv_image;
+    public TextView title, source, time;
 
     public ViewHolderVerticalImage(View itemView) {
         super(itemView);

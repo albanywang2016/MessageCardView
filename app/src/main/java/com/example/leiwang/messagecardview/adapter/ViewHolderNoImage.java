@@ -12,7 +12,7 @@ import com.example.leiwang.messagecardview.R;
 
 public class ViewHolderNoImage extends RecyclerView.ViewHolder {
 
-    private TextView title, source, time;
+    public TextView title, source, time;
 
     public ViewHolderNoImage(View itemView) {
         super(itemView);

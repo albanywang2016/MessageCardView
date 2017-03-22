@@ -26,26 +26,42 @@ public class NewsMessage {
         this.contentsLink = contentsLink;
     }
 
-    public NewsMessage(String message_id, String source_name, String title, String pub_date, String link, String contentsLink, String contents) {
+    public NewsMessage(String message_id, String source_name, String title, String pub_date, String imageLink, String contentsLink, String contents, boolean has_image, int image_width, int image_height) {
         this.message_id = message_id;
         this.contents = contents;
         this.title = title;
         this.source_name = source_name;
         this.pub_date = pub_date;
-        this.imageLink = link;
+        this.imageLink = imageLink;
         this.contentsLink = contentsLink;
+        this.has_image = has_image;
+        this.width = image_width;
+        this.height = image_height;
     }
 
-    public NewsMessage(String message_id, String source_name, String channel, String title,  String link, boolean has_image, String pub_date, String imageLink,  int width, int height) {
+    public NewsMessage(String message_id, String source_name, String channel, String title,  String contentsLink, boolean has_image, String pub_date, String imageLink,  int width, int height) {
         this.message_id = message_id;
         this.channel = channel;
         this.title = title;
+        this.contentsLink = contentsLink;
         this.source_name = source_name;
         this.pub_date = pub_date;
         this.imageLink = imageLink;
         this.width = width;
         this.height = height;
         this.has_image = has_image;
+    }
+
+
+    public NewsMessage(String message_id, String source_name, String channel, String title,  String contentsLink, String pub_date, String imageLink) {
+        this.message_id = message_id;
+        this.channel = channel;
+        this.title = title;
+        this.contentsLink = contentsLink;
+        this.source_name = source_name;
+        this.pub_date = pub_date;
+        this.imageLink = imageLink;
+
     }
 
     public NewsMessage() {
