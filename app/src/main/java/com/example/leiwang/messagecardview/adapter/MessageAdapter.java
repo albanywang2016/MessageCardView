@@ -3,6 +3,7 @@ package com.example.leiwang.messagecardview.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
+import com.example.leiwang.messagecardview.utils.Const;
 import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
@@ -55,7 +57,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }else{
             int width = items.get(position).getWidth();
             int height = items.get(position).getHeight();
-
 
             if(width == 0 || height == 0){
                 viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
@@ -144,18 +145,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureBigImageHolder(ViewHolderBigImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.title.setTextSize(28);
+        holder.title.setTextSize(20);
         holder.title.setText(message.getTitle());
 
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 
-        holder.iv_image.getLayoutParams().width = message.getWidth();
-        holder.iv_image.getLayoutParams().height = message.getHeight();
-        holder.iv_image.setMaxHeight(message.getHeight());
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
-        Picasso.with(context).load(uri).fit().into(holder.iv_image);
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int width = (int) (message.getWidth() * scale);
+        int height = (int) (message.getHeight() * scale);
+//        holder.iv_image.getLayoutParams().width = width;
+//        holder.iv_image.setAdjustViewBounds(true);
+//        holder.iv_image.setScaleType((ImageView.ScaleType.CENTER_CROP));
+
+        //holder.iv_image.getLayoutParams().height = (int) (message.getHeight());
+
+        Picasso.with(context).load(uri).resize(width,height).into(holder.iv_image);
     }
 
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
@@ -164,11 +171,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.title.setText(message.getTitle());
         holder.source.setText(message.getSource_name());
 
-        holder.iv_image.getLayoutParams().width = message.getWidth();
-        holder.iv_image.getLayoutParams().height = message.getHeight();
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
-        Picasso.with(context).load(uri).fit().into(holder.iv_image);
+
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int width = (int) (message.getWidth() * scale);
+        int height = (int) (message.getHeight() * scale);
+
+        Picasso.with(context).load(uri).resize(width,height).into(holder.iv_image);
 
     }
 
@@ -179,11 +189,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 
-        holder.iv_image.getLayoutParams().width = message.getWidth();
-        holder.iv_image.getLayoutParams().height = message.getHeight();
+        //holder.iv_image.setAdjustViewBounds(true);
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
-        Picasso.with(context).load(uri).fit().into(holder.iv_image);
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int width = (int) (message.getWidth() * scale);
+        int height = (int) (message.getHeight() * scale);
+
+        Picasso.with(context).load(uri).resize(width,height).into(holder.iv_image);
         //ImageView view = makeImageRequest(message.getImageLink());
         //holder.image = view;
 
