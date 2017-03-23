@@ -55,9 +55,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }else{
             int width = items.get(position).getWidth();
             int height = items.get(position).getHeight();
-            if(width > 350){
+
+
+            if(width == 0 || height == 0){
+                viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
+                return viewHolderType;
+            }else if(width > 300){
                 viewHolderType = ViewHolderTypeEnum.BIG_IMAGE;
-            }else if ((float)(width/height) >= 0.5) {
+            }else if (width > height) {
                 viewHolderType = ViewHolderTypeEnum.VERTICAL_IMAGE;
             }else{
                 viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
@@ -145,6 +150,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 
+        holder.iv_image.getLayoutParams().width = message.getWidth();
+        holder.iv_image.getLayoutParams().height = message.getHeight();
+        holder.iv_image.setMaxHeight(message.getHeight());
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
         Picasso.with(context).load(uri).fit().into(holder.iv_image);
@@ -156,6 +164,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.title.setText(message.getTitle());
         holder.source.setText(message.getSource_name());
 
+        holder.iv_image.getLayoutParams().width = message.getWidth();
+        holder.iv_image.getLayoutParams().height = message.getHeight();
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
         Picasso.with(context).load(uri).fit().into(holder.iv_image);
@@ -169,6 +179,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 
+        holder.iv_image.getLayoutParams().width = message.getWidth();
+        holder.iv_image.getLayoutParams().height = message.getHeight();
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
         Picasso.with(context).load(uri).fit().into(holder.iv_image);

@@ -24,7 +24,7 @@ android:paddingRight="16dp">
         android:layout_height="wrap_content"
         android:text="TextView"
         android:paddingTop="3dp"
-        android:layout_below="@id/iv_bi_image"
+        android:layout_below="@id/iv_hi_image"
         android:layout_alignParentLeft="true"/>
 
     <TextView
@@ -33,7 +33,7 @@ android:paddingRight="16dp">
         android:layout_height="wrap_content"
         android:text="TextView"
         android:paddingTop="3dp"
-        android:layout_below="@id/tv_bi_source"
+        android:layout_below="@id/tv_hi_title"
         android:layout_alignParentLeft="true"/>
 
     <TextView
@@ -42,8 +42,9 @@ android:paddingRight="16dp">
         android:layout_height="wrap_content"
         android:text="TextView"
         android:paddingTop="3dp"
-        android:layout_below="@id/tv_bi_title"
-        android:layout_alignParentLeft="true"/>
+        android:layout_below="@id/tv_hi_source"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="3dp"/>
 
 </RelativeLayout>
 

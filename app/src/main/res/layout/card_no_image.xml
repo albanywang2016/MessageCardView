@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:paddingTop="3dp"
-            android:layout_below="@id/iv_bi_image"
             android:layout_alignParentLeft="true"/>
 
         <TextView
@@ -28,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:paddingTop="3dp"
-            android:layout_below="@id/tv_bi_source"
+            android:layout_below="@id/tv_ni_source"
             android:layout_alignParentLeft="true"/>
 
         <TextView
@@ -37,8 +36,9 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:paddingTop="3dp"
-            android:layout_below="@id/tv_bi_title"
-            android:layout_alignParentLeft="true"/>
+            android:layout_below="@id/tv_ni_title"
+            android:layout_alignParentLeft="true"
+            android:paddingBottom="3dp"/>
 
     </RelativeLayout>
 
