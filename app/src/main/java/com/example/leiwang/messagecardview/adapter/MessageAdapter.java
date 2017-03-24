@@ -3,7 +3,6 @@ package com.example.leiwang.messagecardview.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
-import com.example.leiwang.messagecardview.utils.Const;
 import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +64,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }else if (width > height) {
                 viewHolderType = ViewHolderTypeEnum.VERTICAL_IMAGE;
             }else{
-                viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
+                //viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
+                viewHolderType = ViewHolderTypeEnum.VERTICAL_TEXT;
             }
         }
 
@@ -100,6 +99,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder = new ViewHolderHorizonalImage(v4);
                 v4.setOnClickListener(listener);
                 break;
+            case ViewHolderTypeEnum.VERTICAL_TEXT:
+                View v5 = inflater.inflate(R.layout.card_vertical_text, parent, false);
+                viewHolder = new ViewHolderVerticalText(v5);
+                v5.setOnClickListener(listener);
+                break;
         }
 
 //        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
@@ -127,13 +131,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ViewHolderVerticalImage viewHolderVertialImage = (ViewHolderVerticalImage) holder;
                 configureVerticalImageHolder(viewHolderVertialImage, position);
                 break;
+            case ViewHolderTypeEnum.VERTICAL_TEXT:
+                ViewHolderVerticalText viewHolderVerticalText = (ViewHolderVerticalText) holder;
+                configureVerticalTextHolder(viewHolderVerticalText, position);
+                break;
             default:
                 break;
 
         }
 
     }
-
 
     private void configureNoImageHolder(ViewHolderNoImage holder, int position) {
         NewsMessage message = items.get(position);
@@ -167,9 +174,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.time.setText(message.getPub_date());
+        //holder.time.setText(message.getPub_date());
         holder.title.setText(message.getTitle());
-        holder.source.setText(message.getSource_name());
+       // holder.source.setText(message.getSource_name());
 
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
@@ -178,7 +185,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int width = (int) (message.getWidth() * scale);
         int height = (int) (message.getHeight() * scale);
 
-        Picasso.with(context).load(uri).resize(width,height).into(holder.iv_image);
+        //Picasso.with(context).load(uri).resize(width,height).into(holder.iv_image);
 
     }
 
@@ -205,6 +212,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
+    private void configureVerticalTextHolder(ViewHolderVerticalText holder, int position) {
+        NewsMessage message = items.get(position);
+
+        holder.title.setText("this is just a vertical test message, that you will see this message in vertical instead of horizonal.");
+
+    }
 
     private ImageView makeImageRequest(String imageURL) {
         ImageView view = null;

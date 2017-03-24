@@ -10,4 +10,5 @@ public class ViewHolderTypeEnum {
     public static final int VERTICAL_IMAGE = 1;
     public static final int HIRIZONAL_IMAGE = 2;
     public static final int BIG_IMAGE = 3;
+    public static final int VERTICAL_TEXT = 4;
 }
