@@ -13,13 +13,13 @@ import com.example.leiwang.messagecardview.R;
 
 public class ViewHolderHorizonalImage extends RecyclerView.ViewHolder {
     public ImageView iv_image;
-    public VerticalTextView2 title;
+    public TextView title;
     public TextView source, time;
 
     public ViewHolderHorizonalImage(View itemView) {
         super(itemView);
         iv_image = (ImageView) itemView.findViewById(R.id.iv_hi_image);
-        title = (VerticalTextView2) itemView.findViewById(R.id.tv_hi_title);
+        title = (TextView) itemView.findViewById(R.id.tv_hi_title);
         source = (TextView) itemView.findViewById(R.id.tv_hi_source);
         time = (TextView) itemView.findViewById(R.id.tv_hi_time);
     }
@@ -36,7 +36,7 @@ public class ViewHolderHorizonalImage extends RecyclerView.ViewHolder {
         return title;
     }
 
-    public void setTitle(VerticalTextView2 title) {
+    public void setTitle(TextView title) {
         this.title = title;
     }
 

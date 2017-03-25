@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         //prepareMessageList(readFile(FILE_PATH));
 
-        prepareMessageList();
+        //prepareMessageList();
 
         //make json array request to retrieve Json object via http web
         getJsonArrayRequest();

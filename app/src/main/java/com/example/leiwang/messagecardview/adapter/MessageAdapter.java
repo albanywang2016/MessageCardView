@@ -3,6 +3,7 @@ package com.example.leiwang.messagecardview.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
+import com.example.leiwang.messagecardview.utils.Const;
+import com.example.leiwang.messagecardview.utils.VerticalText;
 import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
@@ -61,11 +64,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return viewHolderType;
             }else if(width > 300){
                 viewHolderType = ViewHolderTypeEnum.BIG_IMAGE;
-            }else if (width > height) {
-                viewHolderType = ViewHolderTypeEnum.VERTICAL_IMAGE;
+            }else if (width >= height) {
+                viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
             }else{
-                //viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
-                viewHolderType = ViewHolderTypeEnum.VERTICAL_TEXT;
+                viewHolderType = ViewHolderTypeEnum.VERTICAL_IMAGE;
+                //viewHolderType = ViewHolderTypeEnum.VERTICAL_TEXT;
             }
         }
 
@@ -100,7 +103,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 v4.setOnClickListener(listener);
                 break;
             case ViewHolderTypeEnum.VERTICAL_TEXT:
-                View v5 = inflater.inflate(R.layout.card_vertical_text, parent, false);
+                View v5 = inflater.inflate(R.layout.card_horizonal_image, parent, false);
                 viewHolder = new ViewHolderVerticalText(v5);
                 v5.setOnClickListener(listener);
                 break;
@@ -158,6 +161,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 
+
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -174,9 +178,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
         NewsMessage message = items.get(position);
-        //holder.time.setText(message.getPub_date());
+        holder.time.setText(message.getPub_date());
         holder.title.setText(message.getTitle());
-       // holder.source.setText(message.getSource_name());
+        holder.source.setText(message.getSource_name());
 
         Uri uri = Uri.parse(message.getImageLink());
         Context context = holder.iv_image.getContext();
@@ -185,14 +189,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int width = (int) (message.getWidth() * scale);
         int height = (int) (message.getHeight() * scale);
 
-        //Picasso.with(context).load(uri).resize(width,height).into(holder.iv_image);
+        holder.iv_image.getLayoutParams().width = width;
+        holder.iv_image.getLayoutParams().height = height;
+
+        Picasso.with(context).load(uri).fit().into(holder.iv_image);
 
     }
 
     private void configureVerticalImageHolder(ViewHolderVerticalImage holder, int position) {
 
         NewsMessage message = items.get(position);
-        holder.title.setText(message.getTitle());
+
+
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 
@@ -203,8 +211,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int width = (int) (message.getWidth() * scale);
         int height = (int) (message.getHeight() * scale);
 
-        //holder.iv_image.getLayoutParams().width = width;
-        //holder.iv_image.getLayoutParams().height = height;
+        Log.d("scale =", String.valueOf(scale));
+        Log.d("height = ", String.valueOf(height));
+
+        int num_words_per_line = height % Const.WORD_HEIGHT;
+
+        String titleText = VerticalText.makeVerticalText(message.getTitle(), num_words_per_line);
+
+        holder.title.setText(titleText);
+
+        holder.iv_image.getLayoutParams().width = width;
+        holder.iv_image.getLayoutParams().height = height;
 
         Picasso.with(context).load(uri).fit().into(holder.iv_image);
         //ImageView view = makeImageRequest(message.getImageLink());
@@ -215,7 +232,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void configureVerticalTextHolder(ViewHolderVerticalText holder, int position) {
         NewsMessage message = items.get(position);
 
-        holder.title.setText("this is just a vertical test message, that you will see this message in vertical instead of horizonal.");
+        //String titleText = VerticalText.makeVerticalText(message.getTitle());
+//        Log.d("title text = ", titleText);
+//
+//        holder.title.setText(titleText);
 
     }
 

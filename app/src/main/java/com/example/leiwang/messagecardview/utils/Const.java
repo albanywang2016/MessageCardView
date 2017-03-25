@@ -29,5 +29,6 @@ public class Const {
     public static final String IMAGE_HEIGHT = "image_height";
     public static final String CONTENTS_URL = "contents_url";
     public static final String CONTENTS = "contents";
+    public static final int WORD_HEIGHT = 40;
 
 }

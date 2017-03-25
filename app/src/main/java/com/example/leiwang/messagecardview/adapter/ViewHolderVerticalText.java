@@ -2,6 +2,7 @@ package com.example.leiwang.messagecardview.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.leiwang.messagecardview.R;
 
@@ -10,19 +11,19 @@ import com.example.leiwang.messagecardview.R;
  */
 
 public class ViewHolderVerticalText extends RecyclerView.ViewHolder {
-    public VerticalTextView title;
+    public TextView title;
 
     public ViewHolderVerticalText(View itemView) {
         super(itemView);
-        title = (VerticalTextView) itemView.findViewById(R.id.tv_vertical_title);
+        title = (TextView) itemView.findViewById(R.id.tv_vertical_title);
     }
 
 
-    public VerticalTextView getTitle() {
+    public TextView getTitle() {
         return title;
     }
 
-    public void setTitle(VerticalTextView title) {
+    public void setTitle(TextView title) {
         this.title = title;
     }
 }
