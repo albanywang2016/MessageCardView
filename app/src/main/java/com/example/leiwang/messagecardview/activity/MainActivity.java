@@ -1,6 +1,5 @@
 package com.example.leiwang.messagecardview.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +13,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import com.example.leiwang.messagecardview.R;
@@ -24,13 +25,17 @@ import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
 
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.leiwang.messagecardview.utils.Const.GET_JSON_VIA_PHP;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,19 +62,95 @@ public class MainActivity extends AppCompatActivity {
         //prepareMessageList();
 
         //make json array request to retrieve Json object via http web
-        getJsonArrayRequest();
+        //getJsonArrayRequest();
 
         //get Json array view php
-        //getJsonArrayViaPHP();
+        getJsonArrayViaPHP();
+
+        //getJsonObjectViaPHP();
+
+        //get Json string via php
+        //getJsonStringViaPHP();
 
     }
 
+    private void getJsonObjectViaPHP() {
+
+//        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, GET_JSON_VIA_PHP, null, new Response.Listener<JsonObject>() {
+//            @Override
+//            public void onResponse(JsonObject response) {
+//
+//                Log.d("get_JSONObject_via_PHP", "response = " + response.toString());
+//                //parseJsonArray(response.toString());
+//
+////                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+////                    @Override
+////                    public void onClick(View view) {
+////                        int position = rv.getChildLayoutPosition(view);
+////                        NewsMessage item = messageList.get(position);
+////                        startWebViewActivity(item.getContentsLink());
+////                    }
+////                }));
+//
+//            }
+//
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("get_JSONObject_via_PHP", error.toString());
+//
+//            }
+//        });
+//
+//        AppVolleySingleton.getmInstance().addToRequestQueue(jsonReq, Const.TAG);
+
+    }
+
+    private void getJsonStringViaPHP() {
+
+        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("get_string_via_php", "response = " + response);
+
+                parseJsonArray(response);
+
+                //parseStringToJsonArray(response);
+
+                Log.d(Const.TAG, "message List =" + messageList.toString());
+
+//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        int position = rv.getChildLayoutPosition(view);
+//                        NewsMessage item = messageList.get(position);
+//                        startWebViewActivity(item.getContentsLink());
+//                    }
+//                }));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("get_string_via_php", error.toString());
+
+            }
+        });
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+    }
+
+
+
     private void getJsonArrayViaPHP() {
-        JsonArrayRequest arrayReq = new JsonArrayRequest(Const.GET_JSON_VIS_PHP, new Response.Listener<JSONArray>() {
+        JsonArrayRequest arrayReq = new JsonArrayRequest(GET_JSON_VIA_PHP, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                parseJsonArray(response.toString());
-                Log.i("Info", response.toString());
+
+                Log.d(Const.TAG, "Json Array = " + response.toString());
+
+                parseStringToJsonArray(response);
+                Log.d(Const.TAG, "message List =" + messageList.toString());
 
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
@@ -84,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.e("get_array_via_php", error.toString());
             }
         });
 
@@ -93,35 +174,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getJsonArrayRequest() {
-        JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                parseJsonObject(response.toString());
-
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-                        //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
-                        startWebViewActivity(item.getContentsLink());
-                    }
-                }));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(Const.TAG, "Error: " + error.getMessage());
-            }
-        });
-
-        AppVolleySingleton.getmInstance().addToRequestQueue(objReq, Const.TAG);
+//        JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                parseJsonObject(response.toString());
+//
+//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+//
+//                    @Override
+//                    public void onClick(View view) {
+//                        int position = rv.getChildLayoutPosition(view);
+//                        NewsMessage item = messageList.get(position);
+//                        //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
+//                        startWebViewActivity(item.getContentsLink());
+//                    }
+//                }));
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e(Const.TAG, "Error: " + error.getMessage());
+//            }
+//        });
+//
+//        AppVolleySingleton.getmInstance().addToRequestQueue(objReq, Const.TAG);
 
     }
 
     private void parseJsonArray(String result) {
-        messageList = new ArrayList<>();
         JsonArray array = Json.parse(result).asArray();
         for (JsonValue value : array) {
             messageList.add(new NewsMessage(value.asObject().getString(Const.ID, ""),
@@ -138,9 +218,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void parseStringToJsonArray(JSONArray response)  {
+
+        for(int i=0; i< response.length(); i++){
+            try {
+                JSONObject item = (JSONObject) response.get(i);
+                NewsMessage message = new NewsMessage();
+                message.setMessage_id(item.getString(Const.ID));
+                message.setSource_name(item.getString(Const.SOURCE_NAME));
+                message.setChannel(item.getString(Const.CHANNEL));
+                message.setTitle(item.getString(Const.TITLE));
+                message.setContentsLink(item.getString(Const.LINK));
+                message.setHas_image(item.getInt(Const.HAS_IMAGE));
+                message.setPub_date(item.getString(Const.PUB_DATE));
+                message.setImageLink(item.getString(Const.IMAGE_URL));
+                message.setWidth(item.getInt(Const.IMAGE_WIDTH));
+                message.setHeight(item.getInt(Const.IMAGE_HEIGHT));
+                messageList.add(message);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
 
     private void parseJsonObject(String result) {
-        messageList = new ArrayList<>();
+
         JsonArray array = Json.parse(result).asObject().get(Const.ITEM).asArray();
         for (JsonValue value : array) {
             NewsMessage message = new NewsMessage(value.asObject().getString(Const.MESSAGE_ID, ""),

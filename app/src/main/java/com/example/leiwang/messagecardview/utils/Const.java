@@ -11,7 +11,8 @@ public class Const {
     public static final String FILE_PATH = "Asahi.json";
     public static final String ASAHI = "Asahi";
     public static final String ASAHI_JSON = "https://apiwiki.fxcorporate.com/api/examples/Asahi.json";
-    public static final String GET_JSON_VIS_PHP = "http://localhost/rssfeed/select_all_message.php";
+    public static final String GET_JSON_VIA_PHP = "http://10.0.2.2/rssfeed/select_all_message.php";
+
     //public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
     public static final String ITEM = "item";

@@ -62,7 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if(width == 0 || height == 0){
                 viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
                 return viewHolderType;
-            }else if(width > 300){
+            }else if(width >= 300){
                 viewHolderType = ViewHolderTypeEnum.BIG_IMAGE;
             }else if (width >= height) {
                 viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
@@ -216,10 +216,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         int num_words_per_line = height % Const.WORD_HEIGHT;
 
-        String titleText = VerticalText.makeVerticalText(message.getTitle(), num_words_per_line);
+        //String titleText = VerticalText.makeVerticalText(message.getTitle(), num_words_per_line);
 
-        holder.title.setText(titleText);
+        //holder.title.setText(titleText);
 
+        holder.title.setText(message.getTitle());
         holder.iv_image.getLayoutParams().width = width;
         holder.iv_image.getLayoutParams().height = height;
 
