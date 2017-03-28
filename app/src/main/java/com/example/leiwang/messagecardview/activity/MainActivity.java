@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -22,6 +24,7 @@ import com.eclipsesource.json.JsonValue;
 import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.adapter.MessageAdapter;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
+import com.example.leiwang.messagecardview.controller.GsonRequest;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
 
@@ -33,6 +36,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.leiwang.messagecardview.utils.Const.GET_JSON_VIA_PHP;
@@ -76,33 +80,35 @@ public class MainActivity extends AppCompatActivity {
 
     private void getJsonObjectViaPHP() {
 
-//        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, GET_JSON_VIA_PHP, null, new Response.Listener<JsonObject>() {
-//            @Override
-//            public void onResponse(JsonObject response) {
-//
-//                Log.d("get_JSONObject_via_PHP", "response = " + response.toString());
-//                //parseJsonArray(response.toString());
-//
-////                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-////                    @Override
-////                    public void onClick(View view) {
-////                        int position = rv.getChildLayoutPosition(view);
-////                        NewsMessage item = messageList.get(position);
-////                        startWebViewActivity(item.getContentsLink());
-////                    }
-////                }));
-//
-//            }
-//
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("get_JSONObject_via_PHP", error.toString());
-//
-//            }
-//        });
-//
-//        AppVolleySingleton.getmInstance().addToRequestQueue(jsonReq, Const.TAG);
+        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, GET_JSON_VIA_PHP, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d("get_JSONObject_via_PHP", "response = " + response.toString());
+                //parseJsonArray(response.toString());
+
+                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position = rv.getChildLayoutPosition(view);
+                        NewsMessage item = messageList.get(position);
+                        startWebViewActivity(item.getContentsLink());
+                    }
+                }));
+
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("get_JSONObject_via_PHP", error.toString());
+
+            }
+        });
+
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(jsonReq, Const.TAG);
 
     }
 
@@ -120,14 +126,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d(Const.TAG, "message List =" + messageList.toString());
 
-//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        int position = rv.getChildLayoutPosition(view);
-//                        NewsMessage item = messageList.get(position);
-//                        startWebViewActivity(item.getContentsLink());
-//                    }
-//                }));
+                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position = rv.getChildLayoutPosition(view);
+                        NewsMessage item = messageList.get(position);
+                        startWebViewActivity(item.getContentsLink());
+                    }
+                }));
             }
         }, new Response.ErrorListener() {
             @Override
@@ -143,61 +149,78 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void getJsonArrayViaPHP() {
-        JsonArrayRequest arrayReq = new JsonArrayRequest(GET_JSON_VIA_PHP, new Response.Listener<JSONArray>() {
+
+        GsonRequest<NewsMessage[]> getMessages = new GsonRequest<>(Const.GET_JSON_VIA_PHP, NewsMessage[].class, new Response.Listener<NewsMessage[]>() {
             @Override
-            public void onResponse(JSONArray response) {
-
-                Log.d(Const.TAG, "Json Array = " + response.toString());
-
-                parseStringToJsonArray(response);
-                Log.d(Const.TAG, "message List =" + messageList.toString());
-
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-                        startWebViewActivity(item.getContentsLink());
-                    }
-                }));
-
+            public void onResponse(NewsMessage[] response) {
+                messageList = Arrays.asList(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("get_array_via_php", error.toString());
+                Log.d("get_array_via_php", error.toString());
             }
         });
 
-        AppVolleySingleton.getmInstance().addToRequestQueue(arrayReq, Const.TAG);
 
-    }
-
-    private void getJsonArrayRequest() {
-//        JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
+//        JsonArrayRequest arrayReq = new JsonArrayRequest(GET_JSON_VIA_PHP, new Response.Listener<JSONArray>() {
+//
 //            @Override
-//            public void onResponse(JSONObject response) {
-//                parseJsonObject(response.toString());
+//            public void onResponse(JSONArray response) {
+//
+//                Log.d(Const.TAG, "Json Array = " + response.toString());
+//
+//                parseStringToJsonArray(response);
+//                Log.d(Const.TAG, "message List =" + messageList.toString());
 //
 //                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-//
 //                    @Override
 //                    public void onClick(View view) {
 //                        int position = rv.getChildLayoutPosition(view);
 //                        NewsMessage item = messageList.get(position);
-//                        //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
 //                        startWebViewActivity(item.getContentsLink());
 //                    }
 //                }));
+//
 //            }
 //        }, new Response.ErrorListener() {
 //            @Override
 //            public void onErrorResponse(VolleyError error) {
-//                Log.e(Const.TAG, "Error: " + error.getMessage());
+//                Log.e("get_array_via_php", error.toString());
 //            }
 //        });
-//
-//        AppVolleySingleton.getmInstance().addToRequestQueue(objReq, Const.TAG);
+
+
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(getMessages, Const.TAG);
+
+    }
+
+    private void getJsonArrayRequest() {
+        JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                parseJsonObject(response.toString());
+
+                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        int position = rv.getChildLayoutPosition(view);
+                        NewsMessage item = messageList.get(position);
+                        //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
+                        startWebViewActivity(item.getContentsLink());
+                    }
+                }));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(Const.TAG, "Error: " + error.getMessage());
+            }
+        });
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(objReq, Const.TAG);
 
     }
 
