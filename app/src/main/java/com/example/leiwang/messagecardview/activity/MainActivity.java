@@ -27,6 +27,8 @@ import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.controller.GsonRequest;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 import org.json.JSONArray;
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("get_string_via_php", "response = " + response);
 
-                parseJsonArray(response);
+                //parseJsonArray(response);
 
                 //parseStringToJsonArray(response);
 
@@ -150,15 +152,38 @@ public class MainActivity extends AppCompatActivity {
 
     private void getJsonArrayViaPHP() {
 
-        GsonRequest<NewsMessage[]> getMessages = new GsonRequest<>(Const.GET_JSON_VIA_PHP, NewsMessage[].class, new Response.Listener<NewsMessage[]>() {
+//        GsonRequest<NewsMessage[]> getMessages = new GsonRequest<>(Const.GET_JSON_VIA_PHP, NewsMessage[].class, new Response.Listener<NewsMessage[]>() {
+//            @Override
+//            public void onResponse(NewsMessage[] response) {
+//                messageList = Arrays.asList(response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("get_array_via_php", error.toString());
+//            }
+//        });
+
+        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
             @Override
-            public void onResponse(NewsMessage[] response) {
-                messageList = Arrays.asList(response);
+            public void onResponse(String response) {
+                Log.d("getJsonArrayViaPHP", "response =" + response);
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                //messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
+//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        int position = rv.getChildLayoutPosition(view);
+//                        NewsMessage item = messageList.get(position);
+//                        startWebViewActivity(item.getContentsLink());
+//                    }
+//                }));
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("get_array_via_php", error.toString());
+                Log.d("getJsonArrayViaPHP", "error = " + error.toString());
             }
         });
 
@@ -192,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        AppVolleySingleton.getmInstance().addToRequestQueue(getMessages, Const.TAG);
+        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
 
     }
 
