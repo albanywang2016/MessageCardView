@@ -16,7 +16,6 @@ import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
-import com.example.leiwang.messagecardview.utils.VerticalText;
 import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
@@ -56,8 +55,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(hasImage == 0){
             viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
         }else{
-            int width = items.get(position).getWidth();
-            int height = items.get(position).getHeight();
+            int width = items.get(position).getImage_width();
+            int height = items.get(position).getImage_height();
 
             if(width == 0 || height == 0){
                 viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
@@ -162,16 +161,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.time.setText(message.getPub_date());
 
 
-        Uri uri = Uri.parse(message.getImageLink());
+        Uri uri = Uri.parse(message.getImage_url());
         Context context = holder.iv_image.getContext();
         final float scale = context.getResources().getDisplayMetrics().density;
-        int width = (int) (message.getWidth() * scale);
-        int height = (int) (message.getHeight() * scale);
+        int width = (int) (message.getImage_width() * scale);
+        int height = (int) (message.getImage_height() * scale);
 //        holder.iv_image.getLayoutParams().width = width;
 //        holder.iv_image.setAdjustViewBounds(true);
 //        holder.iv_image.setScaleType((ImageView.ScaleType.CENTER_CROP));
 
-        //holder.iv_image.getLayoutParams().height = (int) (message.getHeight());
+        //holder.iv_image.getLayoutParams().height = (int) (message.getImage_height());
 
         Picasso.with(context).load(uri).resize(width,height).centerCrop().into(holder.iv_image);
     }
@@ -182,12 +181,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.title.setText(message.getTitle());
         holder.source.setText(message.getSource_name());
 
-        Uri uri = Uri.parse(message.getImageLink());
+        Uri uri = Uri.parse(message.getImage_url());
         Context context = holder.iv_image.getContext();
 
         final float scale = context.getResources().getDisplayMetrics().density;
-        int width = (int) (message.getWidth() * scale);
-        int height = (int) (message.getHeight() * scale);
+        int width = (int) (message.getImage_width() * scale);
+        int height = (int) (message.getImage_height() * scale);
 
         holder.iv_image.getLayoutParams().width = width;
         holder.iv_image.getLayoutParams().height = height;
@@ -205,11 +204,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.time.setText(message.getPub_date());
 
         //holder.iv_image.setAdjustViewBounds(true);
-        Uri uri = Uri.parse(message.getImageLink());
+        Uri uri = Uri.parse(message.getImage_url());
         Context context = holder.iv_image.getContext();
         final float scale = context.getResources().getDisplayMetrics().density;
-        int width = (int) (message.getWidth() * scale);
-        int height = (int) (message.getHeight() * scale);
+        int width = (int) (message.getImage_width() * scale);
+        int height = (int) (message.getImage_height() * scale);
 
         Log.d("scale =", String.valueOf(scale));
         Log.d("height = ", String.valueOf(height));
@@ -225,7 +224,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.iv_image.getLayoutParams().height = height;
 
         Picasso.with(context).load(uri).fit().into(holder.iv_image);
-        //ImageView view = makeImageRequest(message.getImageLink());
+        //ImageView view = makeImageRequest(message.getImage_url());
         //holder.image = view;
 
     }

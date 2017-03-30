@@ -6,63 +6,63 @@ package com.example.leiwang.messagecardview.model;
 
 public class NewsMessage {
     int imageID;
-    String message_id;
+    String id;
     String channel;
     String contents;
     String title;
     String source_name;
     String pub_date;
-    String imageLink;
-    String contentsLink;
-    int width;
-    int height;
+    String image_url;
+    String link;
+    int image_width;
+    int image_height;
     int has_image;
 
-    public String getContentsLink() {
-        return contentsLink;
+    public String getLink() {
+        return link;
     }
 
-    public void setContentsLink(String contentsLink) {
-        this.contentsLink = contentsLink;
+    public void setLink(String link) {
+        this.link = link;
     }
 
-    public NewsMessage(String message_id, String source_name, String title, String pub_date, String imageLink, String contentsLink, String contents, int has_image, int image_width, int image_height) {
-        this.message_id = message_id;
-        this.contents = contents;
-        this.title = title;
+    public NewsMessage(String id, String source_name, String channel, String title, String link, int has_image, String pub_date, String image_url, int image_width, int image_height) {
+        this.id = id;
         this.source_name = source_name;
-        this.pub_date = pub_date;
-        this.imageLink = imageLink;
-        this.contentsLink = contentsLink;
-        this.has_image = has_image;
-        this.width = image_width;
-        this.height = image_height;
-    }
-
-    public NewsMessage(String message_id, String source_name, String channel, String title,  String contentsLink, int has_image, String pub_date, String imageLink,  int width, int height) {
-        this.message_id = message_id;
         this.channel = channel;
         this.title = title;
-        this.contentsLink = contentsLink;
-        this.source_name = source_name;
         this.pub_date = pub_date;
-        this.imageLink = imageLink;
-        this.width = width;
-        this.height = height;
+        this.image_url = image_url;
+        this.link = link;
         this.has_image = has_image;
+        this.image_width = image_width;
+        this.image_height = image_height;
     }
-
-
-    public NewsMessage(String message_id, String source_name, String channel, String title,  String contentsLink, String pub_date, String imageLink) {
-        this.message_id = message_id;
-        this.channel = channel;
-        this.title = title;
-        this.contentsLink = contentsLink;
-        this.source_name = source_name;
-        this.pub_date = pub_date;
-        this.imageLink = imageLink;
-
-    }
+//
+//    public NewsMessage(String id, String source_name, String title, String pub_date, String image_url, String link, String contents, int has_image, int image_width, int image_height) {
+//        this.id = id;
+//        this.contents = contents;
+//        this.title = title;
+//        this.source_name = source_name;
+//        this.pub_date = pub_date;
+//        this.image_url = image_url;
+//        this.link = link;
+//        this.has_image = has_image;
+//        this.image_width = image_width;
+//        this.image_height = image_height;
+//    }
+//
+//
+//    public NewsMessage(String id, String source_name, String channel, String title, String link, String pub_date, String image_url) {
+//        this.id = id;
+//        this.channel = channel;
+//        this.title = title;
+//        this.link = link;
+//        this.source_name = source_name;
+//        this.pub_date = pub_date;
+//        this.image_url = image_url;
+//
+//    }
 
     public NewsMessage() {
     }
@@ -83,15 +83,15 @@ public class NewsMessage {
     public String toString() {
         return "NewsMessage{" +
                 "imageID=" + imageID +
-                ", message_id='" + message_id + '\'' +
+                ", id='" + id + '\'' +
                 ", contents='" + contents + '\'' +
                 ", title='" + title + '\'' +
                 ", source_name='" + source_name + '\'' +
                 ", pub_date='" + pub_date + '\'' +
-                ", imageLink='" + imageLink + '\'' +
-                ", contentsLink='" + contentsLink + '\'' +
-                ", width=" + width +
-                ", height=" + height +
+                ", image_url='" + image_url + '\'' +
+                ", link='" + link + '\'' +
+                ", image_width=" + image_width +
+                ", image_height=" + image_height +
                 ", has_image=" + has_image +
                 '}';
     }
@@ -104,36 +104,36 @@ public class NewsMessage {
         this.has_image = has_image;
     }
 
-    public int getWidth() {
-        return width;
+    public int getImage_width() {
+        return image_width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setImage_width(int image_width) {
+        this.image_width = image_width;
     }
 
-    public int getHeight() {
-        return height;
+    public int getImage_height() {
+        return image_height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setImage_height(int image_height) {
+        this.image_height = image_height;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public String getImage_url() {
+        return image_url;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
-    public String getMessage_id() {
-        return message_id;
+    public String getId() {
+        return id;
     }
 
-    public void setMessage_id(String message_id) {
-        this.message_id = message_id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getContents() {
