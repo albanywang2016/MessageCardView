@@ -154,7 +154,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void configureBigImageHolder(ViewHolderBigImage holder, int position) {
         NewsMessage message = items.get(position);
-        holder.title.setTextSize(20);
         holder.title.setText(message.getTitle());
 
         holder.source.setText(message.getSource_name());

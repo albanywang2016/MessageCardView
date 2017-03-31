@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
     <RelativeLayout
@@ -28,7 +28,8 @@
             android:text="TextView"
             android:paddingTop="3dp"
             android:layout_below="@id/tv_ni_source"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/tv_ni_time"

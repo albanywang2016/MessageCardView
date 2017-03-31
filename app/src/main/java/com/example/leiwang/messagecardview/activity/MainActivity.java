@@ -162,11 +162,11 @@ public class MainActivity extends AppCompatActivity {
         StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("getJsonArrayViaPHP", "response =" + response);
+                //Log.d("getJsonArrayViaPHP", "response =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                Log.d("getJsonArrayViaPHP", messageList.toString());
+                //Log.d("getJsonArrayViaPHP", messageList.toString());
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
                     public void onClick(View view) {

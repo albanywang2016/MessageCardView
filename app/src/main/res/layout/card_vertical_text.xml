@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 <RelativeLayout
@@ -18,7 +18,8 @@
         android:id="@+id/tv_vertical_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"/>
+        android:text="TextView"
+        android:textSize="20dp"/>
 
 </RelativeLayout>
 

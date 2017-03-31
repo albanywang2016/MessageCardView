@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp">
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="8dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -37,7 +37,8 @@
                 android:id="@+id/tv_description"
                 android:paddingBottom="1dp"
                 android:paddingLeft="1dp"
-                android:paddingTop="1dp" />
+                android:paddingTop="1dp"
+                android:textSize="20dp"/>
 
             <TextView
                 android:text="TextView"
