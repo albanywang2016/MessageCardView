@@ -16,6 +16,7 @@ import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
+import com.example.leiwang.messagecardview.utils.VerticalText;
 import com.example.leiwang.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
@@ -101,11 +102,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder = new ViewHolderHorizonalImage(v4);
                 v4.setOnClickListener(listener);
                 break;
-            case ViewHolderTypeEnum.VERTICAL_TEXT:
-                View v5 = inflater.inflate(R.layout.card_horizonal_image, parent, false);
-                viewHolder = new ViewHolderVerticalText(v5);
-                v5.setOnClickListener(listener);
-                break;
+
         }
 
 //        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
@@ -132,10 +129,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case ViewHolderTypeEnum.VERTICAL_IMAGE:
                 ViewHolderVerticalImage viewHolderVertialImage = (ViewHolderVerticalImage) holder;
                 configureVerticalImageHolder(viewHolderVertialImage, position);
-                break;
-            case ViewHolderTypeEnum.VERTICAL_TEXT:
-                ViewHolderVerticalText viewHolderVerticalText = (ViewHolderVerticalText) holder;
-                configureVerticalTextHolder(viewHolderVerticalText, position);
                 break;
             default:
                 break;
@@ -228,15 +221,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    private void configureVerticalTextHolder(ViewHolderVerticalText holder, int position) {
-        NewsMessage message = items.get(position);
-
-        //String titleText = VerticalText.makeVerticalText(message.getTitle());
-//        Log.d("title text = ", titleText);
-//
-//        holder.title.setText(titleText);
-
-    }
 
     private ImageView makeImageRequest(String imageURL) {
         ImageView view = null;

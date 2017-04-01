@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -68,105 +69,34 @@ public class MainActivity extends AppCompatActivity {
         //get Json array view php
         getJsonArrayViaPHP();
 
-        //getJsonObjectViaPHP();
-
-        //get Json string via php
-        //getJsonStringViaPHP();
 
     }
 
-    private void getJsonObjectViaPHP() {
-
-        JsonObjectRequest jsonReq = new JsonObjectRequest(Request.Method.GET, GET_JSON_VIA_PHP, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                Log.d("get_JSONObject_via_PHP", "response = " + response.toString());
-                //parseJsonArray(response.toString());
-
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-                        startWebViewActivity(item.getLink());
-                    }
-                }));
-
-            }
-
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("get_JSONObject_via_PHP", error.toString());
-
-            }
-        });
-
-
-        AppVolleySingleton.getmInstance().addToRequestQueue(jsonReq, Const.TAG);
-
-    }
-
-    private void getJsonStringViaPHP() {
-
-        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                Log.d("get_string_via_php", "response = " + response);
-
-                //parseJsonArray(response);
-
-                //parseStringToJsonArray(response);
-
-                Log.d(Const.TAG, "message List =" + messageList.toString());
-
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-                        startWebViewActivity(item.getLink());
-                    }
-                }));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("get_string_via_php", error.toString());
-
-            }
-        });
-
-        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
-    }
+//    public void setFloatingActionButton(final View view) {
+//        float actionButton = (android.support.design.widget.FloatingActionButton) getActivity()
+//                .findViewById(R.id.float);
+//        actionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerView
+//                        .getLayoutManager();
+//                layoutManager.scrollToPositionWithOffset(0, 0);
+//            }
+//        });
+//    }
 
 
 
     private void getJsonArrayViaPHP() {
 
-//        GsonRequest<NewsMessage[]> getMessages = new GsonRequest<>(Const.GET_JSON_VIA_PHP, NewsMessage[].class, new Response.Listener<NewsMessage[]>() {
-//            @Override
-//            public void onResponse(NewsMessage[] response) {
-//                messageList = Arrays.asList(response);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("get_array_via_php", error.toString());
-//            }
-//        });
-
         StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.d("getJsonArrayViaPHP", "response =" + response);
+                //Log.d("getJsonArrayViaPHP", "the response is =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                //Log.d("getJsonArrayViaPHP", messageList.toString());
+                //Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -183,35 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//        JsonArrayRequest arrayReq = new JsonArrayRequest(GET_JSON_VIA_PHP, new Response.Listener<JSONArray>() {
-//
-//            @Override
-//            public void onResponse(JSONArray response) {
-//
-//                Log.d(Const.TAG, "Json Array = " + response.toString());
-//
-//                parseStringToJsonArray(response);
-//                Log.d(Const.TAG, "message List =" + messageList.toString());
-//
-//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        int position = rv.getChildLayoutPosition(view);
-//                        NewsMessage item = messageList.get(position);
-//                        startWebViewActivity(item.getLink());
-//                    }
-//                }));
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("get_array_via_php", error.toString());
-//            }
-//        });
-
-
+        sr.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
 

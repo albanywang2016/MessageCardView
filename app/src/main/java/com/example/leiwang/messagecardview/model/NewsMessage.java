@@ -38,31 +38,7 @@ public class NewsMessage {
         this.image_width = image_width;
         this.image_height = image_height;
     }
-//
-//    public NewsMessage(String id, String source_name, String title, String pub_date, String image_url, String link, String contents, int has_image, int image_width, int image_height) {
-//        this.id = id;
-//        this.contents = contents;
-//        this.title = title;
-//        this.source_name = source_name;
-//        this.pub_date = pub_date;
-//        this.image_url = image_url;
-//        this.link = link;
-//        this.has_image = has_image;
-//        this.image_width = image_width;
-//        this.image_height = image_height;
-//    }
-//
-//
-//    public NewsMessage(String id, String source_name, String channel, String title, String link, String pub_date, String image_url) {
-//        this.id = id;
-//        this.channel = channel;
-//        this.title = title;
-//        this.link = link;
-//        this.source_name = source_name;
-//        this.pub_date = pub_date;
-//        this.image_url = image_url;
-//
-//    }
+
 
     public NewsMessage() {
     }
