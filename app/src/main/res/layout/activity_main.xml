@@ -10,8 +10,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.leiwang.messagecardview.activity.MainActivity">
 
+    <Button
+        android:id="@+id/bt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Login"
+        android:layout_alignParentTop="true"
+        android:visibility="visible"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messageList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bt_login">
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/bt_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="22dp"
+        android:text="Top"
+        android:visibility="visible"/>
+
+
 </RelativeLayout>

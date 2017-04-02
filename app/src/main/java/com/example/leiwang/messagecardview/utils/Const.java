@@ -1,5 +1,6 @@
 package com.example.leiwang.messagecardview.utils;
 
+import com.android.volley.toolbox.StringRequest;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 
 /**
@@ -12,6 +13,8 @@ public class Const {
     public static final String ASAHI = "Asahi";
     public static final String ASAHI_JSON = "https://apiwiki.fxcorporate.com/api/examples/Asahi.json";
     public static final String GET_JSON_VIA_PHP = "http://10.0.2.2/rssfeed/mysqli_get_all_message.php";
+    public static final String USER_REGISTER_PHP = "http://10.0.2.2/rssfeed/user_register.php";
+    public static final String USER_LOGIN_PHP = "http://10.0.2.2/rssfeed/user_login.php";
 
     //public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
@@ -31,5 +34,10 @@ public class Const {
     public static final String CONTENTS_URL = "contents_url";
     public static final String CONTENTS = "contents";
     public static final int WORD_HEIGHT = 40;
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_PASSWORD = "password";
+    public static final String KEY_EMAIL = "email";
+    public static final String OOPS = "Oops";
+    public static final String INPUT_WRONG = "Please make sure you entered all the fields correctly.";
 
 }

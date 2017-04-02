@@ -1,13 +1,18 @@
 package com.example.leiwang.messagecardview.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,7 +40,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.leiwang.messagecardview.utils.Const.GET_JSON_VIA_PHP;
 
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rv;
     MessageAdapter ma;
     List<NewsMessage> messageList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +77,157 @@ public class MainActivity extends AppCompatActivity {
         //get Json array view php
         getJsonArrayViaPHP();
 
+        Button registerBtn = (Button) findViewById(R.id.bt_login);
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callLoginDialog();
+            }
+        });
 
     }
+
+    private void callLoginDialog(){
+
+        final Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.login_layout);
+        myDialog.setCancelable(false);
+        final Button login = (Button) myDialog.findViewById(R.id.loginButton);
+
+        final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
+        final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
+        myDialog.show();
+
+        final Button register = (Button) myDialog.findViewById(R.id.login_btn_register);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callRegisterDialog();
+            }
+        });
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = etUserName.getText().toString().trim();
+                final String password = etPassword.getText().toString().trim();
+                if(username.length() == 0 || password.length() == 0){
+                    showAlert(Const.OOPS, Const.INPUT_WRONG);
+                    return;
+                }else{
+                    StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_LOGIN_PHP, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            myDialog.dismiss();
+                            showAlert("", response.toString());
+                            return;
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            myDialog.dismiss();
+                            showAlert("Error!", error.toString());
+                            return;
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> params = new HashMap<String, String>();
+                            params.put(Const.KEY_USERNAME,username);
+                            params.put(Const.KEY_PASSWORD,password);
+                            return params;
+                        }
+                    };
+                    AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+                }
+            }
+        });
+
+    }
+
+
+
+    private void callRegisterDialog()
+    {
+        final Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.register_layout);
+        myDialog.setCancelable(false);
+        final Button register = (Button) myDialog.findViewById(R.id.registerButton);
+
+        final EditText etUsername = (EditText) myDialog.findViewById(R.id.register_et_username);
+        final EditText etEmail = (EditText) myDialog.findViewById(R.id.register_et_email);
+        final EditText etPassword = (EditText) myDialog.findViewById(R.id.register_et_password);
+        myDialog.show();
+
+        final Button login = (Button) myDialog.findViewById(R.id.register_btn_login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callLoginDialog();
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                //your login calculation goes here
+                final String username = etUsername.getText().toString().trim();
+                final String email = etEmail.getText().toString().trim();
+                final String password = etPassword.getText().toString().trim();
+
+                if(username.length() == 0 || email.length() == 0 || password.length() == 0){
+                    showAlert(Const.OOPS, Const.INPUT_WRONG);
+
+                    return;
+                }else{
+                    StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_REGISTER_PHP, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            myDialog.dismiss();
+                            showAlert("", response.toString());
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            myDialog.dismiss();
+                            showAlert("Error!", error.toString());
+
+                            return;
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> params = new HashMap<String, String>();
+                            params.put(Const.KEY_USERNAME,username);
+                            params.put(Const.KEY_PASSWORD,password);
+                            params.put(Const.KEY_EMAIL, email);
+                            return params;
+                        }
+                    };
+                    AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+                }
+
+            }
+        });
+
+
+    }
+
+    private void showAlert(String title, String alert){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(alert)
+                .setTitle(title)
+                .setPositiveButton(android.R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
 //    public void setFloatingActionButton(final View view) {
 //        float actionButton = (android.support.design.widget.FloatingActionButton) getActivity()
