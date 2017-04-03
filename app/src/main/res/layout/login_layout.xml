@@ -14,7 +14,7 @@ android:orientation="vertical" >
         android:id="@+id/login_tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dip"
+        android:layout_marginTop="10dip"
         android:gravity="center"
         android:textColor="#000000"
         android:text="@string/username"
@@ -45,46 +45,52 @@ android:orientation="vertical" >
         android:layout_marginTop="5dip"
         android:hint="@string/enter_password"
         android:inputType="textPassword" />
-    <TextView
-        android:id="@+id/login_tv_forgot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dip"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:text="@string/forgot_password"
-        android:textSize="18dp"
-        />
-
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dip"
-        android:text="@string/login"
-        />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:gravity="center">
+        android:layout_marginTop="15dip"
+        android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/login_tv_not_an_user"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/not_user_yet" />
+            android:layout_marginTop="10dp"
+            android:text="@string/forgot_password"
+            android:id="@+id/login_forgot_password_btn"
+            android:layout_alignParentLeft="true"
+            />
+        <Button
+            android:id="@+id/longin_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_below="@+id/login_forgot_password_btn"
+            />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/longin_cancel_button"
+            android:layout_below="@+id/login_forgot_password_btn"
+            android:text="@string/login"
+            />
 
         <Button
             android:id="@+id/login_btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register"
-            android:layout_toRightOf="@+id/login_tv_not_an_user"/>
+            android:layout_marginTop="15dip"
+            android:text="@string/not_user_yet"
+            android:layout_below="@+id/loginButton"
+            android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
+
+
+
 
 
 </LinearLayout>

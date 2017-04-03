@@ -2,7 +2,7 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
-android:orientation="vertical" >
+android:orientation="vertical">
 
 <LinearLayout
     android:layout_width="fill_parent"
@@ -14,7 +14,7 @@ android:orientation="vertical" >
         android:id="@+id/register_tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dip"
+        android:layout_marginTop="10dip"
         android:gravity="center"
         android:textColor="#000000"
         android:text="@string/username"
@@ -32,7 +32,7 @@ android:orientation="vertical" >
         android:id="@+id/register_tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dip"
+        android:layout_marginTop="10dip"
         android:gravity="center"
         android:textColor="#000000"
         android:text="@string/email"
@@ -64,37 +64,39 @@ android:orientation="vertical" >
         android:hint="@string/enter_password"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dip"
-        android:text="@string/register"
-        />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_marginTop="10dip">
 
-        <TextView
-            android:id="@+id/register_tv_already_user"
+        <Button
+            android:id="@+id/register_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:text="@string/already_user" />
+            android:layout_gravity="center"
+            android:text="@string/cancel"
+            />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/register_cancel_button"
+            android:text="@string/register"
+            />
 
         <Button
             android:id="@+id/register_btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/register_tv_already_user"
             android:layout_weight="1"
-            android:text="@string/login" />
-
+            android:text="@string/already_user"
+            android:layout_gravity="center"
+            android:layout_below="@+id/registerButton"/>
 
     </RelativeLayout>
+
 
 </LinearLayout>
 

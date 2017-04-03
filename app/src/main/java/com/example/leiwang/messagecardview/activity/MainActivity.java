@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -44,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.leiwang.messagecardview.utils.Const.CONTENTS;
+import static com.example.leiwang.messagecardview.utils.Const.COULD_NOT_LOGIN;
 import static com.example.leiwang.messagecardview.utils.Const.GET_JSON_VIA_PHP;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         //get Json array view php
         getJsonArrayViaPHP();
 
-        Button registerBtn = (Button) findViewById(R.id.bt_login);
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        Button loginBtn = (Button) findViewById(R.id.bt_login);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callLoginDialog();
@@ -92,21 +95,42 @@ public class MainActivity extends AppCompatActivity {
         final Dialog myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.login_layout);
         myDialog.setCancelable(false);
-        final Button login = (Button) myDialog.findViewById(R.id.loginButton);
+        myDialog.setTitle("Login Form");
 
         final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
         myDialog.show();
 
-        final Button register = (Button) myDialog.findViewById(R.id.login_btn_register);
+        //forgot password, direct to forgot password dalog
+        final Button forgot = (Button) myDialog.findViewById(R.id.login_forgot_password_btn);
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+                callForgotPawwrodDialog();
+            }
+        });
 
+        // cancel login dialog
+        final Button cancel = (Button) myDialog.findViewById(R.id.longin_cancel_button);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+
+        //for new user, direct to register dialog
+        final Button register = (Button) myDialog.findViewById(R.id.login_btn_register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myDialog.dismiss();
                 callRegisterDialog();
             }
         });
 
+        final Button login = (Button) myDialog.findViewById(R.id.loginButton);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,9 +144,15 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             myDialog.dismiss();
-                            showAlert("", response.toString());
-                            return;
-
+                            Log.d("userid", response.toString());
+                            if(response.contains(Const.COULD_NOT_LOGIN)){
+                                showAlert(Const.OOPS, Const.COULD_NOT_LOGIN + " " + Const.INPUT_WRONG);
+                                return;
+                            }else{
+                                Const.USER_ID = Integer.parseInt(response.toString());
+                                Toast.makeText(MainActivity.this, Const.LOG_IN_SUCCESSFULLY, Toast.LENGTH_LONG).show();
+                                return;
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -147,13 +177,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     private void callRegisterDialog()
     {
         final Dialog myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.register_layout);
         myDialog.setCancelable(false);
+        myDialog.setTitle("Register form");
         final Button register = (Button) myDialog.findViewById(R.id.registerButton);
 
         final EditText etUsername = (EditText) myDialog.findViewById(R.id.register_et_username);
@@ -165,7 +194,16 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myDialog.dismiss();
                 callLoginDialog();
+            }
+        });
+
+        final Button cancel = (Button) myDialog.findViewById(R.id.register_cancel_button);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
             }
         });
 
@@ -216,8 +254,69 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void callForgotPawwrodDialog() {
+        final Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.forgot_password);
+        myDialog.setCancelable(false);
+        myDialog.setTitle("Forgot passwrod form");
+        myDialog.show();
+
+        final Button cancel = (Button) myDialog.findViewById(R.id.forgot_cancel_btn);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+
+        final EditText etEmail = (EditText) myDialog.findViewById(R.id.forgot_et_email);
+        final Button send = (Button) myDialog.findViewById(R.id.forgot_send_btn);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String email = etEmail.getText().toString().trim();
+                if(email.length() == 0){
+                    showAlert(Const.OOPS, Const.INPUT_WRONG);
+                    return;
+                }else{
+                    StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_FORGOT_PASSWORD_PHP, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            myDialog.dismiss();
+                            //Log.d("RetrieveUserPassword", response.toString());
+                            if(response.contains(Const.COULD_NOT_GET_PASSWORD)){
+                                showAlert(Const.OOPS, Const.COULD_NOT_GET_PASSWORD + " " + Const.INPUT_WRONG);
+                                return;
+                            }else{
+                                //Log.d("RetrieveUserPassword", response.toString());
+                                showAlert("", Const.YOUR_PASSWORD_IS + response.toString());
+                                return;
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            myDialog.dismiss();
+                            return;
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> params = new HashMap<String, String>();
+                            params.put(Const.KEY_EMAIL, email);
+                            return params;
+                        }
+                    };
+                    AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+                }
+            }
+        });
 
     }
+
 
     private void showAlert(String title, String alert){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);

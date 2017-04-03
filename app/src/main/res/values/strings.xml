@@ -7,10 +7,12 @@
     <string name="email">Email</string>
     <string name="enter_email">Enter Email Address</string>
 
-    <string name="forgot_password">Forget Password</string>
-    <string name="already_user">Aleady an User?</string>
-    <string name="not_user_yet">Not an User yet?</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="already_user">Aleady an User? Login</string>
+    <string name="not_user_yet">Not an User yet? Register</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
 
 </resources>

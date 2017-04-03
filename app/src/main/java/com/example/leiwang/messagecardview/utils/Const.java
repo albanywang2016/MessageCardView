@@ -8,6 +8,9 @@ import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
  */
 
 public class Const {
+
+    public static int USER_ID = 0;
+
     public static final String TAG = AppVolleySingleton.class.getSimpleName();
     public static final String FILE_PATH = "Asahi.json";
     public static final String ASAHI = "Asahi";
@@ -15,6 +18,7 @@ public class Const {
     public static final String GET_JSON_VIA_PHP = "http://10.0.2.2/rssfeed/mysqli_get_all_message.php";
     public static final String USER_REGISTER_PHP = "http://10.0.2.2/rssfeed/user_register.php";
     public static final String USER_LOGIN_PHP = "http://10.0.2.2/rssfeed/user_login.php";
+    public static final String USER_FORGOT_PASSWORD_PHP = "http://10.0.2.2/rssfeed/user_get_password.php";
 
     //public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
@@ -39,5 +43,10 @@ public class Const {
     public static final String KEY_EMAIL = "email";
     public static final String OOPS = "Oops";
     public static final String INPUT_WRONG = "Please make sure you entered all the fields correctly.";
+    public static final String LOG_IN_SUCCESSFULLY = "Login Successfully!";
+    public static final String COULD_NOT_LOGIN = "Could not login";
+    public static final String COULD_NOT_GET_PASSWORD = "Could not get password";
+    public static final String YOUR_PASSWORD_IS = "Your password is: ";
+
 
 }
