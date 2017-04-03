@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 callLoginDialog();
             }
         });
-
     }
 
     private void callLoginDialog(){
