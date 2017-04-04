@@ -39,6 +39,7 @@ import com.example.leiwang.messagecardview.R;
 import com.example.leiwang.messagecardview.adapter.BlankFragment;
 import com.example.leiwang.messagecardview.adapter.MessageAdapter;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
+import com.example.leiwang.messagecardview.controller.MyMessageMap;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
 import com.google.gson.Gson;
@@ -63,9 +64,13 @@ import static com.example.leiwang.messagecardview.utils.Const.GET_JSON_VIA_PHP;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rv;
-    MessageAdapter ma;
-    List<NewsMessage> messageList;
+    //RecyclerView rv;
+    //MessageAdapter ma;
+    //List<NewsMessage> messageList;
+
+    List<RecyclerView> rvList;
+    List<Map<String, List<NewsMessage>>> allMessages;
+
 
 
     @Override
@@ -78,17 +83,20 @@ public class MainActivity extends AppCompatActivity {
 
         //get the ViewPager and set it's pagerAdapter
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), MainActivity.this);
-        viewPager.setAdapter(pagerAdapter);
+        setupViewPager(viewPager);
+//        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), MainActivity.this);
+//        viewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        for(int i=0; i<tabLayout.getTabCount(); i++){
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            tab.setCustomView(pagerAdapter.getTabView(i));
-        }
+//        for(int i=0; i<tabLayout.getTabCount(); i++){
+//            TabLayout.Tab tab = tabLayout.getTabAt(i);
+//            tab.setCustomView(pagerAdapter.getTabView(i));
+//        }
 
+        rvList = new ArrayList<>();
+        allMessages = new ArrayList<>();
 
 
 //        rv = (RecyclerView) findViewById(R.id.messageList);
@@ -98,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
 //        llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        rv.setLayoutManager(llm);
 //
-        messageList = new ArrayList<>();
+
+        //messageList = new ArrayList<>();
 
         //prepareMessageList(readFile(FILE_PATH));
 
@@ -110,13 +119,19 @@ public class MainActivity extends AppCompatActivity {
         //get Json array view php
         //getJsonArrayViaPHP();
 
-        Button loginBtn = (Button) findViewById(R.id.bt_login);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callLoginDialog();
-            }
-        });
+//        Button loginBtn = (Button) findViewById(R.id.bt_login);
+//        loginBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                callLoginDialog();
+//            }
+//        });
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new BlankFragment());
+
     }
 
     @Override
@@ -139,50 +154,52 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class PagerAdapter extends FragmentPagerAdapter{
+    class MyPagerAdapter extends FragmentPagerAdapter{
 
-        String tabTitles[] = new String[] {"Domestic", "Internatioinal", "Business"};
-        Context context;
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+        private List<NewsMessage> mFragmentMessageList = new ArrayList<>();
 
-        public PagerAdapter(FragmentManager fm, Context context) {
+//        String tabTitles[] = new String[] {"Domestic", "Internatioinal", "Business"};
+//        Context context;
+
+        public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.context = context;
         }
 
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-//                    BlankFragment blankFragment = new BlankFragment();
-//                    RecyclerView rv  = blankFragment.onCreateView(getMenuInflater(), )
-//                    getJsonArrayViaPHP();
-                    return new BlankFragment();
-
-                case 1:
-                    return new BlankFragment();
-                case 2:
-                    return new BlankFragment();
-            }
-            return null;
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            return tabTitles.length;
+            return mFragmentList.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
+            return mFragmentTitleList.get(position);
         }
 
-        public View getTabView(int positioin){
-            View tab = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
-            TextView tv = (TextView) tab.findViewById(R.id.custom_text);
-            tv.setText(tabTitles[positioin]);
-            return tab;
+        public void addFrag(Fragment fragment, String title){
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
         }
+
+        public void addFrag(Fragment fragment, String title, List<NewsMessage> messageList){
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+            mFragmentMessageList = messageList;
+        }
+
+//        public View getTabView(int positioin){
+//            View tab = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
+//            TextView tv = (TextView) tab.findViewById(R.id.custom_text);
+//            tv.setText(tabTitles[positioin]);
+//            return tab;
+//        }
     }
 
 
@@ -439,20 +456,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void getJsonArrayViaPHP(final RecyclerView recyclerView) {
-
         StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
+            List<NewsMessage> mList = new ArrayList<>();
             @Override
             public void onResponse(String response) {
                 //Log.d("c", "the response is =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
-                recyclerView.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+                mList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
+                Log.d("getJsonArrayViaPHP", "message List = " + mList.toString());
+                recyclerView.setAdapter(new MessageAdapter(mList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
                     public void onClick(View view) {
                         int position = recyclerView.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
+                        NewsMessage item = mList.get(position);
                         startWebViewActivity(item.getLink());
                     }
                 }));
@@ -471,109 +488,106 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getJsonArrayViaPHP() {
+//    private void getJsonArrayViaPHP() {
+//
+//        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                //Log.d("c", "the response is =" + response);
+//                GsonBuilder builder = new GsonBuilder();
+//                Gson gson = builder.create();
+//                messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
+//                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
+//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        int position = rv.getChildLayoutPosition(view);
+//                        NewsMessage item = messageList.get(position);
+//                        startWebViewActivity(item.getLink());
+//                    }
+//                }));
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("getJsonArrayViaPHP", "error = " + error.toString());
+//            }
+//        });
+//
+//        sr.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//
+//        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+//
+//    }
 
-        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Log.d("c", "the response is =" + response);
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-                        startWebViewActivity(item.getLink());
-                    }
-                }));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("getJsonArrayViaPHP", "error = " + error.toString());
-            }
-        });
+//    private void getJsonArrayRequest() {
+//        JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                //parseJsonObject(response.toString());
+//
+//                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+//
+//                    @Override
+//                    public void onClick(View view) {
+//                        int position = rv.getChildLayoutPosition(view);
+//                        NewsMessage item = messageList.get(position);
+//                        //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
+//                        startWebViewActivity(item.getLink());
+//                    }
+//                }));
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e(Const.TAG, "Error: " + error.getMessage());
+//            }
+//        });
+//
+//        AppVolleySingleton.getmInstance().addToRequestQueue(objReq, Const.TAG);
+//
+//    }
 
-        sr.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//    private void parseJsonArray(String result) {
+//        JsonArray array = Json.parse(result).asArray();
+//        for (JsonValue value : array) {
+//            messageList.add(new NewsMessage(value.asObject().getString(Const.ID, ""),
+//                    value.asObject().getString(Const.SOURCE_NAME, ""),
+//                    value.asObject().getString(Const.CHANNEL, ""),
+//                    value.asObject().getString(Const.TITLE, ""),
+//                    value.asObject().getString(Const.LINK, ""),
+//                    value.asObject().getInt(Const.HAS_IMAGE, 0),
+//                    value.asObject().getString(Const.PUB_DATE, ""),
+//                    value.asObject().getString(Const.IMAGE_URL, ""),
+//                    value.asObject().getInt(Const.IMAGE_WIDTH, 0),
+//                    value.asObject().getInt(Const.IMAGE_HEIGHT, 0)));
+//        }
+//
+//    }
 
-        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
-
-    }
-
-    private void getJsonArrayRequest() {
-        JsonObjectRequest objReq = new JsonObjectRequest(Request.Method.GET, Const.ASAHI_JSON, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                //parseJsonObject(response.toString());
-
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-                        //Toast.makeText(view.getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
-                        startWebViewActivity(item.getLink());
-                    }
-                }));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(Const.TAG, "Error: " + error.getMessage());
-            }
-        });
-
-        AppVolleySingleton.getmInstance().addToRequestQueue(objReq, Const.TAG);
-
-    }
-
-    private void parseJsonArray(String result) {
-        JsonArray array = Json.parse(result).asArray();
-        for (JsonValue value : array) {
-            messageList.add(new NewsMessage(value.asObject().getString(Const.ID, ""),
-                    value.asObject().getString(Const.SOURCE_NAME, ""),
-                    value.asObject().getString(Const.CHANNEL, ""),
-                    value.asObject().getString(Const.TITLE, ""),
-                    value.asObject().getString(Const.LINK, ""),
-                    value.asObject().getInt(Const.HAS_IMAGE, 0),
-                    value.asObject().getString(Const.PUB_DATE, ""),
-                    value.asObject().getString(Const.IMAGE_URL, ""),
-                    value.asObject().getInt(Const.IMAGE_WIDTH, 0),
-                    value.asObject().getInt(Const.IMAGE_HEIGHT, 0)));
-        }
-
-    }
-
-    private void parseStringToJsonArray(JSONArray response)  {
-
-        for(int i=0; i< response.length(); i++){
-            try {
-                JSONObject item = (JSONObject) response.get(i);
-                NewsMessage message = new NewsMessage();
-                message.setId(item.getString(Const.ID));
-                message.setSource_name(item.getString(Const.SOURCE_NAME));
-                message.setChannel(item.getString(Const.CHANNEL));
-                message.setTitle(item.getString(Const.TITLE));
-                message.setLink(item.getString(Const.LINK));
-                message.setHas_image(item.getInt(Const.HAS_IMAGE));
-                message.setPub_date(item.getString(Const.PUB_DATE));
-                message.setImage_url(item.getString(Const.IMAGE_URL));
-                message.setImage_width(item.getInt(Const.IMAGE_WIDTH));
-                message.setImage_height(item.getInt(Const.IMAGE_HEIGHT));
-                messageList.add(message);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-    }
+//    private void parseStringToJsonArray(JSONArray response)  {
+//
+//        for(int i=0; i< response.length(); i++){
+//            try {
+//                JSONObject item = (JSONObject) response.get(i);
+//                NewsMessage message = new NewsMessage();
+//                message.setId(item.getString(Const.ID));
+//                message.setSource_name(item.getString(Const.SOURCE_NAME));
+//                message.setChannel(item.getString(Const.CHANNEL));
+//                message.setTitle(item.getString(Const.TITLE));
+//                message.setLink(item.getString(Const.LINK));
+//                message.setHas_image(item.getInt(Const.HAS_IMAGE));
+//                message.setPub_date(item.getString(Const.PUB_DATE));
+//                message.setImage_url(item.getString(Const.IMAGE_URL));
+//                message.setImage_width(item.getInt(Const.IMAGE_WIDTH));
+//                message.setImage_height(item.getInt(Const.IMAGE_HEIGHT));
+//                messageList.add(message);
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
 //    private void parseJsonObject(String result) {
 //
