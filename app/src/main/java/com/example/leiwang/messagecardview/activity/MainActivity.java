@@ -1,16 +1,27 @@
 package com.example.leiwang.messagecardview.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -25,6 +36,7 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
 import com.example.leiwang.messagecardview.R;
+import com.example.leiwang.messagecardview.adapter.BlankFragment;
 import com.example.leiwang.messagecardview.adapter.MessageAdapter;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.model.NewsMessage;
@@ -61,13 +73,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rv = (RecyclerView) findViewById(R.id.messageList);
-        rv.setHasFixedSize(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(llm);
+        //get the ViewPager and set it's pagerAdapter
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), MainActivity.this);
+        viewPager.setAdapter(pagerAdapter);
 
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+
+        for(int i=0; i<tabLayout.getTabCount(); i++){
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab.setCustomView(pagerAdapter.getTabView(i));
+        }
+
+
+
+//        rv = (RecyclerView) findViewById(R.id.messageList);
+//        rv.setHasFixedSize(true);
+//
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        rv.setLayoutManager(llm);
+//
         messageList = new ArrayList<>();
 
         //prepareMessageList(readFile(FILE_PATH));
@@ -78,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         //getJsonArrayRequest();
 
         //get Json array view php
-        getJsonArrayViaPHP();
+        //getJsonArrayViaPHP();
 
         Button loginBtn = (Button) findViewById(R.id.bt_login);
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +118,73 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    class PagerAdapter extends FragmentPagerAdapter{
+
+        String tabTitles[] = new String[] {"Domestic", "Internatioinal", "Business"};
+        Context context;
+
+        public PagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+//                    BlankFragment blankFragment = new BlankFragment();
+//                    RecyclerView rv  = blankFragment.onCreateView(getMenuInflater(), )
+//                    getJsonArrayViaPHP();
+                    return new BlankFragment();
+
+                case 1:
+                    return new BlankFragment();
+                case 2:
+                    return new BlankFragment();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        public View getTabView(int positioin){
+            View tab = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
+            TextView tv = (TextView) tab.findViewById(R.id.custom_text);
+            tv.setText(tabTitles[positioin]);
+            return tab;
+        }
+    }
+
 
     private void callLoginDialog(){
 
@@ -341,17 +438,49 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
+    private void getJsonArrayViaPHP(final RecyclerView recyclerView) {
+
+        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Log.d("c", "the response is =" + response);
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
+                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
+                recyclerView.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int position = recyclerView.getChildLayoutPosition(view);
+                        NewsMessage item = messageList.get(position);
+                        startWebViewActivity(item.getLink());
+                    }
+                }));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("getJsonArrayViaPHP", "error = " + error.toString());
+            }
+        });
+
+        sr.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+
+    }
+
 
     private void getJsonArrayViaPHP() {
 
         StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.d("getJsonArrayViaPHP", "the response is =" + response);
+                //Log.d("c", "the response is =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                //Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
+                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
                     public void onClick(View view) {
