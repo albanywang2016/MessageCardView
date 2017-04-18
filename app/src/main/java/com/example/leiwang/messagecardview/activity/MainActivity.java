@@ -40,6 +40,7 @@ import com.example.leiwang.messagecardview.adapter.BlankFragment;
 import com.example.leiwang.messagecardview.adapter.MessageAdapter;
 import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 import com.example.leiwang.messagecardview.controller.MyMessageMap;
+import com.example.leiwang.messagecardview.model.ChannelModel;
 import com.example.leiwang.messagecardview.model.NewsMessage;
 import com.example.leiwang.messagecardview.utils.Const;
 import com.google.gson.Gson;
@@ -64,12 +65,12 @@ import static com.example.leiwang.messagecardview.utils.Const.GET_JSON_VIA_PHP;
 
 public class MainActivity extends AppCompatActivity {
 
-    //RecyclerView rv;
-    //MessageAdapter ma;
-    //List<NewsMessage> messageList;
+    RecyclerView rv;
+    MessageAdapter ma;
+    List<NewsMessage> messageList;
 
-    List<RecyclerView> rvList;
-    List<Map<String, List<NewsMessage>>> allMessages;
+    //List<RecyclerView> rvList;
+    //List<Map<String, List<NewsMessage>>> allMessages;
 
 
 
@@ -78,36 +79,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         //get the ViewPager and set it's pagerAdapter
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+//        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+//        setupViewPager(viewPager);
 //        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), MainActivity.this);
 //        viewPager.setAdapter(pagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
-
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+//        tabLayout.setupWithViewPager(viewPager);
 //        for(int i=0; i<tabLayout.getTabCount(); i++){
 //            TabLayout.Tab tab = tabLayout.getTabAt(i);
 //            tab.setCustomView(pagerAdapter.getTabView(i));
 //        }
 
-        rvList = new ArrayList<>();
-        allMessages = new ArrayList<>();
+        //rvList = new ArrayList<>();
+        //allMessages = new ArrayList<>();
 
 
-//        rv = (RecyclerView) findViewById(R.id.messageList);
-//        rv.setHasFixedSize(true);
-//
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        rv.setLayoutManager(llm);
-//
+        rv = (RecyclerView) findViewById(R.id.messageList);
+        rv.setHasFixedSize(true);
 
-        //messageList = new ArrayList<>();
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+
+
+        messageList = new ArrayList<>();
 
         //prepareMessageList(readFile(FILE_PATH));
 
@@ -117,20 +116,24 @@ public class MainActivity extends AppCompatActivity {
         //getJsonArrayRequest();
 
         //get Json array view php
-        //getJsonArrayViaPHP();
+        getJsonArrayViaPHP();
 
-//        Button loginBtn = (Button) findViewById(R.id.bt_login);
-//        loginBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                callLoginDialog();
-//            }
-//        });
+        Button loginBtn = (Button) findViewById(R.id.bt_login);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callLoginDialog();
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager){
-        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new BlankFragment());
+
+        for(int i=0; i< ChannelModel.data.length; i++){
+            MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+            //adapter.addFrag(new BlankFragment(), ChannelModel.data[i], );
+        }
+
 
     }
 
@@ -455,21 +458,21 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
-    private void getJsonArrayViaPHP(final RecyclerView recyclerView) {
+    private void getJsonArrayViaPHP() {
         StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
-            List<NewsMessage> mList = new ArrayList<>();
+            //List<NewsMessage> mList = new ArrayList<>();
             @Override
             public void onResponse(String response) {
-                //Log.d("c", "the response is =" + response);
+                Log.d("getJsonArrayViaPHP", "the response is =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                mList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                Log.d("getJsonArrayViaPHP", "message List = " + mList.toString());
-                recyclerView.setAdapter(new MessageAdapter(mList, new MessageAdapter.RecyclerviewClickListener() {
+                messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
+                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
+                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int position = recyclerView.getChildLayoutPosition(view);
-                        NewsMessage item = mList.get(position);
+                        int position = rv.getChildLayoutPosition(view);
+                        NewsMessage item = messageList.get(position);
                         startWebViewActivity(item.getLink());
                     }
                 }));

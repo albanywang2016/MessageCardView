@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.leiwang.messagecardview.activity.MainActivity">
-
+<!--
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -23,6 +23,7 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         />
+
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
@@ -42,7 +43,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
-
+-->
 
     <Button
         android:id="@+id/bt_login"
@@ -52,14 +53,14 @@
         android:text="Login"
         android:layout_alignParentTop="true"
         android:visibility="visible"/>
-<!--
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messageList"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 
-
+<!--
     <Button
         android:id="@+id/bt_top"
         android:layout_width="wrap_content"

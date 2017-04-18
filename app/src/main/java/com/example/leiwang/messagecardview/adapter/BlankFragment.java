@@ -43,8 +43,9 @@ public class BlankFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
-        final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.tab_layout);
-        frameLayout.setBackgroundColor(color);
+        //final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.tab_layout);
+        FrameLayout frameLayout;
+        //frameLayout.setBackgroundColor(color);
 
         RecyclerView rv = (RecyclerView) view.findViewById(R.id.rv_recycler_view);
 
