@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 myDialog.dismiss();
-                callForgotPawwrodDialog();
+                callForgotPasswrodDialog();
             }
         });
 
@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void callForgotPawwrodDialog() {
+    private void callForgotPasswrodDialog() {
         final Dialog myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.forgot_password);
         myDialog.setCancelable(false);

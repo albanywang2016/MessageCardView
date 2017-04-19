@@ -15,11 +15,17 @@ public class Const {
     public static final String FILE_PATH = "Asahi.json";
     public static final String ASAHI = "Asahi";
     public static final String ASAHI_JSON = "https://apiwiki.fxcorporate.com/api/examples/Asahi.json";
-    public static final String GET_JSON_VIA_PHP = "http://10.0.2.2/rssfeed/local_rssfeed/mysqli_get_all_message.php";
-    //public static final String GET_JSON_VIA_PHP = "http://japannews.tech/php/mysqli_get_all_message.php";
-    public static final String USER_REGISTER_PHP = "http://10.0.2.2/rssfeed/user_register.php";
-    public static final String USER_LOGIN_PHP = "http://10.0.2.2/rssfeed/user_login.php";
-    public static final String USER_FORGOT_PASSWORD_PHP = "http://10.0.2.2/rssfeed/user_get_password.php";
+    //public static final String GET_JSON_VIA_PHP = "http://10.0.2.2/rssfeed/local_rssfeed/mysqli_get_all_message.php";
+    //public static final String GET_JSON_VIA_PHP =  "http://localhost/rssfeed/local_rssfeed/mysqli_get_all_message.php";
+
+    //public static final String USER_REGISTER_PHP = "http://10.0.2.2/rssfeed/user_register.php";
+    //public static final String USER_LOGIN_PHP = "http://10.0.2.2/rssfeed/user_login.php";
+    //public static final String USER_FORGOT_PASSWORD_PHP = "http://10.0.2.2/rssfeed/user_get_password.php";
+
+    public static final String USER_REGISTER_PHP = "http://japannews.tech/php/user_register.php";
+    public static final String USER_LOGIN_PHP = "http://japannews.tech/php/user_login.php";
+    public static final String USER_FORGOT_PASSWORD_PHP = "http://japannews.tech/php/user_get_password.php";
+    public static final String GET_JSON_VIA_PHP = "http://japannews.tech/php/mysqli_get_all_message.php";
 
     //public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
