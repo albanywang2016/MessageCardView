@@ -79,8 +79,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         //get the ViewPager and set it's pagerAdapter
 //        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -116,15 +117,7 @@ public class MainActivity extends AppCompatActivity {
         //getJsonArrayRequest();
 
         //get Json array view php
-        getJsonArrayViaPHP();
-
-        Button loginBtn = (Button) findViewById(R.id.bt_login);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callLoginDialog();
-            }
-        });
+        getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
     }
 
     private void setupViewPager(ViewPager viewPager){
@@ -151,9 +144,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_settings){
-            return true;
+
+        switch (id){
+            case R.id.action_login:
+                callLoginDialog();
+                break;
+            case R.id.action_register:
+                callRegisterDialog();
+                break;
+            case R.id.action_domestic:
+                getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
+                break;
+            case R.id.action_international:
+                getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
+                break;
+            case R.id.action_business:
+                getJsonArrayViaPHP(Const.CHANNEL_BUSINESS);
+                break;
+            case R.id.action_entertainment:
+                getJsonArrayViaPHP(Const.CHANNEL_ENTERTAINMENT);
+                break;
+            case R.id.action_sport:
+                getJsonArrayViaPHP(Const.CHANNEL_SPORT);
+                break;
+            case R.id.action_science:
+                getJsonArrayViaPHP(Const.CHANNEL_SCIENCE);
+                break;
+            case R.id.action_life:
+                getJsonArrayViaPHP(Const.CHANNEL_LIFE);
+                break;
+            case R.id.action_local:
+                getJsonArrayViaPHP(Const.CHANNEL_LOCAL);
+                break;
+            case R.id.action_magazine:
+                getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
+                break;
+            default:
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -215,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
+        myDialog.setCanceledOnTouchOutside(true);
         myDialog.show();
 
         //forgot password, direct to forgot password dalog
@@ -227,24 +257,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // cancel login dialog
-        final Button cancel = (Button) myDialog.findViewById(R.id.longin_cancel_button);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
-
-        //for new user, direct to register dialog
-        final Button register = (Button) myDialog.findViewById(R.id.login_btn_register);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-                callRegisterDialog();
-            }
-        });
 
         final Button login = (Button) myDialog.findViewById(R.id.loginButton);
         login.setOnClickListener(new View.OnClickListener() {
@@ -304,24 +316,9 @@ public class MainActivity extends AppCompatActivity {
         final EditText etUsername = (EditText) myDialog.findViewById(R.id.register_et_username);
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.register_et_email);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.register_et_password);
+        myDialog.setCanceledOnTouchOutside(true);
         myDialog.show();
 
-        final Button login = (Button) myDialog.findViewById(R.id.register_btn_login);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-                callLoginDialog();
-            }
-        });
-
-        final Button cancel = (Button) myDialog.findViewById(R.id.register_cancel_button);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
 
         register.setOnClickListener(new View.OnClickListener()
         {
@@ -377,15 +374,8 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setContentView(R.layout.forgot_password);
         myDialog.setCancelable(false);
         myDialog.setTitle("Forgot passwrod form");
+        myDialog.setCanceledOnTouchOutside(true);
         myDialog.show();
-
-        final Button cancel = (Button) myDialog.findViewById(R.id.forgot_cancel_btn);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
 
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.forgot_et_email);
         final Button send = (Button) myDialog.findViewById(R.id.forgot_send_btn);
@@ -458,8 +448,8 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
-    private void getJsonArrayViaPHP() {
-        StringRequest sr = new StringRequest(Request.Method.GET, GET_JSON_VIA_PHP, new Response.Listener<String>() {
+    private void getJsonArrayViaPHP(final String channel) {
+        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_MESSAGE_BY_CHANNEL, new Response.Listener<String>() {
             //List<NewsMessage> mList = new ArrayList<>();
             @Override
             public void onResponse(String response) {
@@ -482,7 +472,14 @@ public class MainActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("getJsonArrayViaPHP", "error = " + error.toString());
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(Const.CHANNEL, channel);
+                return params;
+            }
+        };
 
         sr.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

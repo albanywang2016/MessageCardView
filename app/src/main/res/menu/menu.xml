@@ -3,9 +3,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_login"
         android:orderInCategory="100"
-        android:title="my menu Item!"
-        app:showAsAction="never"/>
+        android:title="@string/login"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_register"
+        android:orderInCategory="100"
+        android:title="@string/register"
+        app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_domestic"
+        android:orderInCategory="100"
+        android:title="@string/domestic"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_international"
+        android:orderInCategory="100"
+        android:title="@string/international"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_business"
+        android:orderInCategory="100"
+        android:title="@string/business"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_entertainment"
+        android:orderInCategory="100"
+        android:title="@string/entertainment"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_sport"
+        android:orderInCategory="100"
+        android:title="@string/sport"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_science"
+        android:orderInCategory="100"
+        android:title="@string/science"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_life"
+        android:orderInCategory="100"
+        android:title="@string/life"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_local"
+        android:orderInCategory="100"
+        android:title="@string/local"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_magazine"
+        android:orderInCategory="100"
+        android:title="@string/magazine"
+        app:showAsAction="ifRoom"/>
 </menu>

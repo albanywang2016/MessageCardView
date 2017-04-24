@@ -26,6 +26,17 @@ public class Const {
     public static final String USER_LOGIN_PHP = "http://japannews.tech/php/user_login.php";
     public static final String USER_FORGOT_PASSWORD_PHP = "http://japannews.tech/php/user_get_password.php";
     public static final String GET_JSON_VIA_PHP = "http://japannews.tech/php/mysqli_get_all_message.php";
+    public static final String GET_MESSAGE_BY_CHANNEL = "http://japannews.tech/php/get_message_by_channel.php";
+
+    public static final String CHANNEL_DOMESTIC = "Domestic";
+    public static final String CHANNEL_INTERNATIONAL = "International";
+    public static final String CHANNEL_BUSINESS = "Business";
+    public static final String CHANNEL_ENTERTAINMENT = "Entertainment";
+    public static final String CHANNEL_SPORT = "Sport";
+    public static final String CHANNEL_SCIENCE = "Science";
+    public static final String CHANNEL_LIFE = "Life";
+    public static final String CHANNEL_LOCAL = "Local";
+    public static final String CHANNEL_MAGAZINE = "Magazine";
 
     //public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
