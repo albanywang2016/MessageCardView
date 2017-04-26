@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rv;
     MessageAdapter ma;
     List<NewsMessage> messageList;
+    private Menu menu;
 
     //List<RecyclerView> rvList;
     //List<Map<String, List<NewsMessage>>> allMessages;
@@ -138,12 +139,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        this.menu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        String underscore = getResources().getString(R.string.enderscore);
+        String app_name = getResources().getString(R.string.app_name);
 
         switch (id){
             case R.id.action_login:
@@ -154,30 +158,39 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_domestic:
                 getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.domestic));
                 break;
             case R.id.action_international:
                 getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.international));
                 break;
             case R.id.action_business:
                 getJsonArrayViaPHP(Const.CHANNEL_BUSINESS);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.business));
                 break;
             case R.id.action_entertainment:
                 getJsonArrayViaPHP(Const.CHANNEL_ENTERTAINMENT);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.entertainment));
                 break;
             case R.id.action_sport:
                 getJsonArrayViaPHP(Const.CHANNEL_SPORT);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.sport));
                 break;
             case R.id.action_science:
                 getJsonArrayViaPHP(Const.CHANNEL_SCIENCE);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.science));
                 break;
             case R.id.action_life:
                 getJsonArrayViaPHP(Const.CHANNEL_LIFE);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.life));
                 break;
             case R.id.action_local:
                 getJsonArrayViaPHP(Const.CHANNEL_LOCAL);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.local));
                 break;
             case R.id.action_magazine:
                 getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
                 break;
             default:
                 break;

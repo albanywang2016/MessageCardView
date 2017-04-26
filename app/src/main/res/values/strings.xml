@@ -26,5 +26,6 @@
     <string name="life">ライフ</string>
     <string name="local">地域</string>
     <string name="magazine">雑誌</string>
+    <string name="enderscore">_</string>
 
 </resources>
