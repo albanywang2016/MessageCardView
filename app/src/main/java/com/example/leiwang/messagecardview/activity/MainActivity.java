@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     //List<RecyclerView> rvList;
     //List<Map<String, List<NewsMessage>>> allMessages;
-
+    DisplayMetrics metrics;
 
 
     @Override
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        metrics = getResources().getDisplayMetrics();
 
         //get the ViewPager and set it's pagerAdapter
 //        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -150,47 +152,56 @@ public class MainActivity extends AppCompatActivity {
         String app_name = getResources().getString(R.string.app_name);
 
         switch (id){
-            case R.id.action_login:
-                callLoginDialog();
+            case R.id.action_login_or_register:
+                callLoginOrRegister();
                 break;
-            case R.id.action_register:
-                callRegisterDialog();
+            case R.id.action_refresh:
+                getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
                 break;
             case R.id.action_domestic:
                 getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.domestic));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
                 break;
             case R.id.action_international:
                 getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.international));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_INTERNATIONAL;
                 break;
             case R.id.action_business:
                 getJsonArrayViaPHP(Const.CHANNEL_BUSINESS);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.business));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_BUSINESS;
                 break;
             case R.id.action_entertainment:
                 getJsonArrayViaPHP(Const.CHANNEL_ENTERTAINMENT);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.entertainment));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_ENTERTAINMENT;
                 break;
             case R.id.action_sport:
                 getJsonArrayViaPHP(Const.CHANNEL_SPORT);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.sport));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_SPORT;
                 break;
             case R.id.action_science:
                 getJsonArrayViaPHP(Const.CHANNEL_SCIENCE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.science));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_SCIENCE;
                 break;
             case R.id.action_life:
                 getJsonArrayViaPHP(Const.CHANNEL_LIFE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.life));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_LIFE;
                 break;
             case R.id.action_local:
                 getJsonArrayViaPHP(Const.CHANNEL_LOCAL);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.local));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_LOCAL;
                 break;
             case R.id.action_magazine:
                 getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
                 break;
             default:
                 break;
@@ -248,6 +259,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void callLoginOrRegister(){
+
+        final Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.login_or_register);
+        myDialog.setCancelable(true);
+        myDialog.setCanceledOnTouchOutside(true);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
+        myDialog.show();
+
+        final Button loginBtn = (Button) myDialog.findViewById(R.id.btn_login);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+                callLoginDialog();
+            }
+        });
+
+        final Button registerBtn = (Button) myDialog.findViewById(R.id.btn_register);
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+                callRegisterDialog();
+            }
+        });
+    }
+
     private void callLoginDialog(){
 
         final Dialog myDialog = new Dialog(this);
@@ -258,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
         myDialog.setCanceledOnTouchOutside(true);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
         myDialog.show();
 
         //forgot password, direct to forgot password dalog
@@ -330,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.register_et_email);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.register_et_password);
         myDialog.setCanceledOnTouchOutside(true);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
         myDialog.show();
 
 
@@ -388,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setCancelable(false);
         myDialog.setTitle("Forgot passwrod form");
         myDialog.setCanceledOnTouchOutside(true);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
         myDialog.show();
 
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.forgot_et_email);

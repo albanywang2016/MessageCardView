@@ -10,6 +10,7 @@ import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 public class Const {
 
     public static int USER_ID = 0;
+    public static String CURRENT_CHANNEL = "国内";
 
     public static final String TAG = AppVolleySingleton.class.getSimpleName();
     public static final String FILE_PATH = "Asahi.json";

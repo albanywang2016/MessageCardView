@@ -17,6 +17,7 @@
         <item name="colorAccent">#FF4081</item>
 
         <!-- <item name="android:actionMenuTextColor">@color/red</item> -->
+        <item name="android:itemBackground">@color/lightblue</item>
 
     </style>
 

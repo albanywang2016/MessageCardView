@@ -28,4 +28,6 @@
     <string name="magazine">雑誌</string>
     <string name="enderscore">_</string>
 
+    <string name="refresh">refresh</string>
+
 </resources>

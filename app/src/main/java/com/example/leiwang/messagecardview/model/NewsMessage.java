@@ -8,7 +8,7 @@ public class NewsMessage {
     int imageID;
     String id;
     String channel;
-    String contents;
+    String content;
     String title;
     String source_name;
     String pub_date;
@@ -26,7 +26,7 @@ public class NewsMessage {
         this.link = link;
     }
 
-    public NewsMessage(String id, String source_name, String channel, String title, String link, int has_image, String pub_date, String image_url, int image_width, int image_height) {
+    public NewsMessage(String id, String source_name, String channel, String title, String link, String content, int has_image, String pub_date, String image_url, int image_width, int image_height) {
         this.id = id;
         this.source_name = source_name;
         this.channel = channel;
@@ -34,6 +34,7 @@ public class NewsMessage {
         this.pub_date = pub_date;
         this.image_url = image_url;
         this.link = link;
+        this.content = content;
         this.has_image = has_image;
         this.image_width = image_width;
         this.image_height = image_height;
@@ -60,7 +61,7 @@ public class NewsMessage {
         return "NewsMessage{" +
                 "imageID=" + imageID +
                 ", id='" + id + '\'' +
-                ", contents='" + contents + '\'' +
+                ", contents='" + content + '\'' +
                 ", title='" + title + '\'' +
                 ", source_name='" + source_name + '\'' +
                 ", pub_date='" + pub_date + '\'' +
@@ -113,11 +114,11 @@ public class NewsMessage {
     }
 
     public String getContents() {
-        return contents;
+        return content;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setContents(String content) {
+        this.content = content;
     }
 
     public int getImageID() {
