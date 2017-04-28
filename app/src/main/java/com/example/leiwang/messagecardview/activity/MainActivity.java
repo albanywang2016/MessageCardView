@@ -17,16 +17,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ShareActionProvider;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     MessageAdapter ma;
     List<NewsMessage> messageList;
     private Menu menu;
+    private ShareActionProvider mShare;
 
     //List<RecyclerView> rvList;
     //List<Map<String, List<NewsMessage>>> allMessages;
@@ -133,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
             MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
             //adapter.addFrag(new BlankFragment(), ChannelModel.data[i], );
         }
-
-
     }
 
     @Override
@@ -156,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
         String app_name = getResources().getString(R.string.app_name);
 
         switch (id){
+            case R.id.action_share:
+                mShare = (ShareActionProvider) item.getActionProvider();
+                setShareIntent(createShareIntent());
+                break;
             case R.id.action_login_or_register:
                 callLoginOrRegister();
                 break;
@@ -214,6 +220,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setShareIntent(Intent shareIntent) {
+        if(mShare != null){
+            mShare.setShareIntent(shareIntent);
+        }
+    }
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                "http://japannews.tech");
+        return shareIntent;
+    }
 
     class MyPagerAdapter extends FragmentPagerAdapter{
 
@@ -267,10 +286,11 @@ public class MainActivity extends AppCompatActivity {
     private void callLoginOrRegister(){
 
         final Dialog myDialog = new Dialog(this);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setContentView(R.layout.login_or_register);
         myDialog.setCancelable(true);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (2 * metrics.heightPixels)/3);
+        myDialog.getWindow().setLayout((8 * metrics.widthPixels)/9, (2 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button loginBtn = (Button) myDialog.findViewById(R.id.btn_login);
@@ -304,9 +324,9 @@ public class MainActivity extends AppCompatActivity {
     private void callLoginDialog(){
 
         final Dialog myDialog = new Dialog(this);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setContentView(R.layout.login_layout);
         myDialog.setCancelable(false);
-        myDialog.setTitle("Login Form");
 
         final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
@@ -383,10 +403,9 @@ public class MainActivity extends AppCompatActivity {
     private void callRegisterDialog()
     {
         final Dialog myDialog = new Dialog(this);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setContentView(R.layout.register_layout);
         myDialog.setCancelable(false);
-        myDialog.setTitle("Register form");
-
 
         final EditText etUsername = (EditText) myDialog.findViewById(R.id.register_et_username);
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.register_et_email);
@@ -394,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.register_et_password);
         final EditText etPassword2 = (EditText) myDialog.findViewById(R.id.register_et_password2);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
+        myDialog.getWindow().setLayout((7 * metrics.widthPixels)/8, (6 * metrics.heightPixels)/7);
         myDialog.show();
 
         final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_register_cancel);
@@ -461,11 +480,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void callForgotPasswrodDialog() {
         final Dialog myDialog = new Dialog(this);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setContentView(R.layout.forgot_password);
         myDialog.setCancelable(false);
-        myDialog.setTitle("Forgot passwrod form");
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (1 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_forgot_cancel);

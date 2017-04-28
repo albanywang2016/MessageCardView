@@ -27,6 +27,8 @@
     <string name="local">地域</string>
     <string name="magazine">雑誌</string>
     <string name="enderscore">_</string>
+    <string name="not_register_yet">まだ登録していない、ここで登録してください：</string>
+    <string name="register_already">既に登録されていますか？ここでログイン：</string>
 
     <string name="refresh">refresh</string>
 

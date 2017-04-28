@@ -20,6 +20,7 @@ android:orientation="vertical" >
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
             android:hint="@string/enter_username"
+            android:textColorHint="@color/white"
             android:inputType="textEmailAddress" />
 
         <TextView
@@ -37,6 +38,7 @@ android:orientation="vertical" >
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
             android:hint="@string/enter_password"
+            android:textColorHint="@color/white"
             android:inputType="textPassword" />
 
 

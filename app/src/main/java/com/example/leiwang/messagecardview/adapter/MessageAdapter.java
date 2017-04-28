@@ -191,7 +191,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         NewsMessage message = items.get(position);
 
-
         holder.source.setText(message.getSource_name());
         holder.time.setText(message.getPub_date());
 

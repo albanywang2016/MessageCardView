@@ -21,6 +21,7 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:hint="@string/enter_username"
+        android:textColorHint="@color/white"
         android:inputType="textEmailAddress" />
 
     <TextView
@@ -39,6 +40,7 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:hint="@string/enter_email"
+        android:textColorHint="@color/white"
         android:inputType="textEmailAddress" />
 
     <TextView
@@ -57,6 +59,7 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:hint="@string/enter_email"
+        android:textColorHint="@color/white"
         android:inputType="textEmailAddress" />
 
 
@@ -76,6 +79,7 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:hint="@string/enter_password"
+        android:textColorHint="@color/white"
         android:inputType="textPassword" />
 
     <TextView
@@ -94,12 +98,13 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:hint="@string/enter_password"
+        android:textColorHint="@color/white"
         android:inputType="textPassword" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 

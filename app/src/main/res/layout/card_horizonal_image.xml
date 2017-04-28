@@ -40,8 +40,7 @@
                 android:layout_below="@+id/tv_hi_source"
                 android:paddingTop="3dp"
                 android:paddingLeft="3dp"
-                android:text="TextView"
-                android:textSize="20dp"/>
+                android:text="TextView"/>
 
             <TextView
                 android:id="@+id/tv_hi_time"
