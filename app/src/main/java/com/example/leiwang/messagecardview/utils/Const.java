@@ -10,7 +10,7 @@ import com.example.leiwang.messagecardview.controller.AppVolleySingleton;
 public class Const {
 
     public static int USER_ID = 0;
-    public static String CURRENT_CHANNEL = "国内";
+    public static String CURRENT_CHANNEL = "";
 
     public static final String TAG = AppVolleySingleton.class.getSimpleName();
     public static final String FILE_PATH = "Asahi.json";
@@ -62,6 +62,7 @@ public class Const {
     public static final String KEY_EMAIL = "email";
     public static final String OOPS = "Oops";
     public static final String INPUT_WRONG = "Please make sure you entered all the fields correctly.";
+    public static final String INPUT_WRONG_NOT_THE_SAME = "Email not the same or password not the same";
     public static final String LOG_IN_SUCCESSFULLY = "Login Successfully!";
     public static final String COULD_NOT_LOGIN = "Could not login";
     public static final String COULD_NOT_GET_PASSWORD = "Could not get password";

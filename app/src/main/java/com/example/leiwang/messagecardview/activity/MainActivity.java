@@ -2,6 +2,7 @@ package com.example.leiwang.messagecardview.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -22,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         metrics = getResources().getDisplayMetrics();
+        Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
 
         //get the ViewPager and set it's pagerAdapter
 //        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -159,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
                 getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
                 break;
             case R.id.action_domestic:
-                getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.domestic));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
+                getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
                 break;
             case R.id.action_international:
                 getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
@@ -209,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
     class MyPagerAdapter extends FragmentPagerAdapter{
 
@@ -265,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setContentView(R.layout.login_or_register);
         myDialog.setCancelable(true);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (2 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button loginBtn = (Button) myDialog.findViewById(R.id.btn_login);
@@ -285,6 +290,15 @@ public class MainActivity extends AppCompatActivity {
                 callRegisterDialog();
             }
         });
+
+        final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_login_register_cancel);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+
     }
 
     private void callLoginDialog(){
@@ -297,8 +311,16 @@ public class MainActivity extends AppCompatActivity {
         final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
+        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (2 * metrics.heightPixels)/3);
         myDialog.show();
+
+        final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_login_cancel);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
 
         //forgot password, direct to forgot password dalog
         final Button forgot = (Button) myDialog.findViewById(R.id.login_forgot_password_btn);
@@ -364,16 +386,26 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setContentView(R.layout.register_layout);
         myDialog.setCancelable(false);
         myDialog.setTitle("Register form");
-        final Button register = (Button) myDialog.findViewById(R.id.registerButton);
+
 
         final EditText etUsername = (EditText) myDialog.findViewById(R.id.register_et_username);
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.register_et_email);
+        final EditText etMail2 = (EditText) myDialog.findViewById(R.id.register_et_email2);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.register_et_password);
+        final EditText etPassword2 = (EditText) myDialog.findViewById(R.id.register_et_password2);
         myDialog.setCanceledOnTouchOutside(true);
         myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
         myDialog.show();
 
+        final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_register_cancel);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
 
+        final Button register = (Button) myDialog.findViewById(R.id.registerButton);
         register.setOnClickListener(new View.OnClickListener()
         {
 
@@ -383,13 +415,18 @@ public class MainActivity extends AppCompatActivity {
                 //your login calculation goes here
                 final String username = etUsername.getText().toString().trim();
                 final String email = etEmail.getText().toString().trim();
+                final String email2 = etMail2.getText().toString().trim();
                 final String password = etPassword.getText().toString().trim();
+                final String password2 = etPassword2.getText().toString().trim();
 
-                if(username.length() == 0 || email.length() == 0 || password.length() == 0){
+                if(username.length() == 0 || email.length() == 0 || email2.length() == 0 || password.length() == 0 || password2.length() == 0){
                     showAlert(Const.OOPS, Const.INPUT_WRONG);
-
                     return;
-                }else{
+                }else if (!email.equalsIgnoreCase(email2) || !password.equalsIgnoreCase(password2)){
+                    showAlert(Const.OOPS, Const.INPUT_WRONG_NOT_THE_SAME);
+                    return;
+                }
+                else{
                     StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_REGISTER_PHP, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -402,7 +439,6 @@ public class MainActivity extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             myDialog.dismiss();
                             showAlert("Error!", error.toString());
-
                             return;
                         }
                     }){
@@ -431,6 +467,14 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setCanceledOnTouchOutside(true);
         myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (4 * metrics.heightPixels)/5);
         myDialog.show();
+
+        final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_forgot_cancel);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
 
         final EditText etEmail = (EditText) myDialog.findViewById(R.id.forgot_et_email);
         final Button send = (Button) myDialog.findViewById(R.id.forgot_send_btn);
