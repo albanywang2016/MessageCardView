@@ -31,5 +31,9 @@
     <string name="register_already">既に登録されていますか？ここでログイン：</string>
 
     <string name="refresh">refresh</string>
+    <string name="share">ニュースを共有する</string>
+    <string name="share_via">共有経由</string>
+    <string name="download_from">プレイストアからダウンロードしてください</string>
+
 
 </resources>

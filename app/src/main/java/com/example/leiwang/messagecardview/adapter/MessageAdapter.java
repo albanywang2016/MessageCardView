@@ -242,21 +242,4 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return view;
     }
 
-//
-//    public static class MessageViewHolder extends RecyclerView.ViewHolder{
-//        private ImageView image;
-//        private TextView title;
-//        private ImageView source_image;
-//        private TextView time;
-//        private LinearLayout linerLayout;
-//
-//        public MessageViewHolder(View itemView) {
-//            super(itemView);
-//
-//            image = (ImageView) itemView.findViewById(R.id.iv_image);
-//            title = (TextView) itemView.findViewById(R.id.tv_description);
-//            source_image = (ImageView) itemView.findViewById(R.id.iv_source);
-//            time = (TextView) itemView.findViewById(R.id.tv_time);
-//        }
-//    }
 }
