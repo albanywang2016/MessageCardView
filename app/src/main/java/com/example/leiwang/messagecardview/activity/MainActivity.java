@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 final String username = etUserName.getText().toString().trim();
                 final String password = etPassword.getText().toString().trim();
                 if(username.length() == 0 || password.length() == 0){
-                    showAlert(Const.OOPS, Const.INPUT_WRONG);
+                    showAlert(Const.OOPS, getResources().getString(R.string.input_wrong));
                     return;
                 }else{
                     StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_LOGIN_PHP, new Response.Listener<String>() {
@@ -248,12 +248,12 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(String response) {
                             myDialog.dismiss();
                             Log.d("userid", response.toString());
-                            if(response.contains(Const.COULD_NOT_LOGIN)){
-                                showAlert(Const.OOPS, Const.COULD_NOT_LOGIN + " " + Const.INPUT_WRONG);
+                            if(response.contains(getResources().getString(R.string.could_not_login)) || response.length() == 0){
+                                showAlert(Const.OOPS, getResources().getString(R.string.could_not_login) + " " + getResources().getString(R.string.input_wrong));
                                 return;
                             }else{
                                 Const.USER_ID = Integer.parseInt(response.toString());
-                                Toast.makeText(MainActivity.this, Const.LOG_IN_SUCCESSFULLY, Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, getResources().getString(R.string.login_successfully), Toast.LENGTH_LONG).show();
                                 return;
                             }
                         }
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             myDialog.dismiss();
-                            showAlert("Error!", error.toString());
+                            showAlert(getResources().getString(R.string.error), error.toString());
                             return;
                         }
                     }){
@@ -318,11 +318,12 @@ public class MainActivity extends AppCompatActivity {
                 final String password = etPassword.getText().toString().trim();
                 final String password2 = etPassword2.getText().toString().trim();
 
+
                 if(username.length() == 0 || email.length() == 0 || email2.length() == 0 || password.length() == 0 || password2.length() == 0){
-                    showAlert(Const.OOPS, Const.INPUT_WRONG);
+                    showAlert(Const.OOPS, getResources().getString(R.string.input_wrong));
                     return;
                 }else if (!email.equalsIgnoreCase(email2) || !password.equalsIgnoreCase(password2)){
-                    showAlert(Const.OOPS, Const.INPUT_WRONG_NOT_THE_SAME);
+                    showAlert(Const.OOPS, getResources().getString(R.string.input_not_the_same));
                     return;
                 }
                 else{
@@ -330,14 +331,20 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             myDialog.dismiss();
-                            showAlert("", response.toString());
-
+                            if(response.toString().contains(Const.DUPLICATE_ENTRY)){
+                                showAlert(getResources().getString(R.string.error), getResources().getString(R.string.duplicate_entry));
+                            }else if(response.toString().contains(Const.ERROR)){
+                                showAlert(getResources().getString(R.string.error), response.toString());
+                            }else{
+                                showAlert("", getResources().getString(R.string.successfully_registered));
+                            }
+                            return;
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             myDialog.dismiss();
-                            showAlert("Error!", error.toString());
+                            showAlert(getResources().getString(R.string.error), error.toString());
                             return;
                         }
                     }){
@@ -383,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = etEmail.getText().toString().trim();
                 if(email.length() == 0){
-                    showAlert(Const.OOPS, Const.INPUT_WRONG);
+                    showAlert(Const.OOPS, getResources().getString(R.string.input_wrong));
                     return;
                 }else{
                     StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_FORGOT_PASSWORD_PHP, new Response.Listener<String>() {
@@ -391,14 +398,15 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(String response) {
                             myDialog.dismiss();
                             //Log.d("RetrieveUserPassword", response.toString());
-                            if(response.contains(Const.COULD_NOT_GET_PASSWORD)){
-                                showAlert(Const.OOPS, Const.COULD_NOT_GET_PASSWORD + " " + Const.INPUT_WRONG);
-                                return;
-                            }else{
+                            if(response.contains(getResources().getString(R.string.could_not_get_password))){
+                                showAlert(Const.OOPS, getResources().getString(R.string.could_not_get_password)+ " " + getResources().getString(R.string.input_wrong));
+                            }else if(response.length() == 0){
                                 //Log.d("RetrieveUserPassword", response.toString());
-                                showAlert("", Const.YOUR_PASSWORD_IS + response.toString());
-                                return;
+                                showAlert(getResources().getString(R.string.error), getResources().getString(R.string.could_not_get_password));
+                            }else{
+                                showAlert("", getResources().getString(R.string.your_password_is) + response.toString());
                             }
+                            return;
                         }
                     }, new Response.ErrorListener() {
                         @Override

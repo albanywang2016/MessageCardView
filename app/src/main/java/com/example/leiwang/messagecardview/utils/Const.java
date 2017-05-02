@@ -39,7 +39,6 @@ public class Const {
     public static final String CHANNEL_LOCAL = "Local";
     public static final String CHANNEL_MAGAZINE = "Magazine";
 
-    //public static final String ASAHI_JSON =  "http://localhost/android_connect/2017-03-14/AbemaTIMES2017-03-14.json";
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
     public static final String ITEM = "item";
     public static final String MESSAGE_ID = "message_id";
@@ -61,12 +60,10 @@ public class Const {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_EMAIL = "email";
     public static final String OOPS = "Oops";
-    public static final String INPUT_WRONG = "Please make sure you entered all the fields correctly.";
-    public static final String INPUT_WRONG_NOT_THE_SAME = "Email not the same or password not the same";
-    public static final String LOG_IN_SUCCESSFULLY = "Login Successfully!";
-    public static final String COULD_NOT_LOGIN = "Could not login";
-    public static final String COULD_NOT_GET_PASSWORD = "Could not get password";
-    public static final String YOUR_PASSWORD_IS = "Your password is: ";
+
+    public static final String ERROR = "Error";
+    public static final String DUPLICATE_ENTRY = "1062";
+    public static final String SUCCESSFULLY = "Successfully";
 
 
 }

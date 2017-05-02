@@ -4,11 +4,11 @@
     <string name="username">ユーザー名</string>
     <string name="enter_username">ユーザー名を入力</string>
     <string name="password">パスワード</string>
-    <string name="re_password">パスワードを再入力してください</string>
-    <string name="enter_password">パスワードを入力する</string>
+    <string name="re_password">パスワードを再入力</string>
+    <string name="enter_password">パスワードを入力</string>
     <string name="email">Eメール</string>
     <string name="re_email">Eメールを再入力</string>
-    <string name="enter_email">メールアドレスを入力してください</string>
+    <string name="enter_email">メールアドレスを入力</string>
 
     <string name="forgot_password">パスワードをお忘れですか</string>
     <string name="already_user">すでにユーザーですか？ ログイン</string>
@@ -27,13 +27,22 @@
     <string name="local">地域</string>
     <string name="magazine">雑誌</string>
     <string name="enderscore">_</string>
-    <string name="not_register_yet">まだ登録していない、ここで登録してください：</string>
+    <string name="not_register_yet">まだ登録していない、ここで登録：</string>
     <string name="register_already">既に登録されていますか？ここでログイン：</string>
-
-    <string name="refresh">refresh</string>
-    <string name="share">ニュースを共有する</string>
+    <string name="refresh">リフレッシュ</string>
+    <string name="share">ニュースを共有</string>
     <string name="share_via">共有経由</string>
     <string name="download_from">プレイストアからダウンロードしてください</string>
+
+    <string name="could_not_login">ログインできませんでした</string>
+    <string name="login_successfully">ログインに成功しました</string>
+    <string name="could_not_get_password">パスワードを取得できません</string>
+    <string name="input_wrong">すべてのフィールドを正しく入力したことを確認してください</string>
+    <string name="input_not_the_same">メールアドレスが同じでないか、パスワードが同じでない</string>
+    <string name="your_password_is">あなたのパスワード:</string>
+    <string name="duplicate_entry">重複エントリ,あなたのユーザー名または電子メールは既に存在します</string>
+    <string name="successfully_registered">登録成功</string>
+    <string name="error">エラー!</string>
 
 
 </resources>
