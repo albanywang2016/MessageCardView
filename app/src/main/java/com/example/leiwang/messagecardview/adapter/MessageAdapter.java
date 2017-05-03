@@ -29,8 +29,6 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<NewsMessage> items;
     private final RecyclerviewClickListener listener;
-    private NetworkImageView imgNetWorkView;
-
 
     public interface RecyclerviewClickListener extends View.OnClickListener {
         @Override
@@ -104,8 +102,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         }
 
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
-//        view.setOnClickListener(listener);
         return viewHolder;
     }
 
@@ -157,12 +153,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final float scale = context.getResources().getDisplayMetrics().density;
         int width = (int) (message.getImage_width() * scale);
         int height = (int) (message.getImage_height() * scale);
-//        holder.iv_image.getLayoutParams().width = width;
-//        holder.iv_image.setAdjustViewBounds(true);
-//        holder.iv_image.setScaleType((ImageView.ScaleType.CENTER_CROP));
-
-        //holder.iv_image.getLayoutParams().height = (int) (message.getImage_height());
-
         Picasso.with(context).load(uri).resize(width,height).centerCrop().into(holder.iv_image);
     }
 
@@ -204,42 +194,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Log.d("height = ", String.valueOf(height));
 
         int num_words_per_line = height % Const.WORD_HEIGHT;
-
-        //String titleText = VerticalText.makeVerticalText(message.getTitle(), num_words_per_line);
-
-        //holder.title.setText(titleText);
-
         holder.title.setText(message.getTitle());
         holder.iv_image.getLayoutParams().width = width;
         holder.iv_image.getLayoutParams().height = height;
 
         Picasso.with(context).load(uri).fit().into(holder.iv_image);
-        //ImageView view = makeImageRequest(message.getImage_url());
-        //holder.image = view;
 
     }
 
-
-    private ImageView makeImageRequest(String imageURL) {
-        ImageView view = null;
-        ImageLoader loader = AppVolleySingleton.getmInstance().getmImageLoader();
-
-        //try cache first
-        loader.get(imageURL, ImageLoader.getImageListener(view, R.drawable.ico_loading, R.drawable.ico_error));
-
-        Cache cache = AppVolleySingleton.getmInstance().getRequestQueue().getCache();
-        Cache.Entry entry = cache.get(imageURL);
-        if(entry != null){
-            try{
-
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }else{
-            imgNetWorkView.setImageUrl(imageURL, loader);
-            view = imgNetWorkView ;
-        }
-        return view;
-    }
 
 }

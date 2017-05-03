@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -45,10 +46,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView rv;
-    MessageAdapter ma;
     List<NewsMessage> messageList;
     DisplayMetrics metrics;
-
+    ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        pb = (ProgressBar) findViewById(R.id.progressbar_main);
 
         metrics = getResources().getDisplayMetrics();
         Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
@@ -100,52 +102,72 @@ public class MainActivity extends AppCompatActivity {
                 callLoginOrRegister();
                 break;
             case R.id.action_refresh:
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
                 break;
             case R.id.action_domestic:
+                rv.setVisibility(RecyclerView.INVISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.domestic));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
+                pb.setVisibility(ProgressBar.VISIBLE);
                 getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
                 break;
             case R.id.action_international:
-                getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.international));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_INTERNATIONAL;
+                getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
                 break;
             case R.id.action_business:
-                getJsonArrayViaPHP(Const.CHANNEL_BUSINESS);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.business));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_BUSINESS;
+                getJsonArrayViaPHP(Const.CHANNEL_BUSINESS);
                 break;
             case R.id.action_entertainment:
-                getJsonArrayViaPHP(Const.CHANNEL_ENTERTAINMENT);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.entertainment));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_ENTERTAINMENT;
+                getJsonArrayViaPHP(Const.CHANNEL_ENTERTAINMENT);
                 break;
             case R.id.action_sport:
-                getJsonArrayViaPHP(Const.CHANNEL_SPORT);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.sport));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_SPORT;
+                getJsonArrayViaPHP(Const.CHANNEL_SPORT);
                 break;
             case R.id.action_science:
-                getJsonArrayViaPHP(Const.CHANNEL_SCIENCE);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.science));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_SCIENCE;
+                getJsonArrayViaPHP(Const.CHANNEL_SCIENCE);
                 break;
             case R.id.action_life:
-                getJsonArrayViaPHP(Const.CHANNEL_LIFE);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.life));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_LIFE;
+                getJsonArrayViaPHP(Const.CHANNEL_LIFE);
                 break;
             case R.id.action_local:
-                getJsonArrayViaPHP(Const.CHANNEL_LOCAL);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.local));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_LOCAL;
+                getJsonArrayViaPHP(Const.CHANNEL_LOCAL);
                 break;
             case R.id.action_magazine:
-                getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
+                getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
                 break;
             default:
                 break;
@@ -170,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setContentView(R.layout.login_or_register);
         myDialog.setCancelable(true);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((8 * metrics.widthPixels)/9, (2 * metrics.heightPixels)/3);
+        //myDialog.getWindow().setLayout((8 * metrics.widthPixels)/9, (2 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button loginBtn = (Button) myDialog.findViewById(R.id.btn_login);
@@ -211,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText etUserName = (EditText) myDialog.findViewById(R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(R.id.login_et_password);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (2 * metrics.heightPixels)/3);
+        //myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (2 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button cancelBtn = (Button) myDialog.findViewById(R.id.btn_login_cancel);
@@ -404,7 +426,7 @@ public class MainActivity extends AppCompatActivity {
                                 //Log.d("RetrieveUserPassword", response.toString());
                                 showAlert(getResources().getString(R.string.error), getResources().getString(R.string.could_not_get_password));
                             }else{
-                                showAlert("", getResources().getString(R.string.your_password_is) + response.toString());
+                                showAlert("", response.toString());
                             }
                             return;
                         }
@@ -444,11 +466,13 @@ public class MainActivity extends AppCompatActivity {
             //List<NewsMessage> mList = new ArrayList<>();
             @Override
             public void onResponse(String response) {
-                Log.d("getJsonArrayViaPHP", "the response is =" + response);
+                //Log.d("getJsonArrayViaPHP", "the response is =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
                 Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
+                pb.setVisibility(ProgressBar.INVISIBLE);
+                rv.setVisibility(RecyclerView.VISIBLE);
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override
                     public void onClick(View view) {
