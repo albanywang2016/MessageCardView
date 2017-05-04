@@ -27,6 +27,7 @@
     <string name="local">地域</string>
     <string name="magazine">雑誌</string>
     <string name="enderscore">_</string>
+    <string name="setting">設定</string>
     <string name="not_register_yet">まだ登録していない、ここで登録：(登録すると、ソフトウェアのアップデート情報が送信されます。)</string>
     <string name="register_already">既に登録されていますか？ここでログイン：</string>
     <string name="refresh">リフレッシュ</string>
@@ -37,12 +38,18 @@
     <string name="could_not_login">ログインできませんでした</string>
     <string name="login_successfully">ログインに成功しました</string>
     <string name="could_not_get_password">パスワードを取得できません</string>
+    <string name="should_not_be_empty">入力は空であってはならない</string>
     <string name="input_wrong">すべてのフィールドを正しく入力したことを確認してください</string>
-    <string name="input_not_the_same">メールアドレスが同じでないか、パスワードが同じでない</string>
+    <string name="input_not_the_same">再入力の内容が同じでない</string>
     <string name="your_password_is">あなたのパスワード:</string>
     <string name="duplicate_entry">重複エントリ,あなたのユーザー名または電子メールは既に存在します</string>
     <string name="successfully_registered">登録成功</string>
     <string name="error">エラー!</string>
 
+    <string name="first_name">姓</string>
+    <string name="last_name">名</string>
+    <string name="gender"></string>
+    <string name="city">都市</string>
+    <string name="age">年齢</string>
 
 </resources>

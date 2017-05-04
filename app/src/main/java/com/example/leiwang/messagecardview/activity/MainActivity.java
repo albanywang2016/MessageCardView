@@ -36,8 +36,10 @@ import com.example.leiwang.messagecardview.utils.Const;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_login_or_register:
                 callLoginOrRegister();
+                break;
+            case R.id.action_setting:
+                callSettingDialog();
                 break;
             case R.id.action_refresh:
                 rv.setVisibility(RecyclerView.INVISIBLE);
@@ -186,6 +191,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void callSettingDialog(){
+        final Dialog myDialog = new Dialog(this);
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        myDialog.setContentView(R.layout.account_setting);
+        myDialog.setCancelable(true);
+        myDialog.setCanceledOnTouchOutside(true);
+        myDialog.show();
+
+
+
+    }
     private void callLoginOrRegister(){
 
         final Dialog myDialog = new Dialog(this);
@@ -262,8 +278,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String username = etUserName.getText().toString().trim();
                 final String password = etPassword.getText().toString().trim();
+                final String last_login = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
                 if(username.length() == 0 || password.length() == 0){
-                    showAlert(Const.OOPS, getResources().getString(R.string.input_wrong));
+                    showAlert(Const.OOPS, getResources().getString(R.string.should_not_be_empty));
                     return;
                 }else{
                     StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_LOGIN_PHP, new Response.Listener<String>() {
@@ -293,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
                             Map<String,String> params = new HashMap<String, String>();
                             params.put(Const.KEY_USERNAME,username);
                             params.put(Const.KEY_PASSWORD,password);
+                            params.put(Const.LAST_LOGIN, last_login);
                             return params;
                         }
                     };
@@ -340,10 +359,12 @@ public class MainActivity extends AppCompatActivity {
                 final String email2 = etMail2.getText().toString().trim();
                 final String password = etPassword.getText().toString().trim();
                 final String password2 = etPassword2.getText().toString().trim();
+                final String created_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                final String last_login = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
 
                 if(username.length() == 0 || email.length() == 0 || email2.length() == 0 || password.length() == 0 || password2.length() == 0){
-                    showAlert(Const.OOPS, getResources().getString(R.string.input_wrong));
+                    showAlert(Const.OOPS, getResources().getString(R.string.should_not_be_empty));
                     return;
                 }else if (!email.equalsIgnoreCase(email2) || !password.equalsIgnoreCase(password2)){
                     showAlert(Const.OOPS, getResources().getString(R.string.input_not_the_same));
@@ -377,6 +398,8 @@ public class MainActivity extends AppCompatActivity {
                             params.put(Const.KEY_USERNAME,username);
                             params.put(Const.KEY_PASSWORD,password);
                             params.put(Const.KEY_EMAIL, email);
+                            params.put(Const.CREATED_DATE, created_date);
+                            params.put(Const.LAST_LOGIN, last_login);
                             return params;
                         }
                     };
@@ -413,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = etEmail.getText().toString().trim();
                 if(email.length() == 0){
-                    showAlert(Const.OOPS, getResources().getString(R.string.input_wrong));
+                    showAlert(Const.OOPS, getResources().getString(R.string.should_not_be_empty));
                     return;
                 }else{
                     StringRequest sr = new StringRequest(Request.Method.POST, Const.USER_FORGOT_PASSWORD_PHP, new Response.Listener<String>() {

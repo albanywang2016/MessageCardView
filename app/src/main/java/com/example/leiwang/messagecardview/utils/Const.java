@@ -60,6 +60,9 @@ public class Const {
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_EMAIL = "email";
+    public static final String CREATED_DATE = "created_date";
+    public static final String LAST_LOGIN = "last_login";
+
     public static final String OOPS = "Oops";
 
     public static final String ERROR = "Error";
