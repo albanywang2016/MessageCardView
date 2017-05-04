@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         //get Json array view php
         getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
+
     }
 
 
