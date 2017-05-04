@@ -29,6 +29,7 @@ public class Const {
     public static final String GET_JSON_VIA_PHP = "http://japannews.tech/php/mysqli_get_all_message.php";
     public static final String GET_MESSAGE_BY_CHANNEL = "http://japannews.tech/php/get_message_by_channel.php";
 
+    public static final String CHANNEL_TOPIC = "Topic";
     public static final String CHANNEL_DOMESTIC = "Domestic";
     public static final String CHANNEL_INTERNATIONAL = "International";
     public static final String CHANNEL_BUSINESS = "Business";
