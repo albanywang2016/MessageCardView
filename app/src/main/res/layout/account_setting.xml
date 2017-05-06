@@ -73,39 +73,39 @@
                 android:textSize="14dp"
                 android:text="Female"
                 />
-            <TextView
-                android:id="@+id/tv_age"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/age"
-                android:layout_below="@+id/radioM"/>
-
-            <EditText
-                android:id="@+id/et_age"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                android:layout_toRightOf="@id/et_age"/>
-
-            <TextView
-                android:id="@+id/tv_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/city"
-                android:layout_below="@+id/radioF"/>
-
-            <EditText
-                android:id="@+id/et_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                android:layout_toRightOf="@+id/tv_city"/>
         </RadioGroup>
+        <TextView
+            android:id="@+id/tv_age"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/age"
+            android:layout_below="@+id/radioGrp"/>
+
+        <EditText
+            android:id="@+id/et_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:layout_toRightOf="@id/et_age"/>
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/city"
+            android:layout_below="@+id/tv_age"/>
+
+        <EditText
+            android:id="@+id/et_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:layout_toRightOf="@+id/tv_city"/>
     </RelativeLayout>
 
 

@@ -95,6 +95,7 @@
                 "android.widget.ShareActionProvider"
             app:showAsAction="ifRoom"/>
 
+        <!--
         <item
             android:id="@+id/action_setting"
             android:orderInCategory="100"
@@ -102,6 +103,7 @@
             android:itemBackground="@color/aqua"
             android:icon="@drawable/ic_settings"
             app:showAsAction="ifRoom"/>
+            -->
     </group>
 
 

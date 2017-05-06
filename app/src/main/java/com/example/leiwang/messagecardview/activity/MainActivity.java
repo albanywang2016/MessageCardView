@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_login_or_register:
                 callLoginOrRegister();
                 break;
-            case R.id.action_setting:
-                callSettingDialog();
-                break;
+//            case R.id.action_setting:
+//                callSettingDialog();
+//                break;
             case R.id.action_refresh:
                 rv.setVisibility(RecyclerView.INVISIBLE);
                 pb.setVisibility(ProgressBar.VISIBLE);
