@@ -31,9 +31,9 @@
     <string name="not_register_yet">まだ登録していない、ここで登録：(登録すると、ソフトウェアのアップデート情報が送信されます。)</string>
     <string name="register_already">既に登録されていますか？ここでログイン：</string>
     <string name="refresh">リフレッシュ</string>
-    <string name="share">ニュースを共有</string>
+    <string name="share">AtNews 無料新聞プレイ</string>
     <string name="share_via">共有経由</string>
-    <string name="download_from">プレイストアからダウンロードしてください</string>
+    <string name="download_from">プレイストアからダウンロードしてください. https://play.google.com/store/apps/details?id=tech.japan.news.messagecardview </string>
 
     <string name="could_not_login">ログインできませんでした</string>
     <string name="login_successfully">ログインに成功しました</string>
