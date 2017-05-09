@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import tech.japan.news.messagecardview.R;
 import tech.japan.news.messagecardview.adapter.MessageAdapter;
 import tech.japan.news.messagecardview.controller.AppVolleySingleton;
 
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     List<NewsMessage> messageList;
     DisplayMetrics metrics;
     ProgressBar pb;
+    String underscore;
+    String app_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         pb = (ProgressBar) findViewById(tech.japan.news.messagecardview.R.id.progressbar_main);
 
         metrics = getResources().getDisplayMetrics();
-        Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
 
         rv = (RecyclerView) findViewById(tech.japan.news.messagecardview.R.id.messageList);
         rv.setHasFixedSize(true);
@@ -73,7 +75,14 @@ public class MainActivity extends AppCompatActivity {
 
         messageList = new ArrayList<>();
 
-        //get Json array view php
+        underscore = getResources().getString(tech.japan.news.messagecardview.R.string.enderscore);
+        app_name = getResources().getString(tech.japan.news.messagecardview.R.string.app_name);
+
+        //domestic is the default first page, get Json array view php
+        //rv.setVisibility(RecyclerView.INVISIBLE);
+        this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.domestic));
+        Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
+        pb.setVisibility(ProgressBar.VISIBLE);
         getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
 
     }
@@ -93,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        String underscore = getResources().getString(tech.japan.news.messagecardview.R.string.enderscore);
-        String app_name = getResources().getString(tech.japan.news.messagecardview.R.string.app_name);
 
         switch (id){
             case tech.japan.news.messagecardview.R.id.action_share:
@@ -111,13 +118,12 @@ public class MainActivity extends AppCompatActivity {
                 pb.setVisibility(ProgressBar.VISIBLE);
                 getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
                 break;
-            case tech.japan.news.messagecardview.R.id.action_domestic:
+            case R.id.action_domestic:
                 rv.setVisibility(RecyclerView.INVISIBLE);
                 this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.domestic));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
                 pb.setVisibility(ProgressBar.VISIBLE);
                 getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
-                break;
             case tech.japan.news.messagecardview.R.id.action_international:
                 rv.setVisibility(RecyclerView.INVISIBLE);
                 pb.setVisibility(ProgressBar.VISIBLE);
