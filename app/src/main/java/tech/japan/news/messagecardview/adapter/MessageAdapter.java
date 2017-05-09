@@ -144,6 +144,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int width = (int) (message.getImage_width() * scale);
         int height = (int) (message.getImage_height() * scale);
         Picasso.with(context).load(uri).resize(width,height).centerCrop().into(holder.iv_image);
+
     }
 
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {

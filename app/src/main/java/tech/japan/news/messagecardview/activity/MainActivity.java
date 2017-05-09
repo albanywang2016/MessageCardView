@@ -208,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setContentView(tech.japan.news.messagecardview.R.layout.login_or_register);
         myDialog.setCancelable(true);
         myDialog.setCanceledOnTouchOutside(true);
-        //myDialog.getWindow().setLayout((8 * metrics.widthPixels)/9, (2 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button loginBtn = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.btn_login);
@@ -249,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText etUserName = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.login_et_username);
         final EditText etPassword = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.login_et_password);
         myDialog.setCanceledOnTouchOutside(true);
-        //myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (2 * metrics.heightPixels)/3);
         myDialog.show();
 
         final Button cancelBtn = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.btn_login_cancel);
