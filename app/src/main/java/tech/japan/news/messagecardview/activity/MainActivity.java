@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
                 pb.setVisibility(ProgressBar.VISIBLE);
                 getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
+                break;
             case tech.japan.news.messagecardview.R.id.action_international:
                 rv.setVisibility(RecyclerView.INVISIBLE);
                 pb.setVisibility(ProgressBar.VISIBLE);
