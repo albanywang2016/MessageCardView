@@ -51,7 +51,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if(width == 0 || height == 0){
                 viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
                 return viewHolderType;
-            }else if(width >= 230 || height >= 230){
+            }else if(width >= 260){
                 viewHolderType = ViewHolderTypeEnum.BIG_IMAGE;
             }else if (width >= height) {
                 viewHolderType = ViewHolderTypeEnum.HIRIZONAL_IMAGE;
