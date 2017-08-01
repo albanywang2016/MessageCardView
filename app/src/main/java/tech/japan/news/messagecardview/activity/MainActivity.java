@@ -2,6 +2,7 @@ package tech.japan.news.messagecardview.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import tech.japan.news.messagecardview.R;
@@ -35,6 +37,8 @@ import tech.japan.news.messagecardview.model.NewsMessage;
 import tech.japan.news.messagecardview.utils.Const;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,11 +57,17 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar pb;
     String underscore;
     String app_name;
+    String package_version = "1.10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
+
+        String package_db_version = retrievePackageVersionFromDB(Const.CHANNEL_DOMESTIC);
+        if(!package_version.equalsIgnoreCase(package_db_version)){
+            //Toast.makeText(MainActivity.this, getResources().getString(R.string.please_update_your_package), Toast.LENGTH_LONG).show();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(tech.japan.news.messagecardview.R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,6 +94,37 @@ public class MainActivity extends AppCompatActivity {
         Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
         pb.setVisibility(ProgressBar.VISIBLE);
         getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
+
+    }
+
+    private String retrievePackageVersionFromDB(final String channel) {
+        final String[] version = {""};
+
+        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_PACKAGE_VERSION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                version[0] = response.toString();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("retrievePackage", "error = " + error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(Const.CHANNEL, channel);
+                return params;
+            }
+        };
+
+
+        sr.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+        return version[0];
 
     }
 
@@ -180,6 +221,13 @@ public class MainActivity extends AppCompatActivity {
                 this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.magazine));
                 Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
                 getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
+                break;
+            case tech.japan.news.messagecardview.R.id.action_vedio:
+                rv.setVisibility(RecyclerView.INVISIBLE);
+                pb.setVisibility(ProgressBar.VISIBLE);
+                this.setTitle(app_name + underscore + getResources().getString(R.string.vedio));
+                Const.CURRENT_CHANNEL = Const.CHANNEL_VEDIO;
+                getJsonArrayViaPHP(Const.CHANNEL_VEDIO);
                 break;
             default:
                 break;
@@ -506,7 +554,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         int position = rv.getChildLayoutPosition(view);
                         NewsMessage item = messageList.get(position);
-                        startWebViewActivity(item.getLink());
+
+                        if(item.getChannel().equalsIgnoreCase(Const.CHANNEL_VEDIO)){
+                            //String id = item.getLink().substring(item.getLink().lastIndexOf("=") + 1, item.getLink().length());
+                            //startYoutubeActivity(id);
+                            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(item.getLink())));
+
+                        }else{
+                            startWebViewActivity(item.getLink());
+                        }
                     }
                 }));
             }
@@ -533,8 +589,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startWebViewActivity(String url) {
         Intent intent = new Intent(this, WebViewContents.class);
+        intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra("ArticleURL", url);
         startActivity(intent);
     }
+
 
 }
