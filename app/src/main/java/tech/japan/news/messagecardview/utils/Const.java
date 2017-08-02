@@ -27,7 +27,7 @@ public class Const {
     public static final String USER_FORGOT_PASSWORD_PHP = "http://japannews.tech/php/user_get_password.php";
     public static final String GET_JSON_VIA_PHP = "http://japannews.tech/php/mysqli_get_all_message.php";
     public static final String GET_MESSAGE_BY_CHANNEL = "http://japannews.tech/php/get_message_by_channel.php";
-    public static final String GET_PACKAGE_VERSION = "http://japannews.tech/php/get_package_version.php";
+    public static final String GET_PACKAGE_VERSION_PHP = "http://japannews.tech/php/get_package_version.php";
 
     public static final String CHANNEL_TOPIC = "Topic";
     public static final String CHANNEL_DOMESTIC = "Domestic";
@@ -40,6 +40,8 @@ public class Const {
     public static final String CHANNEL_LOCAL = "Local";
     public static final String CHANNEL_MAGAZINE = "Magazine";
     public static final String CHANNEL_VEDIO = "Vedio";
+    public static final String APPLICATION_NAME = "messagecardview";
+    public static final String PROGRAM_NAME = "program_name";
 
     public static final String JSON_ARRAY_TAG = "Json_array_tag";
     public static final String ITEM = "item";

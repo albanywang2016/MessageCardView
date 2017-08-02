@@ -26,7 +26,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import tech.japan.news.messagecardview.R;
@@ -37,8 +36,6 @@ import tech.japan.news.messagecardview.model.NewsMessage;
 import tech.japan.news.messagecardview.utils.Const;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,17 +54,15 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar pb;
     String underscore;
     String app_name;
-    String package_version = "1.10";
+    String package_version = "1.12";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
 
-        String package_db_version = retrievePackageVersionFromDB(Const.CHANNEL_DOMESTIC);
-        if(!package_version.equalsIgnoreCase(package_db_version)){
-            //Toast.makeText(MainActivity.this, getResources().getString(R.string.please_update_your_package), Toast.LENGTH_LONG).show();
-        }
+        retrievePackageVersionFromDB(Const.APPLICATION_NAME);
+
 
         Toolbar toolbar = (Toolbar) findViewById(tech.japan.news.messagecardview.R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,21 +85,23 @@ public class MainActivity extends AppCompatActivity {
 
         //domestic is the default first page, get Json array view php
         //rv.setVisibility(RecyclerView.INVISIBLE);
-        this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.domestic));
-        Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
+        this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
+        Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
         pb.setVisibility(ProgressBar.VISIBLE);
-        getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
+        getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
 
     }
 
-    private String retrievePackageVersionFromDB(final String channel) {
-        final String[] version = {""};
-
-        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_PACKAGE_VERSION, new Response.Listener<String>() {
+    private void retrievePackageVersionFromDB(final String application_name) {
+        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_PACKAGE_VERSION_PHP, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                version[0] = response.toString();
+                if(!package_version.equalsIgnoreCase(response.toString())){
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.please_update_your_package), Toast.LENGTH_LONG).show();
+                }else {
+                    Log.d("Package version = ", response.toString());
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -115,17 +112,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put(Const.CHANNEL, channel);
+                params.put(Const.PROGRAM_NAME, application_name);
                 return params;
             }
         };
 
-
         sr.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
-        return version[0];
-
     }
 
 
