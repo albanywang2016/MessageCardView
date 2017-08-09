@@ -4,6 +4,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 import tech.japan.news.messagecardview.R;
+import tech.japan.news.messagecardview.adapter.GeneralPagerAdapter;
 import tech.japan.news.messagecardview.adapter.MessageAdapter;
 import tech.japan.news.messagecardview.controller.AppVolleySingleton;
 
@@ -59,36 +63,53 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
 
-        retrievePackageVersionFromDB(Const.APPLICATION_NAME);
-
-
-        Toolbar toolbar = (Toolbar) findViewById(tech.japan.news.messagecardview.R.id.toolbar);
+        setContentView(R.layout.tab_activity);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tab_activity_toolbar);
         setSupportActionBar(toolbar);
 
-        pb = (ProgressBar) findViewById(tech.japan.news.messagecardview.R.id.progressbar_main);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        PagerAdapter  pagerAdapter = new GeneralPagerAdapter(getSupportFragmentManager(), MainActivity.this);
+        viewPager.setAdapter(pagerAdapter);
 
-        metrics = getResources().getDisplayMetrics();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        rv = (RecyclerView) findViewById(tech.japan.news.messagecardview.R.id.messageList);
-        rv.setHasFixedSize(true);
+        for(int i=0; i<tabLayout.getTabCount(); i++){
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab.setCustomView(pagerAdapter.getTabView(i));
+        }
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(llm);
-
-        messageList = new ArrayList<>();
-
-        underscore = getResources().getString(tech.japan.news.messagecardview.R.string.enderscore);
-        app_name = getResources().getString(tech.japan.news.messagecardview.R.string.app_name);
-
-        //domestic is the default first page, get Json array view php
-        //rv.setVisibility(RecyclerView.INVISIBLE);
-        this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
-        Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
-        pb.setVisibility(ProgressBar.VISIBLE);
-        getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
+//        setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
+//
+//        retrievePackageVersionFromDB(Const.APPLICATION_NAME);
+//
+//
+//        Toolbar toolbar = (Toolbar) findViewById(tech.japan.news.messagecardview.R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        pb = (ProgressBar) findViewById(tech.japan.news.messagecardview.R.id.progressbar_main);
+//
+//        metrics = getResources().getDisplayMetrics();
+//
+//        rv = (RecyclerView) findViewById(tech.japan.news.messagecardview.R.id.messageList);
+//        rv.setHasFixedSize(true);
+//
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        rv.setLayoutManager(llm);
+//
+//        messageList = new ArrayList<>();
+//
+//        underscore = getResources().getString(tech.japan.news.messagecardview.R.string.enderscore);
+//        app_name = getResources().getString(tech.japan.news.messagecardview.R.string.app_name);
+//
+//        //domestic is the default first page, get Json array view php
+//        //rv.setVisibility(RecyclerView.INVISIBLE);
+//        this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
+//        Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
+//        pb.setVisibility(ProgressBar.VISIBLE);
+//        getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
 
     }
 
