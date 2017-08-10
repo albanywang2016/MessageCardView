@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -70,8 +71,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.tab_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tab_activity_toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.tab_activity_toolbar);
+//        if(toolbar != null){
+//            setSupportActionBar(toolbar);
+//        }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PagerAdapter  pagerAdapter = new GeneralPagerAdapter(getSupportFragmentManager(), MainActivity.this);
@@ -119,8 +122,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class GeneralPagerAdapter extends FragmentPagerAdapter {
-        String tabTitles[] = new String[] { "Tab One", "Tab Two", "Tab Three" };
+    public class GeneralPagerAdapter extends FragmentStatePagerAdapter {
+        String tabTitles[] = new String[] {
+                getResources().getString(R.string.domestic),
+                getResources().getString(R.string.international),
+                getResources().getString(R.string.business),
+                getResources().getString(R.string.entertainment),
+                getResources().getString(R.string.sport),
+                getResources().getString(R.string.science),
+                getResources().getString(R.string.life),
+                getResources().getString(R.string.local),
+                getResources().getString(R.string.magazine),
+                getResources().getString(R.string.vedio)};
         Context context;
 
         public GeneralPagerAdapter(FragmentManager fm, Context context) {
@@ -130,13 +143,45 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Bundle bundle = new Bundle();
+            TabFragment fragment = new TabFragment();
             switch (position){
                 case 0:
-                    return new TabFragment();
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_DOMESTIC);
+                    fragment.setArguments(bundle);
+                    return fragment;
                 case 1:
-                    return new TabFragment();
-                case 2:
-                    return new TabFragment();
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_INTERNATIONAL);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 3:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_BUSINESS);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 4:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_ENTERTAINMENT);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 5:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_SCIENCE);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 6:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_LIFE);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 7:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_LOCAL);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 8:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_MAGAZINE);
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 9:
+                    bundle.putString(Const.CHANNEL, Const.CHANNEL_VEDIO);
+                    fragment.setArguments(bundle);
+                    return fragment;
                 default:
                     return null;
             }
