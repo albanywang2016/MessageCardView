@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
     String package_version = "2.1";
     private static MainActivity mInstance;
     boolean isConnected;
-    boolean isWIFIConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
         mInstance = this;
         isConnected = ConnectivityReceiver.isConnected();
-        //isWIFIConnected = ConnectivityReceiver.isWifiConnected();
         if(!isConnected){
             showAlert(Const.OOPS, getResources().getString(R.string.internet_not_connected));
             return;
