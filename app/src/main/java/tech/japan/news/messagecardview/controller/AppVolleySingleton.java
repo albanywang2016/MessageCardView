@@ -6,7 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import tech.japan.news.messagecardview.utils.LruBitmapCache;
 
 /**
  * Created by lei.wang on 3/8/2017.
@@ -33,14 +32,6 @@ public class AppVolleySingleton extends Application {
         return mRequestQueue;
     }
 
-    public ImageLoader getmImageLoader(){
-        getRequestQueue();
-        if(mImageLoader == null){
-            mImageLoader = new ImageLoader(this.mRequestQueue, new LruBitmapCache());
-
-        }
-        return this.mImageLoader;
-    }
 
     public <T> void addToRequestQueue(Request<T> req, String jsonArrayTag){
         req.setTag(jsonArrayTag);

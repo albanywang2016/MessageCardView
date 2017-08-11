@@ -40,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 import tech.japan.news.messagecardview.R;
+import tech.japan.news.messagecardview.adapter.ConnectivityReceiver;
 import tech.japan.news.messagecardview.adapter.MessageAdapter;
 import tech.japan.news.messagecardview.controller.AppVolleySingleton;
 
@@ -57,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
 
     RecyclerView rv;
     List<NewsMessage> messageList;
@@ -65,12 +66,22 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar pb;
     String underscore;
     String app_name;
-    String package_version = "1.12";
+    String package_version = "2.1";
+    private static MainActivity mInstance;
+    boolean isConnected;
+    boolean isWIFIConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mInstance = this;
+        isConnected = ConnectivityReceiver.isConnected();
+        //isWIFIConnected = ConnectivityReceiver.isWifiConnected();
+        if(!isConnected){
+            showAlert(Const.OOPS, getResources().getString(R.string.internet_not_connected));
+            return;
+        }
         retrievePackageVersionFromDB(Const.APPLICATION_NAME);
         metrics = getResources().getDisplayMetrics();
 
@@ -87,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
 //        setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
 //
 //
@@ -118,6 +128,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static synchronized MainActivity getInstance() {
+        return mInstance;
+    }
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        this.isConnected = isConnected;
+    }
 
     public class GeneralPagerAdapter extends FragmentStatePagerAdapter {
         String tabTitles[] = new String[] {
@@ -156,40 +178,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void retrievePackageVersionFromDB(final String application_name) {
-        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_PACKAGE_VERSION_PHP, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                if(!package_version.equalsIgnoreCase(response.toString())){
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.please_update_your_package), Toast.LENGTH_LONG).show();
-                }else {
-                    Log.d("Package version = ", response.toString());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("retrievePackage", "error = " + error.toString());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put(Const.PROGRAM_NAME, application_name);
-                return params;
-            }
-        };
-
-        sr.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
-    }
-
-
     @Override
     protected void onResume() {
         super.onResume();
+        MainActivity.getInstance().setConnectivityListener(this);
     }
 
     @Override
@@ -317,6 +309,35 @@ public class MainActivity extends AppCompatActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 
+    private void retrievePackageVersionFromDB(final String application_name) {
+        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_PACKAGE_VERSION_PHP, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                if(!package_version.equalsIgnoreCase(response.toString())){
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.please_update_your_package), Toast.LENGTH_LONG).show();
+                }else {
+                    Log.d("Package version = ", response.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("retrievePackage", "error = " + error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put(Const.PROGRAM_NAME, application_name);
+                return params;
+            }
+        };
+
+        sr.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
+    }
     private void shareIt(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -362,6 +383,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void callLoginDialog(){
 

@@ -57,5 +57,5 @@
     <string name="seek_to">Jump To</string>
     <string name="seek_to_hint">Seconds</string>
     <string name="please_update_your_package">ご使用されているアプリが古いのですが、更新してください</string>
-
+    <string name="internet_not_connected">インターネットが接続されていません、後でやり直してください</string>
 </resources>

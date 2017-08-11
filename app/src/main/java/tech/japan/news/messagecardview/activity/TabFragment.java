@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import tech.japan.news.messagecardview.R;
+import tech.japan.news.messagecardview.adapter.ConnectivityReceiver;
 import tech.japan.news.messagecardview.adapter.MessageAdapter;
 import tech.japan.news.messagecardview.controller.AppVolleySingleton;
 import tech.japan.news.messagecardview.model.NewsMessage;
@@ -38,12 +41,13 @@ import tech.japan.news.messagecardview.utils.Const;
  * Created by lei.wang on 8/9/2017.
  */
 
-public class TabFragment extends Fragment {
+public class TabFragment extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener{
 
     private String channel;
     private RecyclerView rv;
     private ProgressBar pb;
     private List<NewsMessage> messageList;
+    boolean isConnected;
 
 
     public TabFragment() {
@@ -111,45 +115,51 @@ public class TabFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
+        isConnected = ConnectivityReceiver.isConnected();
 
-        if(bundle != null){
-            channel = bundle.getString(Const.CHANNEL);
-            getJsonArrayViaPHP(channel);
+        if(!isConnected){
+            pb.setVisibility(ProgressBar.INVISIBLE);
+            Toast.makeText(getActivity(), getResources().getString(R.string.internet_not_connected), Toast.LENGTH_LONG).show();
+            return null;
         }else{
-            Log.d("TabFragmentonCreateView", "channel is empty");
+            pb.setVisibility(ProgressBar.VISIBLE);
+            if(bundle != null){
+                channel = bundle.getString(Const.CHANNEL);
+                getJsonArrayViaPHP(channel);
+            }else{
+                Log.d("TabFragmentonCreateView", "channel is empty");
+            }
+            return view;
         }
-
-        return view;
     }
 
     private void getJsonArrayViaPHP(final String channel) {
         StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_MESSAGE_BY_CHANNEL, new Response.Listener<String>() {
-            //List<NewsMessage> mList = new ArrayList<>();
             @Override
             public void onResponse(String response) {
-                //Log.d("getJsonArrayViaPHP", "the response is =" + response);
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                //Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
-                pb.setVisibility(ProgressBar.INVISIBLE);
-                rv.setVisibility(RecyclerView.VISIBLE);
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
 
-                        if(item.getChannel().equalsIgnoreCase(Const.CHANNEL_VEDIO)){
-                            //String id = item.getLink().substring(item.getLink().lastIndexOf("=") + 1, item.getLink().length());
-                            //startYoutubeActivity(id);
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLink())));
+                if(pb != null){
+                    pb.setVisibility(ProgressBar.INVISIBLE);
+                }
+                if(rv != null){
+                    rv.setVisibility(RecyclerView.VISIBLE);
+                    rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int position = rv.getChildLayoutPosition(view);
+                            NewsMessage item = messageList.get(position);
 
-                        }else{
-                            startWebViewActivity(item.getLink());
+                            if(item.getChannel().equalsIgnoreCase(Const.CHANNEL_VEDIO)){
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLink())));
+                            }else{
+                                startWebViewActivity(item.getLink());
+                            }
                         }
-                    }
-                }));
+                    }));
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -177,6 +187,12 @@ public class TabFragment extends Fragment {
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra("ArticleURL", url);
         startActivity(intent);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        this.isConnected = isConnected;
+
     }
 
 }
