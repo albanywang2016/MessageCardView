@@ -53,8 +53,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if(width == 0 || height == 0){
                 viewHolderType = ViewHolderTypeEnum.NO_IMAGE;
                 return viewHolderType;
-            }else if (width >= 800){
-                viewHolderType = ViewHolderTypeEnum.VEDIO;
             }else if(width >= 260){
                 viewHolderType = ViewHolderTypeEnum.BIG_IMAGE;
             }else if (width >= height) {
@@ -94,11 +92,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder = new ViewHolderHorizonalImage(v4);
                 v4.setOnClickListener(listener);
                 break;
-            case ViewHolderTypeEnum.VEDIO:
-                View v5 = inflater.inflate(R.layout.card_vedio, parent, false);
-                viewHolder = new ViewHolderVedio(v5);
-                v5.setOnClickListener(listener);
-                break;
         }
 
         return viewHolder;
@@ -123,10 +116,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case ViewHolderTypeEnum.VERTICAL_IMAGE:
                 ViewHolderVerticalImage viewHolderVertialImage = (ViewHolderVerticalImage) holder;
                 configureVerticalImageHolder(viewHolderVertialImage, position);
-                break;
-            case ViewHolderTypeEnum.VEDIO:
-                ViewHolderVedio viewHolderVedio = (ViewHolderVedio) holder;
-                configureVedioHolder(viewHolderVedio, position);
                 break;
             default:
                 break;
@@ -202,20 +191,4 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    private void configureVedioHolder(ViewHolderVedio holder, int position) {
-        NewsMessage message = items.get(position);
-        holder.title.setText(message.getTitle());
-
-        holder.source.setText(message.getSource_name());
-        holder.time.setText(message.getPub_date());
-
-        Uri uri = Uri.parse(message.getImage_url());
-        Context context = holder.iv_image.getContext();
-        final float scale = context.getResources().getDisplayMetrics().density;
-
-        int width = (int) (message.getImage_width() * scale);
-        int height = (int) (message.getImage_height() * scale);
-        Picasso.with(context).load(uri).resize(width,height).centerCrop().into(holder.iv_image);
-
-    }
 }

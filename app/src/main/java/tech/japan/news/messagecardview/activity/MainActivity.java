@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        retrievePackageVersionFromDB(Const.APPLICATION_NAME);
+        metrics = getResources().getDisplayMetrics();
+
         setContentView(R.layout.tab_activity);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.tab_activity_toolbar);
-//        if(toolbar != null){
-//            setSupportActionBar(toolbar);
-//        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tab_activity_toolbar);
+        if(toolbar != null){
+            setSupportActionBar(toolbar);
+        }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PagerAdapter  pagerAdapter = new GeneralPagerAdapter(getSupportFragmentManager(), MainActivity.this);
@@ -83,14 +88,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        for(int i=0; i<tabLayout.getTabCount(); i++){
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            tab.setCustomView(pagerAdapter.getTabView(i));
-        }
-
 //        setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
-//
-//        retrievePackageVersionFromDB(Const.APPLICATION_NAME);
 //
 //
 //        Toolbar toolbar = (Toolbar) findViewById(tech.japan.news.messagecardview.R.id.toolbar);
@@ -98,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //        pb = (ProgressBar) findViewById(tech.japan.news.messagecardview.R.id.progressbar_main);
 //
-//        metrics = getResources().getDisplayMetrics();
 //
 //        rv = (RecyclerView) findViewById(tech.japan.news.messagecardview.R.id.messageList);
 //        rv.setHasFixedSize(true);
@@ -143,56 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Bundle bundle = new Bundle();
-            TabFragment fragment = new TabFragment();
-            switch (position){
-                case 0:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_DOMESTIC);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 1:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_INTERNATIONAL);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 3:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_BUSINESS);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 4:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_ENTERTAINMENT);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 5:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_SCIENCE);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 6:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_LIFE);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 7:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_LOCAL);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 8:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_MAGAZINE);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                case 9:
-                    bundle.putString(Const.CHANNEL, Const.CHANNEL_VEDIO);
-                    fragment.setArguments(bundle);
-                    return fragment;
-                default:
-                    return null;
-            }
+            return TabFragment.newInstance(position);
         }
 
-        public View getTabView(int position) {
-            View tab = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
-            TextView tv = (TextView) tab.findViewById(R.id.custom_text);
-            tv.setText(tabTitles[position]);
-            return tab;
-        }
 
         @Override
         public int getCount() {
@@ -201,11 +151,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-
             return tabTitles[position];
         }
-
-
 
     }
 
@@ -256,10 +203,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
+        switch (id){
+            case tech.japan.news.messagecardview.R.id.action_share:
+                shareIt();
+                break;
+            case tech.japan.news.messagecardview.R.id.action_login_or_register:
+                callLoginOrRegister();
+                break;
+//            case tech.japan.news.messagecardview.R.id.action_refresh:
+//                rv.setVisibility(RecyclerView.INVISIBLE);
+//                pb.setVisibility(ProgressBar.VISIBLE);
+//                getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
+//                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -368,17 +326,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void callSettingDialog(){
-        final Dialog myDialog = new Dialog(this);
-        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        myDialog.setContentView(tech.japan.news.messagecardview.R.layout.account_setting);
-        myDialog.setCancelable(true);
-        myDialog.setCanceledOnTouchOutside(true);
-        myDialog.show();
-
-
-
-    }
     private void callLoginOrRegister(){
 
         final Dialog myDialog = new Dialog(this);

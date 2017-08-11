@@ -42,23 +42,61 @@ public class TabFragment extends Fragment {
 
     private String channel;
     private RecyclerView rv;
+    private ProgressBar pb;
     private List<NewsMessage> messageList;
+
 
     public TabFragment() {
         super();
     }
 
-    public static TabFragment newInstance(){
+    public static TabFragment newInstance(int page){
         TabFragment tabFragment = new TabFragment();
         Bundle bundle = new Bundle();
+        switch (page){
+            case 0:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_DOMESTIC);
+                break;
+            case 1:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_INTERNATIONAL);
+                break;
+            case 2:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_BUSINESS);
+                break;
+            case 3:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_ENTERTAINMENT);
+                break;
+            case 4:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_SPORT);
+                break;
+            case 5:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_SCIENCE);
+                break;
+            case 6:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_LIFE);
+                break;
+            case 7:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_LOCAL);
+                break;
+            case 8:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_MAGAZINE);
+                break;
+            case 9:
+                bundle.putString(Const.CHANNEL, Const.CHANNEL_VEDIO);
+                break;
+            default:
+                break;
+
+        }
+
         tabFragment.setArguments(bundle);
         return tabFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        messageList = new ArrayList<>();
         super.onCreate(savedInstanceState);
+        messageList = new ArrayList<>();
     }
 
     @Nullable
@@ -67,6 +105,7 @@ public class TabFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         View view = inflater.inflate(R.layout.tab_layout, container, false);
+        pb = (ProgressBar) view.findViewById(R.id.tab_progressbar);
         rv = (RecyclerView) view.findViewById(R.id.tab_message);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -92,8 +131,8 @@ public class TabFragment extends Fragment {
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
                 messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
-                //pb.setVisibility(ProgressBar.INVISIBLE);
+                //Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
+                pb.setVisibility(ProgressBar.INVISIBLE);
                 rv.setVisibility(RecyclerView.VISIBLE);
                 rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
                     @Override

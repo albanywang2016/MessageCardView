@@ -6,8 +6,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import tech.japan.news.messagecardview.R;
-
 
 /**
  * Created by lei.wang on 3/6/2017.
@@ -21,7 +19,7 @@ public class WebViewContents extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(tech.japan.news.messagecardview.R.layout.progressbar);
+        setContentView(tech.japan.news.messagecardview.R.layout.webview);
 
         String url = getIntent().getStringExtra("ArticleURL");
 
