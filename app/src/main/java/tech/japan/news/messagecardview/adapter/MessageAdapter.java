@@ -13,6 +13,7 @@ import tech.japan.news.messagecardview.utils.Const;
 import tech.japan.news.messagecardview.utils.ViewHolderTypeEnum;
 import com.squareup.picasso.Picasso;
 
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -128,7 +129,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         NewsMessage message = items.get(position);
         holder.title.setText(message.getTitle());
         holder.source.setText(message.getSource_name());
-        holder.time.setText(message.getPub_date());
+        holder.time.setText(GetPubDate(message.getPub_date()));
 
     }
 
@@ -137,7 +138,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.title.setText(message.getTitle());
 
         holder.source.setText(message.getSource_name());
-        holder.time.setText(message.getPub_date());
+        holder.time.setText(GetPubDate(message.getPub_date()));
 
         Uri uri = Uri.parse(message.getImage_url());
         Context context = holder.iv_image.getContext();
@@ -152,7 +153,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void configureHorizonalImageHolder(ViewHolderHorizonalImage holder, int position) {
         NewsMessage message = items.get(position);
 
-        holder.time.setText(message.getPub_date());
+        if(message.getChannel().equalsIgnoreCase(Const.CHANNEL_VEDIO)){
+            holder.time.setText(message.getPub_date());
+        }else{
+            holder.time.setText(GetPubDate(message.getPub_date()));
+        }
+
         holder.title.setText(message.getTitle());
         holder.source.setText(message.getSource_name());
 
@@ -175,7 +181,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         NewsMessage message = items.get(position);
 
         holder.source.setText(message.getSource_name());
-        holder.time.setText(message.getPub_date());
+        holder.time.setText(GetPubDate(message.getPub_date()));
 
         //holder.iv_image.setAdjustViewBounds(true);
         Uri uri = Uri.parse(message.getImage_url());
@@ -189,6 +195,28 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         Picasso.with(context).load(uri).fit().into(holder.iv_image);
 
+    }
+
+    private String GetPubDate (String pubDate){
+        String pubDateInJapanese = "";
+
+        if(pubDate.contains(Const.ENGLISH_MONDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_MONDAY, Const.JAPANESE_MONDAY);
+        }else if(pubDate.contains(Const.ENGLISH_TUESDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_TUESDAY, Const.JAPANESE_TUESDAY);
+        }else if (pubDate.contains(Const.ENGLISH_WEDNESDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_WEDNESDAY, Const.JAPANESE_WEDNESDAY);
+        }else if (pubDate.contains(Const.ENGLISH_THRUSDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_THRUSDAY, Const.JAPANESE_THRUSDAY);
+        }else if (pubDate.contains(Const.ENGLISH_FRIDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_FRIDAY, Const.JAPANESE_FRIDAY);
+        }else if (pubDate.contains(Const.ENGLISH_SATURDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_SATURDAY, Const.JAPANESE_SATURDAY);
+        }else if (pubDate.contains(Const.ENGLISH_SUNDAY)){
+            pubDateInJapanese = pubDate.replace(Const.ENGLISH_SUNDAY, Const.JAPANESE_SUNDAY);
+        }
+
+        return pubDateInJapanese;
     }
 
 }

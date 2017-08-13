@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
     ProgressBar pb;
     String underscore;
     String app_name;
-    String package_version = "2.1";
+    String package_version = "1.16";
     private static MainActivity mInstance;
     boolean isConnected;
 

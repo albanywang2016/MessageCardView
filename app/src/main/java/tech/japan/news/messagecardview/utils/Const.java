@@ -72,5 +72,20 @@ public class Const {
     public static final String DUPLICATE_ENTRY = "1062";
     public static final String SUCCESSFULLY = "Successfully";
 
+    public static final String ENGLISH_SUNDAY = "Sun";
+    public static final String ENGLISH_SATURDAY = "Sat";
+    public static final String ENGLISH_FRIDAY = "Fri";
+    public static final String ENGLISH_THRUSDAY = "Thu";
+    public static final String ENGLISH_WEDNESDAY = "Wed";
+    public static final String ENGLISH_TUESDAY = "Tue";
+    public static final String ENGLISH_MONDAY = "Mon";
+
+    public static final String JAPANESE_SUNDAY = "日";
+    public static final String JAPANESE_SATURDAY = "土";
+    public static final String JAPANESE_FRIDAY = "金";
+    public static final String JAPANESE_THRUSDAY = "木";
+    public static final String JAPANESE_WEDNESDAY = "水";
+    public static final String JAPANESE_TUESDAY = "火";
+    public static final String JAPANESE_MONDAY = "月";
 
 }

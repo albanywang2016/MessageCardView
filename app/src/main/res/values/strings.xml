@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"@新聞"</string>
+    <string name="app_name">"新聞+"</string>
 
     <string name="username">ユーザー名</string>
     <string name="enter_username">ユーザー名を入力</string>
