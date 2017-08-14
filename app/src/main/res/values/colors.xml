@@ -25,5 +25,13 @@
     <item name="darkorange" type="color">#FFFF8800</item>
     <item name="darkred" type="color">#FFCC0000</item>
 
+    <color name="appirator_button_start_color">#ff449def</color>
+    <color name="appirator_button_end_color">#ff2f6699</color>
+    <color name="appirator_button_text_color">#ffffffff</color>
+
+    <!-- Love App Dialog -->
+    <color name="love_button_no_start_color">#e0e0e0</color>
+    <color name="love_button_no_pressed_color">#ff449def</color>
+    <color name="love_button_text_color">#000000</color>
 
 </resources>

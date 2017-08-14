@@ -58,4 +58,23 @@
     <string name="seek_to_hint">Seconds</string>
     <string name="please_update_your_package">ご使用されているアプリが古いのですが、更新してください</string>
     <string name="internet_not_connected">インターネットが接続されていません、後でやり直してください</string>
+    <string name="totle_message">メッセージあります</string>
+
+    <string name="rate_title">新聞+の評価</string>
+    <string name="rate_message">楽しんでいただけたならば簡単なご意見をお願いします。新聞+を評価しますか？</string>
+    <string name="rate">評価する</string>
+    <string name="rate_later">後で見る</string>
+    <string name="rate_cancel">いいえ</string>
+
+    <string name="appirator_app_title">新聞+</string>
+    <string name="appirator_market_url">https://play.google.com/store/apps/details?id=tech.japan.news.messagecardview</string>
+    <integer name="appirator_days_until_prompt">30</integer>
+    <integer name="appirator_launches_until_prompt">15</integer>
+    <integer name="appirator_events_until_prompt">15</integer>
+    <!-- Set this to 0 to remind every launch -->
+    <integer name="appirator_days_before_reminding">3</integer>
+    <!-- Change to true to show every time, for testing -->
+    <bool name="appirator_test_mode">false</bool>
+
+
 </resources>

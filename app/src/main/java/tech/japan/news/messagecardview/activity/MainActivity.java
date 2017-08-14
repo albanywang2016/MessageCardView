@@ -44,6 +44,7 @@ import tech.japan.news.messagecardview.adapter.ConnectivityReceiver;
 import tech.japan.news.messagecardview.adapter.MessageAdapter;
 import tech.japan.news.messagecardview.controller.AppVolleySingleton;
 
+import tech.japan.news.messagecardview.controller.Appirater;
 import tech.japan.news.messagecardview.model.NewsMessage;
 import tech.japan.news.messagecardview.utils.Const;
 import com.google.gson.Gson;
@@ -73,14 +74,22 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mInstance = this;
+
+        //Checking network connectivity
         isConnected = ConnectivityReceiver.isConnected();
         if(!isConnected){
             showAlert(Const.OOPS, getResources().getString(R.string.internet_not_connected));
             return;
         }
+
+        //checking application version
         retrievePackageVersionFromDB(Const.APPLICATION_NAME);
+
+        //asking for rating
+        Appirater.appLaunched(MainActivity.this);
+
+
         metrics = getResources().getDisplayMetrics();
 
         setContentView(R.layout.tab_activity);
@@ -336,6 +345,8 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
         AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
     }
+
+
     private void shareIt(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -372,13 +383,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
             }
         });
 
-        final Button cancelBtn = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.btn_login_register_cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
 
     }
 
@@ -395,13 +399,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
         myDialog.setCanceledOnTouchOutside(true);
         myDialog.show();
 
-        final Button cancelBtn = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.btn_login_cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
 
         //forgot password, direct to forgot password dalog
         final Button forgot = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.login_forgot_password_btn);
@@ -473,20 +470,12 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
         final EditText etUsername = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.register_et_username);
         final EditText etEmail = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.register_et_email);
-        final EditText etMail2 = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.register_et_email2);
         final EditText etPassword = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.register_et_password);
         final EditText etPassword2 = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.register_et_password2);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((7 * metrics.widthPixels)/8, (6 * metrics.heightPixels)/7);
+        //myDialog.getWindow().setLayout((7 * metrics.widthPixels)/8, (4 * metrics.heightPixels)/5);
         myDialog.show();
 
-        final Button cancelBtn = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.btn_register_cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
 
         final Button register = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.registerButton);
         register.setOnClickListener(new View.OnClickListener()
@@ -498,17 +487,16 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
                 //your login calculation goes here
                 final String username = etUsername.getText().toString().trim();
                 final String email = etEmail.getText().toString().trim();
-                final String email2 = etMail2.getText().toString().trim();
                 final String password = etPassword.getText().toString().trim();
                 final String password2 = etPassword2.getText().toString().trim();
                 final String created_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                 final String last_login = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
 
-                if(username.length() == 0 || email.length() == 0 || email2.length() == 0 || password.length() == 0 || password2.length() == 0){
+                if(username.length() == 0 || email.length() == 0 || password.length() == 0 || password2.length() == 0){
                     showAlert(Const.OOPS, getResources().getString(tech.japan.news.messagecardview.R.string.should_not_be_empty));
                     return;
-                }else if (!email.equalsIgnoreCase(email2) || !password.equalsIgnoreCase(password2)){
+                }else if (!password.equalsIgnoreCase(password2)){
                     showAlert(Const.OOPS, getResources().getString(tech.japan.news.messagecardview.R.string.input_not_the_same));
                     return;
                 }
@@ -559,16 +547,9 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
         myDialog.setContentView(tech.japan.news.messagecardview.R.layout.forgot_password);
         myDialog.setCancelable(false);
         myDialog.setCanceledOnTouchOutside(true);
-        myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (1 * metrics.heightPixels)/3);
+        //myDialog.getWindow().setLayout((6 * metrics.widthPixels)/7, (1 * metrics.heightPixels)/3);
         myDialog.show();
 
-        final Button cancelBtn = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.btn_forgot_cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
 
         final EditText etEmail = (EditText) myDialog.findViewById(tech.japan.news.messagecardview.R.id.forgot_et_email);
         final Button send = (Button) myDialog.findViewById(tech.japan.news.messagecardview.R.id.forgot_send_btn);

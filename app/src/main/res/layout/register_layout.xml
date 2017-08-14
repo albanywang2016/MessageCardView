@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="fill_parent"
+android:layout_width="300dp"
 android:layout_height="fill_parent"
 android:orientation="vertical"
     android:weightSum="1">
@@ -8,11 +8,11 @@ android:orientation="vertical"
 
     <TextView
         android:id="@+id/register_tv_username"
+        style="@style/MyBlueTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
         android:gravity="center"
-        android:textColor="#000000"
         android:text="@string/username"
         />
 
@@ -27,11 +27,11 @@ android:orientation="vertical"
 
     <TextView
         android:id="@+id/register_tv_email"
+        style="@style/MyBlueTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
         android:gravity="center"
-        android:textColor="#000000"
         android:text="@string/email"
         />
 
@@ -44,33 +44,14 @@ android:orientation="vertical"
         android:textColorHint="@color/white"
         android:inputType="textEmailAddress" />
 
-    <TextView
-        android:id="@+id/register_tv_email2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:text="@string/re_email"
-        />
-
-    <EditText
-        android:id="@+id/register_et_email2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
-        android:hint="@string/enter_email"
-        android:textColorHint="@color/white"
-        android:inputType="textEmailAddress" />
-
 
     <TextView
         android:id="@+id/register_tv_password"
+        style="@style/MyBlueTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dip"
         android:gravity="center"
-        android:textColor="#000000"
         android:text="@string/password"
         />
 
@@ -85,11 +66,11 @@ android:orientation="vertical"
 
     <TextView
         android:id="@+id/register_tv_password2"
+        style="@style/MyBlueTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dip"
         android:gravity="center"
-        android:textColor="#000000"
         android:text="@string/re_password"
         />
 
@@ -102,25 +83,15 @@ android:orientation="vertical"
         android:textColorHint="@color/white"
         android:inputType="textPassword" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+    <Button
+        android:id="@+id/registerButton"
+        style="@style/appiratorButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"/>
 
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register" />
-
-        <Button
-            android:id="@+id/btn_register_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel" />
-    </LinearLayout>
 
 
 </LinearLayout>
