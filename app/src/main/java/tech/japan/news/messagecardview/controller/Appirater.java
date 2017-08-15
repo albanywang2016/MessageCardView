@@ -28,21 +28,23 @@ public class Appirater {
     private static final String PREF_LAUNCH_COUNT = "launch_count";
     private static final String PREF_EVENT_COUNT = "event_count";
     private static final String PREF_RATE_CLICKED = "rateclicked";
-    private static final String PREF_DONT_SHOW = "dontshow";
+    //private static final String PREF_DONT_SHOW = "dontshow";
     private static final String PREF_DATE_REMINDER_PRESSED = "date_reminder_pressed";
     private static final String PREF_DATE_FIRST_LAUNCHED = "date_firstlaunch";
     private static final String PREF_APP_VERSION_CODE = "versioncode";
-    private static final String PREF_APP_LOVE_CLICKED= "loveclicked";
+    //private static final String PREF_APP_LOVE_CLICKED= "loveclicked";
 
     public static void appLaunched(Context mContext) {
         boolean testMode = Const.appirator_test_mode;
         SharedPreferences prefs = mContext.getSharedPreferences(mContext.getPackageName()+".appirater", 0);
         //if(!testMode && (prefs.getBoolean(PREF_DONT_SHOW, false) || prefs.getBoolean(PREF_RATE_CLICKED, false))) {return;}
+        if(!testMode && prefs.getBoolean(PREF_RATE_CLICKED, false)) {return;}
 
         SharedPreferences.Editor editor = prefs.edit();
 
         if(testMode){
             showRateDialog(mContext,editor);
+            return;
         }
 
         // Increment launch counter
@@ -106,7 +108,8 @@ public class Appirater {
     public static void significantEvent(Context mContext) {
         boolean testMode = Const.appirator_test_mode;
         SharedPreferences prefs = mContext.getSharedPreferences(mContext.getPackageName()+".appirater", 0);
-        if(!testMode && (prefs.getBoolean(PREF_DONT_SHOW, false) || prefs.getBoolean(PREF_RATE_CLICKED, false))) {return;}
+        //if(!testMode && (prefs.getBoolean(PREF_DONT_SHOW, false) || prefs.getBoolean(PREF_RATE_CLICKED, false))) {return;}
+        if(!testMode && prefs.getBoolean(PREF_RATE_CLICKED, false)) {return;}
 
         long event_count = prefs.getLong(PREF_EVENT_COUNT, 0);
         event_count++;
@@ -172,7 +175,13 @@ public class Appirater {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (editor != null) {
-                    editor.putBoolean(PREF_DONT_SHOW, true);
+                    //editor.putBoolean(PREF_DONT_SHOW, true);
+                    editor.putLong(PREF_LAUNCH_COUNT, 0);
+                    editor.putLong(PREF_EVENT_COUNT,0);
+                    editor.putLong(PREF_DATE_FIRST_LAUNCHED, 0);
+                    editor.putLong(PREF_DATE_REMINDER_PRESSED, 0);
+                    editor.putInt(PREF_APP_VERSION_CODE, 0);
+
                     editor.commit();
                 }
                 dialog.dismiss();
