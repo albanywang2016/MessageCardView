@@ -9,8 +9,8 @@ android {
         applicationId "tech.japan.news.messagecardview"
         minSdkVersion 15
         targetSdkVersion 15
-        versionCode 16
-        versionName "1.16"
+        versionCode 18
+        versionName "1.18"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

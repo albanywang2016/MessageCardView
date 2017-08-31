@@ -133,6 +133,22 @@ public class TabFragment extends Fragment implements ConnectivityReceiver.Connec
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(rv != null){
+            rv.setAdapter(null);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(rv != null){
+            rv.setAdapter(null);
+        }
+    }
+
     private void getJsonArrayViaPHP(final String channel) {
         StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_MESSAGE_BY_CHANNEL, new Response.Listener<String>() {
             @Override

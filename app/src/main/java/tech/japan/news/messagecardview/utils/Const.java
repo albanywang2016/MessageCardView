@@ -88,8 +88,7 @@ public class Const {
     public static final String JAPANESE_TUESDAY = "火";
     public static final String JAPANESE_MONDAY = "月";
 
-    //public static final int appirator_days_until_prompt = 30;
-    public static final int appirator_days_until_prompt = 1;
+    public static final int appirator_days_until_prompt = 15;
     public static final int appirator_launches_until_prompt = 15;
     public static final int appirator_events_until_prompt = 15;
     public static final int appirator_days_before_reminding = 3;
