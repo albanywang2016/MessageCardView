@@ -167,12 +167,7 @@ public class TabFragment extends Fragment implements ConnectivityReceiver.Connec
                         public void onClick(View view) {
                             int position = rv.getChildLayoutPosition(view);
                             NewsMessage item = messageList.get(position);
-
-                            if(item.getChannel().equalsIgnoreCase(Const.CHANNEL_VEDIO)){
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLink())));
-                            }else{
-                                startWebViewActivity(item.getLink());
-                            }
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLink())));
                         }
                     }));
                 }
@@ -197,13 +192,6 @@ public class TabFragment extends Fragment implements ConnectivityReceiver.Connec
 
     }
 
-
-    private void startWebViewActivity(String url) {
-        Intent intent = new Intent(getActivity(), WebViewContents.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra("ArticleURL", url);
-        startActivity(intent);
-    }
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {

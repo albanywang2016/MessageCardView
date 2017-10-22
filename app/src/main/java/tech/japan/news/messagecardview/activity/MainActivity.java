@@ -3,33 +3,28 @@ package tech.japan.news.messagecardview.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -41,18 +36,13 @@ import com.android.volley.toolbox.StringRequest;
 
 import tech.japan.news.messagecardview.R;
 import tech.japan.news.messagecardview.adapter.ConnectivityReceiver;
-import tech.japan.news.messagecardview.adapter.MessageAdapter;
 import tech.japan.news.messagecardview.controller.AppVolleySingleton;
 
 import tech.japan.news.messagecardview.controller.Appirater;
 import tech.japan.news.messagecardview.model.NewsMessage;
 import tech.japan.news.messagecardview.utils.Const;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
     ProgressBar pb;
     String underscore;
     String app_name;
-    String package_version = "1.18";
+    String package_version = "1.19";
     private static MainActivity mInstance;
     boolean isConnected;
 
@@ -105,33 +95,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-//        setContentView(tech.japan.news.messagecardview.R.layout.activity_main);
-//
-//
-//        Toolbar toolbar = (Toolbar) findViewById(tech.japan.news.messagecardview.R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        pb = (ProgressBar) findViewById(tech.japan.news.messagecardview.R.id.progressbar_main);
-//
-//
-//        rv = (RecyclerView) findViewById(tech.japan.news.messagecardview.R.id.messageList);
-//        rv.setHasFixedSize(true);
-//
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        rv.setLayoutManager(llm);
-//
-//        messageList = new ArrayList<>();
-//
-//        underscore = getResources().getString(tech.japan.news.messagecardview.R.string.enderscore);
-//        app_name = getResources().getString(tech.japan.news.messagecardview.R.string.app_name);
-//
-//        //domestic is the default first page, get Json array view php
-//        //rv.setVisibility(RecyclerView.INVISIBLE);
-//        this.setTitle(app_name + underscore + getResources().getString(R.string.magazine));
-//        Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
-//        pb.setVisibility(ProgressBar.VISIBLE);
-//        getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
 
     }
 
@@ -209,112 +172,12 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
             case tech.japan.news.messagecardview.R.id.action_login_or_register:
                 callLoginOrRegister();
                 break;
-//            case tech.japan.news.messagecardview.R.id.action_refresh:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
-//                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-//        switch (id){
-//            case tech.japan.news.messagecardview.R.id.action_share:
-//                shareIt();
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_login_or_register:
-//                callLoginOrRegister();
-//                break;
-////            case R.id.action_setting:
-////                callSettingDialog();
-////                break;
-//            case tech.japan.news.messagecardview.R.id.action_refresh:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                getJsonArrayViaPHP(Const.CURRENT_CHANNEL);
-//                break;
-//            case R.id.action_domestic:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.domestic));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_DOMESTIC;
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                getJsonArrayViaPHP(Const.CHANNEL_DOMESTIC);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_international:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.international));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_INTERNATIONAL;
-//                getJsonArrayViaPHP(Const.CHANNEL_INTERNATIONAL);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_business:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.business));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_BUSINESS;
-//                getJsonArrayViaPHP(Const.CHANNEL_BUSINESS);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_entertainment:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.entertainment));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_ENTERTAINMENT;
-//                getJsonArrayViaPHP(Const.CHANNEL_ENTERTAINMENT);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_sport:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.sport));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_SPORT;
-//                getJsonArrayViaPHP(Const.CHANNEL_SPORT);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_science:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.science));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_SCIENCE;
-//                getJsonArrayViaPHP(Const.CHANNEL_SCIENCE);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_life:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.life));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_LIFE;
-//                getJsonArrayViaPHP(Const.CHANNEL_LIFE);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_local:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.local));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_LOCAL;
-//                getJsonArrayViaPHP(Const.CHANNEL_LOCAL);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_magazine:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(tech.japan.news.messagecardview.R.string.magazine));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_MAGAZINE;
-//                getJsonArrayViaPHP(Const.CHANNEL_MAGAZINE);
-//                break;
-//            case tech.japan.news.messagecardview.R.id.action_vedio:
-//                rv.setVisibility(RecyclerView.INVISIBLE);
-//                pb.setVisibility(ProgressBar.VISIBLE);
-//                this.setTitle(app_name + underscore + getResources().getString(R.string.vedio));
-//                Const.CURRENT_CHANNEL = Const.CHANNEL_VEDIO;
-//                getJsonArrayViaPHP(Const.CHANNEL_VEDIO);
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     private void retrievePackageVersionFromDB(final String application_name) {
         StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_PACKAGE_VERSION_PHP, new Response.Listener<String>() {
@@ -598,7 +461,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
 
     }
 
-
     private void showAlert(String title, String alert){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(alert)
@@ -606,63 +468,6 @@ public class MainActivity extends AppCompatActivity implements ConnectivityRecei
                 .setPositiveButton(android.R.string.ok, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void getJsonArrayViaPHP(final String channel) {
-        StringRequest sr = new StringRequest(Request.Method.POST, Const.GET_MESSAGE_BY_CHANNEL, new Response.Listener<String>() {
-            //List<NewsMessage> mList = new ArrayList<>();
-            @Override
-            public void onResponse(String response) {
-                //Log.d("getJsonArrayViaPHP", "the response is =" + response);
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                messageList = Arrays.asList(gson.fromJson(response, NewsMessage[].class));
-                Log.d("getJsonArrayViaPHP", "message List = " + messageList.toString());
-                pb.setVisibility(ProgressBar.INVISIBLE);
-                rv.setVisibility(RecyclerView.VISIBLE);
-                rv.setAdapter(new MessageAdapter(messageList, new MessageAdapter.RecyclerviewClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int position = rv.getChildLayoutPosition(view);
-                        NewsMessage item = messageList.get(position);
-
-                        if(item.getChannel().equalsIgnoreCase(Const.CHANNEL_VEDIO)){
-                            //String id = item.getLink().substring(item.getLink().lastIndexOf("=") + 1, item.getLink().length());
-                            //startYoutubeActivity(id);
-                            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(item.getLink())));
-
-                        }else{
-                            startWebViewActivity(item.getLink());
-                        }
-                    }
-                }));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("getJsonArrayViaPHP", "error = " + error.toString());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put(Const.CHANNEL, channel);
-                return params;
-            }
-        };
-
-        sr.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        AppVolleySingleton.getmInstance().addToRequestQueue(sr, Const.TAG);
-
-    }
-
-
-    private void startWebViewActivity(String url) {
-        Intent intent = new Intent(this, WebViewContents.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra("ArticleURL", url);
-        startActivity(intent);
     }
 
 
